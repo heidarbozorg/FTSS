@@ -9,7 +9,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FTSS.Logic\FTSS.Logic.csproj" />
     <ProjectReference Include="..\FTSS.Models\FTSS.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Filters\" />
   </ItemGroup>
 
 

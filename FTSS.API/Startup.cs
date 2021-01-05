@@ -40,7 +40,7 @@ namespace FTSS.API
         {
             services.AddControllers();
 
-            services.AddDbContext<Dataprovider.SalamatDBContext>(options => options.UseSqlServer(cns));
+            //services.AddDbContext<Dataprovider.FTSSDBContext>(options => options.UseSqlServer(cns));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
