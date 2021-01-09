@@ -6,7 +6,7 @@ namespace FTSS.Logic.Log
 {
     public interface ILog
     {
-        void Add(string msg, Exception e);
+        void Add(Exception e, string msg = null);
 
         void Add(string msg);
     }
