@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\Functions\" />
+    <Folder Include="Database\Views\" />
+    <Folder Include="Database\Tables\" />
+  </ItemGroup>
+
 </Project>
