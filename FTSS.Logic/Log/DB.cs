@@ -6,9 +6,11 @@ namespace FTSS.Logic.Log
 {
     public class DB : ILog
     {
-        public DB()
-        {
+        Models.Database.StoredProcedures.ISP _DBLogger;
 
+        public DB(Models.Database.StoredProcedures.ISP DBLogger)
+        {
+            _DBLogger = DBLogger;
         }
 
         /// <summary>
@@ -23,9 +25,14 @@ namespace FTSS.Logic.Log
             this.Add(text);
         }
 
+        /// <summary>
+        /// Log a simple text at database
+        /// </summary>
+        /// <param name="msg"></param>
         public void Add(string msg)
         {
-            throw new NotImplementedException();
+            string text = string.Format("{0}: {1}\n", DateTime.Now, msg);
+            _DBLogger.Call(text);
         }
     }
 }

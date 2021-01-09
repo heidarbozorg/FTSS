@@ -6,6 +6,7 @@ namespace FTSS.Models.Database.StoredProcedures
 {
     public interface ISP
     {
-        ISPResult Call(ISPParameters Param = null);
+        //ISPResult Call(ISPParameters Param = null);
+        ISPResult Call(params object[] param);
     }
 }

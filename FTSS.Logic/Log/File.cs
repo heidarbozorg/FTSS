@@ -32,7 +32,7 @@ namespace FTSS.Logic.Log
         }
 
         /// <summary>
-        /// Log a simple text
+        /// Log a simple text at a file
         /// </summary>
         /// <param name="msg"></param>
         public void Add(string msg)

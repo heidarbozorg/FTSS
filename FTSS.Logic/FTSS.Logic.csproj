@@ -8,4 +8,8 @@
     <Folder Include="Database\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FTSS.Models\FTSS.Models.csproj" />
+  </ItemGroup>
+
 </Project>
