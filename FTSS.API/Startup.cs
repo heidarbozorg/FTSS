@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using FTSS.API.Extensions;
 
 namespace FTSS.API
 {
@@ -38,8 +39,9 @@ namespace FTSS.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddControllers();
-
+            services.AddDBLogger(cns);
             //services.AddDbContext<Dataprovider.FTSSDBContext>(options => options.UseSqlServer(cns));
         }
 

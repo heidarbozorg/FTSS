@@ -4,11 +4,14 @@ using System.Text;
 
 namespace FTSS.Logic.Log
 {
+    /// <summary>
+    /// Implement ILog for saving log at database
+    /// </summary>
     public class DB : ILog
     {
-        Models.Database.StoredProcedures.ISP _DBLogger;
+        Models.Database.Interfaces.ISP _DBLogger;
 
-        public DB(Models.Database.StoredProcedures.ISP DBLogger)
+        public DB(Models.Database.Interfaces.ISP DBLogger)
         {
             _DBLogger = DBLogger;
         }

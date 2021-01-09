@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FTSS.DP.Dapper\FTSS.DP.DapperORM.csproj" />
     <ProjectReference Include="..\FTSS.Logic\FTSS.Logic.csproj" />
     <ProjectReference Include="..\FTSS.Models\FTSS.Models.csproj" />
   </ItemGroup>
