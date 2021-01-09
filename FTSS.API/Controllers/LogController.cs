@@ -23,10 +23,9 @@ namespace FTSS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] complex data)
+        public IActionResult Add([FromBody] Models.Database.Log data)
         {
-            _logger.Add("This is a test");
-
+            _logger.Add(data.MSG);
             return Ok(data);
         }
 

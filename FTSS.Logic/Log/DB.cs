@@ -34,7 +34,7 @@ namespace FTSS.Logic.Log
         /// <param name="msg"></param>
         public void Add(string msg)
         {
-            string text = string.Format("{0}: {1}\n", DateTime.Now, msg);
+            string text = string.Format("{0}", msg);
             _DBLogger.Call(text);
         }
     }
