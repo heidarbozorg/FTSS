@@ -7,7 +7,6 @@ namespace FTSS.Models.Database
     public class Log
     {
         public int LogiId { get; set; }
-        public int PersonelId { get; set; }
         public string IPAddress { get; set; }
         public string MSG { get; set; }
         public DateTime Date { get; set; }

@@ -11,19 +11,9 @@ namespace FTSS.DP.DapperORM.StoredProcedure
     {
         private readonly string _cns;
 
-        /// <summary>
-        /// Maybe delete in the future
-        /// </summary>
-        private readonly SqlConnection _connection;
-
         public SP_Log_Insert(string cns)
         {
             _cns = cns;
-        }
-
-        public SP_Log_Insert(SqlConnection connection)
-        {
-            _connection = connection;
         }
 
         /// <summary>
@@ -45,8 +35,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             {
                 connection.Execute(sql,
                     new 
-                    {
-                        PersonelId,
+                    {                        
                         IPAddress,
                         MSG = msg 
                     }, 

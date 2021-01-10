@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,16 @@ namespace FTSS.API.Extensions
 {
     public static class Services
     {
+        public static void AddDBCTX(this IServiceCollection services, string connectionString)
+        {
+            //Create a storedProcedure instance for saving log on database
+            var ctx = new Logic.Database.ctx(connectionString);
+
+            //Add dbLogger as a service to the service pool
+            services.AddSingleton<Logic.Database.IDBCTX>(ctx);
+        }
+
+
         /// <summary>
         /// Add Logger service to services pool
         /// </summary>
@@ -19,8 +30,13 @@ namespace FTSS.API.Extensions
         /// </remarks>
         public static void AddDBLogger(this IServiceCollection services, string connectionString)
         {
-            var insertLogAtDB = new DP.DapperORM.StoredProcedure.SP_Log_Insert(connectionString);
-            var dbLogger = new Logic.Log.DB(insertLogAtDB);
+            //Create a storedProcedure instance for saving log on database
+            var storedProcedure = new DP.DapperORM.StoredProcedure.SP_Log_Insert(connectionString);
+
+            //Pass the storedProcedure to the dbLogger constructor
+            var dbLogger = new Logic.Log.DB(storedProcedure);
+
+            //Add dbLogger as a service to the service pool
             services.AddSingleton<Logic.Log.ILog>(dbLogger);
         }
     }

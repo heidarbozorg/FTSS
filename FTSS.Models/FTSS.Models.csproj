@@ -6,9 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Database\Functions\" />
-    <Folder Include="Database\StoredProcedures\" />
     <Folder Include="Database\Views\" />
-    <Folder Include="Database\Tables\" />
   </ItemGroup>
 
 </Project>

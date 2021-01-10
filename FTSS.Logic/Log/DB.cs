@@ -9,11 +9,11 @@ namespace FTSS.Logic.Log
     /// </summary>
     public class DB : ILog
     {
-        Models.Database.Interfaces.ISP _DBLogger;
+        Models.Database.Interfaces.ISP _storedProcedure;
 
-        public DB(Models.Database.Interfaces.ISP DBLogger)
+        public DB(Models.Database.Interfaces.ISP storedProcedure)
         {
-            _DBLogger = DBLogger;
+            _storedProcedure = storedProcedure;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace FTSS.Logic.Log
         public void Add(string msg)
         {
             string text = string.Format("{0}", msg);
-            _DBLogger.Call(text);
+            _storedProcedure.Call(text);
         }
     }
 }

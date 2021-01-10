@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\FTSS.DP.Dapper\FTSS.DP.DapperORM.csproj" />
     <ProjectReference Include="..\FTSS.Models\FTSS.Models.csproj" />
   </ItemGroup>
 
