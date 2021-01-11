@@ -8,15 +8,10 @@ using Microsoft.Extensions.Configuration;
 namespace FTSS.API.Controllers
 {
     [Route("/api/[controller]/[action]")]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
-        private readonly Logic.Database.IDBCTX _ctx;
-        private readonly Logic.Log.ILog _logger;
-
-        public UsersController(Logic.Database.IDBCTX dbCTX, Logic.Log.ILog logger)
+        public UsersController(Logic.Database.IDBCTX dbCTX, Logic.Log.ILog logger) : base(dbCTX, logger)
         {
-            _ctx = dbCTX;
-            _logger = logger;
         }
 
         /// <summary>
@@ -30,7 +25,7 @@ namespace FTSS.API.Controllers
             try
             {
                 var rst = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, data);
-                return Ok(rst);
+                return FromDatabase(rst);
             }
             catch (Exception e)
             {
