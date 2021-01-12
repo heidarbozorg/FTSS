@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Filters\**" />
+    <Content Remove="Filters\**" />
+    <EmbeddedResource Remove="Filters\**" />
+    <None Remove="Filters\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
   </ItemGroup>
 
@@ -12,10 +19,6 @@
     <ProjectReference Include="..\FTSS.DP.Dapper\FTSS.DP.DapperORM.csproj" />
     <ProjectReference Include="..\FTSS.Logic\FTSS.Logic.csproj" />
     <ProjectReference Include="..\FTSS.Models\FTSS.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Filters\" />
   </ItemGroup>
 
 
