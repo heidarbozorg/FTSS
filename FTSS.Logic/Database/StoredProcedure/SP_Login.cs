@@ -6,6 +6,12 @@ namespace FTSS.Logic.Database.StoredProcedure
 {
     public class SP_Login
     {
+        /// <summary>
+        /// Calling SP_Login stored procedure in database
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static Models.Database.Interfaces.DBResult Call(IDBCTX ctx,
             Models.Database.Tables.Users user)
         {

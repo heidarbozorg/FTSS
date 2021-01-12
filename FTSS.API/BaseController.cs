@@ -18,6 +18,11 @@ namespace FTSS.API
             _logger = logger;
         }
 
+        /// <summary>
+        /// Convert database result to rest standard result
+        /// </summary>
+        /// <param name="dbResult"></param>
+        /// <returns></returns>
         public IActionResult FromDatabase(Models.Database.Interfaces.DBResult dbResult)
         {
             if (dbResult == null)
