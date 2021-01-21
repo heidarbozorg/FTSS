@@ -10,7 +10,8 @@ namespace FTSS.API.Controllers
     [Route("/api/[controller]/[action]")]
     public class UsersController : BaseController
     {
-        public UsersController(Logic.Database.IDBCTX dbCTX, Logic.Log.ILog logger) : base(dbCTX, logger)
+        public UsersController(Logic.Database.IDBCTX dbCTX, Logic.Log.ILog logger) 
+            : base(dbCTX, logger)
         {
         }
 
@@ -24,7 +25,8 @@ namespace FTSS.API.Controllers
         {
             try
             {
-                var rst = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, data);
+                //var rst = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, data);
+                var rst = Logic.Security.UserInfo.Login(_ctx, data);
                 return FromDatabase(rst);
             }
             catch (Exception e)

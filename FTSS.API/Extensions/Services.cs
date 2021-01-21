@@ -13,7 +13,7 @@ namespace FTSS.API.Extensions
         public static void AddDBCTX(this IServiceCollection services, string connectionString)
         {
             //Create a storedProcedure instance for saving log on database
-            var ctx = new Logic.Database.ctx(connectionString);
+            var ctx = new Logic.Database.Ctx(connectionString);
 
             //Add dbLogger as a service to the service pool
             services.AddSingleton<Logic.Database.IDBCTX>(ctx);

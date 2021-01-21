@@ -4,8 +4,8 @@ using System.Text;
 
 namespace FTSS.Models.Database.Interfaces
 {
-    public interface ISP
+    public interface ISP<T>
     {
-        DBResult Call(params object[] param);
+        DBResult Call(T Data);
     }
 }

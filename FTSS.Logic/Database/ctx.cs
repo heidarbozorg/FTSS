@@ -5,12 +5,12 @@ using System.Text;
 
 namespace FTSS.Logic.Database
 {
-    public class ctx : IDBCTX
+    public class Ctx : IDBCTX
     {
         private string _connectionString { get; set; }
         private SqlConnection _sqlConnection { get; set; }
 
-        public ctx(string ConnectionString)
+        public Ctx(string ConnectionString)
         {
             _connectionString = ConnectionString;
             _sqlConnection = new SqlConnection(_connectionString);

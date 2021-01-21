@@ -17,7 +17,7 @@ namespace FTSS.Logic.Database.StoredProcedure
         {
             var connectionString = ctx.GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Login(connectionString);
-            var rst = sp.Call(user.Email, user.Password);
+            var rst = sp.Call(user);
             return rst;
         }
     }

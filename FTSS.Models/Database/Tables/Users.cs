@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FTSS.Models.Database.Tables
 {
-    public class Users
+    public class Users : Models.Database.BaseModel
     {
         public int UserId { get; set; }
         public string Email { get; set; }

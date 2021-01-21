@@ -9,9 +9,9 @@ namespace FTSS.Logic.Log
     /// </summary>
     public class DB : ILog
     {
-        Models.Database.Interfaces.ISP _storedProcedure;
+        Models.Database.Interfaces.ISP<string> _storedProcedure;
 
-        public DB(Models.Database.Interfaces.ISP storedProcedure)
+        public DB(Models.Database.Interfaces.ISP<string> storedProcedure)
         {
             _storedProcedure = storedProcedure;
         }

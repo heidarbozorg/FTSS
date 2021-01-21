@@ -7,7 +7,7 @@ using FTSS.Models.Database.Interfaces;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_Log_Insert : ISP
+    public class SP_Log_Insert : ISP<string>
     {
         private readonly string _cns;
 
@@ -21,15 +21,14 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        public DBResult Call(params object[] param)
+        public DBResult Call(string msg)
         {
-            if (param == null || param.Length == 0)
+            if (string.IsNullOrEmpty(msg))
                 throw new Exception("SP_Log_Insert.Call need a text message as parameter");
 
             string sql = "dbo.SP_Log_Insert";
             int PersonelId = -1;
             string IPAddress = "test";
-            string msg = param[0] as string;
 
             using (var connection = new SqlConnection(_cns))
             {

@@ -7,35 +7,34 @@ using FTSS.Models.Database.Interfaces;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_Login : ISP<FTSS.Models.Database.Tables.Users>
+    public class SP_User_GetAllMenu : ISP<Models.Database.StoredProcedures.SP_Login>
     {
         private readonly string _cns;
 
-        public SP_Login(string cns)
+        public SP_User_GetAllMenu(string cns)
         {
             _cns = cns;
         }
 
-        public DBResult Call(FTSS.Models.Database.Tables.Users Data)
+        public DBResult Call(Models.Database.StoredProcedures.SP_Login Data)
         {
-            if (Data == null)
-                throw new Exception("SP_Login.Call can not be call without passing username and password");
+            if (Data == null || string.IsNullOrEmpty(Data.Token))
+                throw new Exception("SP_User_GetAllMenu.Call can not be call without passing userInfo");
 
             int ErrorCode = 0;
             string ErrorMessage = "";
 
-            string sql = "dbo.SP_Login";
+            string sql = "dbo.SP_User_GetAllMenu";
             DBResult rst = null;
 
             using (var connection = new SqlConnection(_cns))
             {
                 var p = new DynamicParameters();
-                p.Add("@Email", Data.Email);
-                p.Add("@Password", Data.Password);
+                p.Add("@Token", Data.Token);
                 p.Add("@ErrorCode", ErrorCode, System.Data.DbType.Int32, System.Data.ParameterDirection.Output);
                 p.Add("@ErrorMessage", ErrorMessage, System.Data.DbType.String, System.Data.ParameterDirection.Output);
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_Login>(
+                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_GetAllMenu>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
                 ErrorMessage = p.Get<string>("ErrorMessage");
