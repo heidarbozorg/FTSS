@@ -35,5 +35,25 @@ namespace FTSS.API.Controllers
                 return Problem(e.Message, e.StackTrace, 500, "Error in Login");
             }
         }
+
+        [HttpPost]
+        public IActionResult GetUser([FromBody] Models.Database.Interfaces.DBResult data)
+        {
+            try
+            {
+                //var rst = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, data);
+                var JWT = new Logic.Security.JWT();
+                string token = data.Data.ToString();
+                var rst = JWT.GetData(token);
+                var dbResult = new Models.Database.Interfaces.DBResult(200, "", rst);
+                return FromDatabase(dbResult);
+            }
+            catch (Exception e)
+            {
+                _logger.Add(e, "Error in UsersController.GetUser(data)");
+                return Problem(e.Message, e.StackTrace, 500, "Error in Login");
+            }
+        }
+
     }
 }
