@@ -49,3 +49,9 @@ Is the upper tier of solution which contains RESTful API interface
 
 * **FTSS.Logic:** _All common function such as Error Log, Messages and Convert types Implement by this tier_
 
+# Implementation
+In this section I described the source code in details.
+
+## Login
+End-Point calling api/Users/Login and send Username & Password. If Username & Password is valid, Login will return JWT token + User non-sensitive data.
+![Login flowchart](https://github.com/heidarbozorg/FTSS/raw/master/FTSS%20Login.png)
