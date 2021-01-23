@@ -23,7 +23,7 @@ namespace FTSS.API
         /// </summary>
         /// <param name="dbResult"></param>
         /// <returns></returns>
-        public IActionResult FromDatabase(Models.Database.Interfaces.DBResult dbResult)
+        public IActionResult FromDatabase(Models.Database.DBResult dbResult)
         {
             if (dbResult == null)
                 return StatusCode(500, "Unhandled internal server error");

@@ -1,5 +1,4 @@
 ﻿using FTSS.Models.Database;
-using FTSS.Models.Database.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -17,13 +16,13 @@ namespace FTSS.Logic.Security
         /// <summary>
         /// Generate JWT token from UserInfo object
         /// </summary>
-        /// <param name="Data">UserInfo object</param>
+        /// <param name="data">UserInfo object</param>
         /// <returns>JWT token which is a string</returns>
-        public string GenerateToken(UserInfo Data)
+        public string GenerateToken(UserInfo data)
         {
-            var User = Data.User;
-            var AccessMenu = Data.AccessMenu;
-            var accessMenuJSON = CommonOperations.JSON.ObjToJson(AccessMenu);
+            var user = data.User;
+            var accessMenu = data.AccessMenu;
+            var accessMenuJSON = CommonOperations.JSON.ObjToJson(accessMenu);
 
             var symmetricKey = Convert.FromBase64String(key);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -32,15 +31,15 @@ namespace FTSS.Logic.Security
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, Data.Username),
-                    new Claim("FirstName", User.FirstName),
-                    new Claim("LastName", User.LastName),
-                    new Claim("UserId", User.UserId.ToString()),
-                    new Claim("Token", User.Token),
+                    new Claim(ClaimTypes.Name, data.Username),
+                    new Claim("FirstName", user.FirstName),
+                    new Claim("LastName", user.LastName),
+                    new Claim("UserId", user.UserId.ToString()),
+                    new Claim("Token", user.Token),
                     new Claim("AccessMenu", accessMenuJSON),
                     new Claim("scope", Guid.NewGuid().ToString()),
                 }),
-                Expires = User.ExpireDate,
+                Expires = user.ExpireDate,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256)
             };
 
@@ -50,9 +49,9 @@ namespace FTSS.Logic.Security
             return token;
         }
 
-        public UserInfo GetData(string Token)
+        public UserInfo GetData(string token)
         {
-            var validateToken = GetPrincipal(Token);
+            var validateToken = GetPrincipal(token);
             
             if (validateToken != null)
             {
@@ -69,7 +68,7 @@ namespace FTSS.Logic.Security
                     model.User.Token = getValueFromClaim(validateToken.Claims, "token");
                     var accessMenuJSON = getValueFromClaim(validateToken.Claims, "AccessMenu");
                     if (!string.IsNullOrEmpty(accessMenuJSON))
-                        model.AccessMenu = CommonOperations.JSON.jsonToT<Models.Database.StoredProcedures.SP_User_GetAllMenu>(accessMenuJSON);
+                        model.AccessMenu = CommonOperations.JSON.jsonToT<Models.Database.StoredProcedures.SP_User_GetAccessMenu>(accessMenuJSON);
 
                     return model;
                 }
@@ -107,13 +106,13 @@ namespace FTSS.Logic.Security
         /// Get a value from Claim by it's name
         /// </summary>
         /// <param name="claims"></param>
-        /// <param name="Name"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
-        private string getValueFromClaim(IEnumerable<Claim> claims, string Name)
+        private string getValueFromClaim(IEnumerable<Claim> claims, string name)
         {
             try
             {
-                var item = claims.FirstOrDefault(a => a.Type.ToLower().Equals(Name.ToLower()));
+                var item = claims.FirstOrDefault(a => a.Type.ToLower().Equals(name.ToLower()));
                 return (item.Value);
             }
             catch (Exception)

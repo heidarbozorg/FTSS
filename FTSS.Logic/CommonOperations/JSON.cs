@@ -13,9 +13,9 @@ namespace FTSS.Logic.CommonOperations
             return (rst);
         }
 
-        public static string ObjToJson(object Data)
+        public static string ObjToJson(object data)
         {
-            var rst = JsonConvert.SerializeObject(Data);
+            var rst = JsonConvert.SerializeObject(data);
             return rst;
         }
     }

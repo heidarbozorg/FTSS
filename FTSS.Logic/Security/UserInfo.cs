@@ -1,4 +1,4 @@
-﻿using FTSS.Models.Database.Interfaces;
+﻿using FTSS.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +17,7 @@ namespace FTSS.Logic.Security
         public UserInfo()
         {
             this.User = new Models.Database.StoredProcedures.SP_Login();
-            this.AccessMenu = new Models.Database.StoredProcedures.SP_User_GetAllMenu();
+            this.AccessMenu = new Models.Database.StoredProcedures.SP_User_GetAccessMenu();
         }
 
         public string Username { get; set; }
@@ -30,30 +30,30 @@ namespace FTSS.Logic.Security
         /// <summary>
         /// Application menu and restful APIs
         /// </summary>
-        public Models.Database.StoredProcedures.SP_User_GetAllMenu AccessMenu { get; set; }
+        public Models.Database.StoredProcedures.SP_User_GetAccessMenu AccessMenu { get; set; }
 
         /// <summary>
         /// Call database stored procedure for username & password validation
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="filterParams"></param>
         /// <returns></returns>
-        private DBResult Login(Models.Database.Tables.Users data)
+        private DBResult Login(Models.Database.StoredProcedures.SP_Login_Params filterParams)
         {
-            var LoginResult = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, data);
+            var LoginResult = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, filterParams);
             if (LoginResult.ErrorCode != 200)
                 return LoginResult;
 
             //Set user info
             this.User = LoginResult.Data as Models.Database.StoredProcedures.SP_Login;
-            this.Username = data.Email;
+            this.Username = filterParams.Email;
 
             //Get user access menu
-            var AccessMenuResult = Logic.Database.StoredProcedure.SP_User_GetAllMenu.Call(_ctx, this.User);
+            var AccessMenuResult = Logic.Database.StoredProcedure.SP_User_GetAccessMenu.Call(_ctx, this.User);
             if (AccessMenuResult.ErrorCode != 200)
                 return AccessMenuResult;
 
             //Set user access menu
-            this.AccessMenu = AccessMenuResult.Data as Models.Database.StoredProcedures.SP_User_GetAllMenu;
+            this.AccessMenu = AccessMenuResult.Data as Models.Database.StoredProcedures.SP_User_GetAccessMenu;
 
             //Create result
             var rst = new DBResult(200, "", this);
@@ -64,13 +64,13 @@ namespace FTSS.Logic.Security
         /// Login and generate JWT token
         /// </summary>
         /// <param name="ctx"></param>
-        /// <param name="data"></param>
+        /// <param name="filterParams"></param>
         /// <returns></returns>
-        public static DBResult Login(Logic.Database.IDBCTX ctx, Models.Database.Tables.Users data)
+        public static DBResult Login(Logic.Database.IDBCTX ctx, Models.Database.StoredProcedures.SP_Login_Params filterParams)
         {
             //Validation Username & Password by database stored procedure
             var userInfo = new UserInfo(ctx);
-            var loginResult = userInfo.Login(data);
+            var loginResult = userInfo.Login(filterParams);
 
             //If login failed, exit
             if (loginResult.ErrorCode != 200)

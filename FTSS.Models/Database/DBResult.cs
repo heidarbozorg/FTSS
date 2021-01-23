@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FTSS.Models.Database.Interfaces
+namespace FTSS.Models.Database
 {
     /// <summary>
     /// Result of calling stored procedures
@@ -17,7 +17,7 @@ namespace FTSS.Models.Database.Interfaces
         /// <summary>
         /// All record count by the current condition
         /// </summary>
-        public int ActualLength { get; set; }
+        public int ActualSize { get; set; }
 
         public int ErrorCode { get; set; }
 
@@ -27,12 +27,16 @@ namespace FTSS.Models.Database.Interfaces
         {
         }
 
-        public DBResult(int errorCode, string errorMessage, object data = null)
+        public DBResult(int errorCode, string errorMessage, object data = null, int actualSize = -1)
         {
             this.ErrorCode = errorCode;
             this.ErrorMessage = errorMessage;
 
             this.Data = data;
-        }
+            if (actualSize >= 0)
+                this.ActualSize = actualSize;
+            else
+                this.ActualSize = data == null ? 0 : 1;
+        }        
     }
 }

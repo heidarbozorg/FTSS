@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FTSS.Models.Database.StoredProcedures
 {
-    public class SP_User_GetAllMenu : BaseModel
+    public class SP_User_GetAccessMenu : BaseModel
     {
         public int MenuId { get; set; }
 

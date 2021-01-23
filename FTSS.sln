@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTSS.DP.DapperORM", "FTSS.D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BE2F4E04-8E74-4FF0-A1FA-1C9808E66022}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTSS.Logic.Tests", "FTSS.Logic.Tests\FTSS.Logic.Tests.csproj", "{264D514E-5CF0-4822-A8BF-EB6DB9233CED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FTSS.Logic.Tests", "FTSS.Logic.Tests\FTSS.Logic.Tests.csproj", "{264D514E-5CF0-4822-A8BF-EB6DB9233CED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

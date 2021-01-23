@@ -3,7 +3,7 @@ using Dapper;
 using System;
 using Microsoft.Data.SqlClient;
 using System.Linq;
-using FTSS.Models.Database.Interfaces;
+using FTSS.Models.Database;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
