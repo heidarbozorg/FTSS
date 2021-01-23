@@ -9,8 +9,8 @@ I follow these approaches by developing this template:
 * Secure RESTful APIs
 * Scalable
 
-## Tech slacks:
-I using Microsoft slacks for developing this template and Postman for running APIs:
+## Tech stacks:
+I using Microsoft stacks for developing this template and Postman for running APIs:
 * C#
 * Dot Net Core 3.1
 * Asp.NET Core MVC REST
