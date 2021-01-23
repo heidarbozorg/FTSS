@@ -10,10 +10,6 @@ namespace FTSS.Models.Database.StoredProcedures
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        /// <summary>
-        /// Database token
-        /// </summary>
-        public string Token { get; set; }
         
         /// <summary>
         /// Database token expiration

@@ -27,7 +27,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 throw new Exception("SP_Log_Insert.Call need a text message as parameter");
 
             string sql = "dbo.SP_Log_Insert";
-            int PersonelId = -1;
+            //int PersonelId = -1;
             string IPAddress = "test";
 
             using (var connection = new SqlConnection(_cns))
