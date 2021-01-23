@@ -9,8 +9,8 @@ I follow these approaches by developing this template:
 * Secure RESTful APIs
 * Scalable
 
-## Tech slacks:
-I using Microsoft slacks for developing this template and Postman for running APIs:
+## Stacks:
+I using Microsoft stacks for developing this template and Postman for running APIs:
 * C#
 * Dot Net Core 3.1
 * Asp.NET Core MVC REST
@@ -54,4 +54,4 @@ In this section I described the source code in details.
 
 ## Login
 End-Point calling api/Users/Login and send Username & Password. If Username & Password is valid, Login will return JWT token + User non-sensitive data.
-![Login flowchart](https://github.com/heidarbozorg/FTSS/raw/master/FTSS%20Login.png)
+![Login flowchart](https://github.com/heidarbozorg/FTSS/raw/master/FTSS.API/Documents/Login/FTSS%20Login.png)
