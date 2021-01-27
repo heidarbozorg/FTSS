@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Filters\**" />
-    <Content Remove="Filters\**" />
-    <EmbeddedResource Remove="Filters\**" />
-    <None Remove="Filters\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
   </ItemGroup>
 

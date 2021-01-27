@@ -43,6 +43,7 @@ namespace FTSS.API.Controllers
         /// </param>
         /// <returns></returns>
         [HttpGet]
+        [Filters.Auth]
         public IActionResult GetAll([FromBody] Models.Database.StoredProcedures.SP_Users_GetAll_Params filterParams)
         {
             try

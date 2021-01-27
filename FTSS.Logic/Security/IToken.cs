@@ -18,6 +18,12 @@ namespace FTSS.Logic.Security
         /// </summary>
         /// <param name="Token"></param>
         /// <returns></returns>
-        T GetData(string Token);
+        //T GetData(string Token);
+
+        /// <summary>
+        /// Check token validation
+        /// </summary>
+        /// <returns></returns>
+        bool IsValid();
     }
 }

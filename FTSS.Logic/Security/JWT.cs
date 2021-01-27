@@ -13,6 +13,44 @@ namespace FTSS.Logic.Security
     {
         private const string key = "501b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
 
+        private readonly UserInfo _user;
+        public UserInfo User
+        {
+            get
+            {
+                return _user;
+            }
+        }
+
+
+        private UserInfo GetData(string token)
+        {
+            var validateToken = GetPrincipal(token);
+
+            if (validateToken != null)
+            {
+                var model = new UserInfo();
+                if (validateToken.Identity != null && !string.IsNullOrEmpty(validateToken.Identity.Name))
+                {
+                    model.Username = validateToken.Identity.Name;
+                    var UserId = getValueFromClaim(validateToken.Claims, "UserId");
+                    if (UserId != null)
+                        model.User.UserId = int.Parse(UserId);
+
+                    model.User.FirstName = getValueFromClaim(validateToken.Claims, "FirstName");
+                    model.User.LastName = getValueFromClaim(validateToken.Claims, "LastName");
+                    model.User.Token = getValueFromClaim(validateToken.Claims, "token");
+                    var accessMenuJSON = getValueFromClaim(validateToken.Claims, "AccessMenu");
+                    if (!string.IsNullOrEmpty(accessMenuJSON) && accessMenuJSON != "null")
+                        model.AccessMenu = CommonOperations.JSON.jsonToT<List<Models.Database.StoredProcedures.SP_User_GetAccessMenu>>(accessMenuJSON);
+
+                    return model;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Generate JWT token from UserInfo object
         /// </summary>
@@ -49,34 +87,23 @@ namespace FTSS.Logic.Security
             return token;
         }
 
-        public UserInfo GetData(string token)
+
+        public bool IsValid()
         {
-            var validateToken = GetPrincipal(token);
+            if (_user == null || _user.User == null || _user.User.UserId <= 0)
+                return false;
             
-            if (validateToken != null)
-            {
-                var model = new UserInfo();
-                if (validateToken.Identity != null && !string.IsNullOrEmpty(validateToken.Identity.Name))
-                {
-                    model.Username = validateToken.Identity.Name;
-                    var UserId = getValueFromClaim(validateToken.Claims, "UserId");
-                    if (UserId != null)
-                        model.User.UserId = int.Parse(UserId);
-
-                    model.User.FirstName = getValueFromClaim(validateToken.Claims, "FirstName");
-                    model.User.LastName = getValueFromClaim(validateToken.Claims, "LastName");
-                    model.User.Token = getValueFromClaim(validateToken.Claims, "token");
-                    var accessMenuJSON = getValueFromClaim(validateToken.Claims, "AccessMenu");
-                    if (!string.IsNullOrEmpty(accessMenuJSON))
-                        model.AccessMenu = CommonOperations.JSON.jsonToT<Models.Database.StoredProcedures.SP_User_GetAccessMenu>(accessMenuJSON);
-
-                    return model;
-                }
-            }
-
-            return null;
+            return true;
         }
 
+        public JWT()
+        {
+        }
+
+        public JWT(string token)
+        {
+            this._user = GetData(token);
+        }
 
         private ClaimsPrincipal GetPrincipal(string token)
         {

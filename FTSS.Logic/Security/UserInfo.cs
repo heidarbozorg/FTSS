@@ -17,7 +17,7 @@ namespace FTSS.Logic.Security
         public UserInfo()
         {
             this.User = new Models.Database.StoredProcedures.SP_Login();
-            this.AccessMenu = new Models.Database.StoredProcedures.SP_User_GetAccessMenu();
+            this.AccessMenu = new List<Models.Database.StoredProcedures.SP_User_GetAccessMenu>();
         }
 
         public string Username { get; set; }
@@ -30,7 +30,7 @@ namespace FTSS.Logic.Security
         /// <summary>
         /// Application menu and restful APIs
         /// </summary>
-        public Models.Database.StoredProcedures.SP_User_GetAccessMenu AccessMenu { get; set; }
+        public List<Models.Database.StoredProcedures.SP_User_GetAccessMenu> AccessMenu { get; set; }
 
         /// <summary>
         /// Call database stored procedure for username & password validation
@@ -53,7 +53,7 @@ namespace FTSS.Logic.Security
                 return AccessMenuResult;
 
             //Set user access menu
-            this.AccessMenu = AccessMenuResult.Data as Models.Database.StoredProcedures.SP_User_GetAccessMenu;
+            this.AccessMenu = AccessMenuResult.Data as List<Models.Database.StoredProcedures.SP_User_GetAccessMenu>;
 
             //Create result
             var rst = new DBResult(200, "", this);
