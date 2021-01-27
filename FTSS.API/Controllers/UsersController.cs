@@ -83,6 +83,11 @@ namespace FTSS.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a user info by admin
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPut]
         [Filters.Auth]
         public IActionResult Update([FromBody] Models.Database.Tables.Users data)
@@ -100,6 +105,11 @@ namespace FTSS.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a user by admin
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Filters.Auth]
         public IActionResult Delete([FromBody] Models.Database.Tables.Users data)
@@ -117,5 +127,65 @@ namespace FTSS.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Change password by admin
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Filters.Auth]
+        public IActionResult SetPassword([FromBody] Models.Database.Tables.Users data)
+        {
+            try
+            {
+                data.Token = HttpContext.Request.Headers["Token"];
+                var rst = Logic.Database.StoredProcedure.SP_User_SetPassword.Call(_ctx, data);
+                return FromDatabase(rst);
+            }
+            catch (Exception e)
+            {
+                _logger.Add(e, "Error in UsersController.SetPassword(data)");
+                return Problem(e.Message, e.StackTrace, 500, "Error in SetPassword");
+            }
+        }
+
+        /// <summary>
+        /// Change password by own user
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Filters.Auth]
+        public IActionResult ChangePassword([FromBody] Models.Database.StoredProcedures.SP_User_ChangePassword data)
+        {
+            try
+            {
+                data.Token = HttpContext.Request.Headers["Token"];
+                var rst = Logic.Database.StoredProcedure.SP_User_ChangePassword.Call(_ctx, data);
+                return FromDatabase(rst);
+            }
+            catch (Exception e)
+            {
+                _logger.Add(e, "Error in UsersController.SP_User_ChangePassword(data)");
+                return Problem(e.Message, e.StackTrace, 500, "Error in SP_User_ChangePassword");
+            }
+        }
+
+        [HttpPut]
+        [Filters.Auth]
+        public IActionResult UpdateProfile([FromBody] Models.Database.Tables.Users data)
+        {
+            try
+            {
+                data.Token = HttpContext.Request.Headers["Token"];
+                var rst = Logic.Database.StoredProcedure.SP_User_Update.Call(_ctx, data);
+                return FromDatabase(rst);
+            }
+            catch (Exception e)
+            {
+                _logger.Add(e, "Error in UsersController.UpdateProfile(data)");
+                return Problem(e.Message, e.StackTrace, 500, "Error in UpdateProfile");
+            }
+        }
     }
 }

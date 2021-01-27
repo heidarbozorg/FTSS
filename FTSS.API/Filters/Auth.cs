@@ -12,6 +12,7 @@ namespace FTSS.API.Filters
     /// </summary>
     public class Auth : Attribute, IAuthorizationFilter
     {
+        #region Private properties
         private string _apiAddress
         {
             get; set;
@@ -26,7 +27,9 @@ namespace FTSS.API.Filters
         {
             get; set;
         }
+        #endregion Private properties
 
+        #region Private methods
         /// <summary>
         /// دریافت مقدار یک متغیر از هدر درخواست ارسال شده
         /// </summary>
@@ -105,27 +108,7 @@ namespace FTSS.API.Filters
 
             _userModel = jwt.User;
             return true;
-        }
-
-        private string GetBody(AuthorizationFilterContext context)
-        {
-            try
-            {
-                var ctx = context.HttpContext;
-                if (ctx.Request == null || ctx.Request.Body == null)
-                    return null;
-
-                var reader = new StreamReader(ctx.Request.Body);
-                reader.BaseStream.Seek(0, SeekOrigin.Begin);
-                var rst = reader.ReadToEnd();
-
-                return (rst);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+        }        
 
         /// <summary>
         /// Check user access to this new request
@@ -141,6 +124,8 @@ namespace FTSS.API.Filters
 
             return true;
         }
+        #endregion Private methods
+
 
         /// <summary>
         /// Check user authorization by checking JWT token placed at header
