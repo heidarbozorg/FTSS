@@ -26,10 +26,10 @@ namespace FTSS.DP.DapperORM.StoredProcedure
 
             using (var connection = new SqlConnection(_cns))
             {
-                var p = Common.GetSearchParams(Data.Token);                
+                var p = Common.GetSearchParams(Data.Token);
 
                 var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_GetAccessMenu>(
-                    sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
+                    sql, p, commandType: System.Data.CommandType.StoredProcedure);
 
                 rst = Common.GetResult(p, dbResult);
             }
