@@ -4,8 +4,8 @@ using System.Text;
 
 namespace FTSS.Models.Database.StoredProcedures
 {
-    public class SP_User_Insert
+    public class SingleId
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
     }
 }

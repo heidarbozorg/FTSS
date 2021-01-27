@@ -9,11 +9,11 @@ using System.Text;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_User_Insert : ISP<Models.Database.Tables.Users>
+    public class SP_User_Update : ISP<Models.Database.Tables.Users>
     {
         private readonly string _cns;
 
-        public SP_User_Insert(string cns)
+        public SP_User_Update(string cns)
         {
             _cns = cns;
         }
@@ -21,17 +21,17 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         public DBResult Call(Users Data)
         {
             if (Data == null)
-                throw new Exception("SP_User_Insert.Call can not be call without passing Data");
+                throw new Exception("SP_User_Update.Call can not be call without passing Data");
 
-            string sql = "dbo.SP_User_Insert";
+            string sql = "dbo.SP_User_Update";
             DBResult rst = null;
 
             using (var connection = new SqlConnection(_cns))
             {
                 var p = Common.GetDataParams(Data);
 
+                p.Add("@UserId", Data.UserId);
                 p.Add("@Email", Data.Email);
-                p.Add("@Password", Data.Password);
                 p.Add("@FirstName", Data.FirstName);
                 p.Add("@LastName", Data.LastName);
 

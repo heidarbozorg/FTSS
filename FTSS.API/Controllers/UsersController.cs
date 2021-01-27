@@ -66,6 +66,7 @@ namespace FTSS.API.Controllers
         /// </param>
         /// <returns></returns>
         [HttpPost]
+        [Filters.Auth]
         public IActionResult Insert([FromBody] Models.Database.Tables.Users data)
         {
             try
@@ -77,6 +78,22 @@ namespace FTSS.API.Controllers
             {
                 _logger.Add(e, "Error in UsersController.Insert(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in Insert");
+            }
+        }
+
+        [HttpPut]
+        [Filters.Auth]
+        public IActionResult Update([FromBody] Models.Database.Tables.Users data)
+        {
+            try
+            {
+                var rst = Logic.Database.StoredProcedure.SP_User_Update.Call(_ctx, data);
+                return FromDatabase(rst);
+            }
+            catch (Exception e)
+            {
+                _logger.Add(e, "Error in UsersController.Update(data)");
+                return Problem(e.Message, e.StackTrace, 500, "Error in Update");
             }
         }
 
