@@ -22,25 +22,30 @@ namespace FTSS.Logic.Security
             }
         }
 
+        public ClaimsPrincipal Claims
+        {
+            get; set;
+        }
+
 
         private UserInfo GetData(string token)
         {
-            var validateToken = GetPrincipal(token);
+            Claims = GetPrincipal(token);
 
-            if (validateToken != null)
+            if (Claims != null)
             {
                 var model = new UserInfo();
-                if (validateToken.Identity != null && !string.IsNullOrEmpty(validateToken.Identity.Name))
+                if (Claims.Identity != null && !string.IsNullOrEmpty(Claims.Identity.Name))
                 {
-                    model.Username = validateToken.Identity.Name;
-                    var UserId = getValueFromClaim(validateToken.Claims, "UserId");
+                    model.Username = Claims.Identity.Name;
+                    var UserId = getValueFromClaim(Claims.Claims, "UserId");
                     if (UserId != null)
                         model.User.UserId = int.Parse(UserId);
 
-                    model.User.FirstName = getValueFromClaim(validateToken.Claims, "FirstName");
-                    model.User.LastName = getValueFromClaim(validateToken.Claims, "LastName");
-                    model.User.Token = getValueFromClaim(validateToken.Claims, "token");
-                    var accessMenuJSON = getValueFromClaim(validateToken.Claims, "AccessMenu");
+                    model.User.FirstName = getValueFromClaim(Claims.Claims, "FirstName");
+                    model.User.LastName = getValueFromClaim(Claims.Claims, "LastName");
+                    model.User.Token = getValueFromClaim(Claims.Claims, "token");
+                    var accessMenuJSON = getValueFromClaim(Claims.Claims, "AccessMenu");
                     if (!string.IsNullOrEmpty(accessMenuJSON) && accessMenuJSON != "null")
                         model.AccessMenu = CommonOperations.JSON.jsonToT<List<Models.Database.StoredProcedures.SP_User_GetAccessMenu>>(accessMenuJSON);
 

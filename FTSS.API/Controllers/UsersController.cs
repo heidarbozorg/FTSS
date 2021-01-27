@@ -48,6 +48,7 @@ namespace FTSS.API.Controllers
         {
             try
             {
+                filterParams.Token = HttpContext.Request.Headers["Token"];
                 var dbResult = Logic.Database.StoredProcedure.SP_Users_GetAll.Call(_ctx, filterParams);
                 return FromDatabase(dbResult);
             }
@@ -71,6 +72,7 @@ namespace FTSS.API.Controllers
         {
             try
             {
+                data.Token = HttpContext.Request.Headers["Token"];
                 var rst = Logic.Database.StoredProcedure.SP_User_Insert.Call(_ctx, data);
                 return FromDatabase(rst);
             }
@@ -87,12 +89,30 @@ namespace FTSS.API.Controllers
         {
             try
             {
+                data.Token = HttpContext.Request.Headers["Token"];
                 var rst = Logic.Database.StoredProcedure.SP_User_Update.Call(_ctx, data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
             {
                 _logger.Add(e, "Error in UsersController.Update(data)");
+                return Problem(e.Message, e.StackTrace, 500, "Error in Update");
+            }
+        }
+
+        [HttpDelete]
+        [Filters.Auth]
+        public IActionResult Delete([FromBody] Models.Database.Tables.Users data)
+        {
+            try
+            {
+                data.Token = HttpContext.Request.Headers["Token"];
+                var rst = Logic.Database.StoredProcedure.SP_User_Delete.Call(_ctx, data);
+                return FromDatabase(rst);
+            }
+            catch (Exception e)
+            {
+                _logger.Add(e, "Error in UsersController.Delete(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in Update");
             }
         }
