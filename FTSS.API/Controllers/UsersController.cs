@@ -171,6 +171,11 @@ namespace FTSS.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update profile user info by itself
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPut]
         [Filters.Auth]
         public IActionResult UpdateProfile([FromBody] Models.Database.Tables.Users data)
@@ -178,7 +183,7 @@ namespace FTSS.API.Controllers
             try
             {
                 data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_Update.Call(_ctx, data);
+                var rst = Logic.Database.StoredProcedure.SP_User_UpdateProfile.Call(_ctx, data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
