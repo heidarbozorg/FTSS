@@ -8,7 +8,7 @@ using System.Text;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_Users_GetAll : ISP<Models.Database.StoredProcedures.SP_Users_GetAll_Params>
+    public class SP_Users_GetAll : ISP<Models.Database.StoredProcedures.SP_Users_GetAll.Inputs>
     {
         private readonly string _cns;
 
@@ -17,7 +17,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             _cns = cns;
         }
 
-        public DBResult Call(Models.Database.StoredProcedures.SP_Users_GetAll_Params filterParams)
+        public DBResult Call(Models.Database.StoredProcedures.SP_Users_GetAll.Inputs filterParams)
         {
             if (filterParams == null)
                 throw new Exception("SP_Users_GetAll.Call can not be call without passing filterParams");
@@ -33,7 +33,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 p.Add("@FirstName", filterParams.FirstName);
                 p.Add("@LastName", filterParams.LastName);                                
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_Users_GetAll>(
+                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_Users_GetAll.Outputs>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure);
 
                 rst = Common.GetResult(p, dbResult);
