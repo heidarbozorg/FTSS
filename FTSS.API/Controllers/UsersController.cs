@@ -78,13 +78,13 @@ namespace FTSS.API.Controllers
         /// Filter parameters
         /// </param>
         /// <returns></returns>
-        [HttpGet]        
+        [HttpGet]
+        [Authorize]
         [Filters.Auth]
         public IActionResult GetAll([FromBody] Models.Database.StoredProcedures.SP_Users_GetAll_Params filterParams)
         {
             try
             {
-                var u = User;
                 filterParams.Token = HttpContext.Request.Headers["Token"];
                 var dbResult = Logic.Database.StoredProcedure.SP_Users_GetAll.Call(_ctx, filterParams);
                 return FromDatabase(dbResult);
