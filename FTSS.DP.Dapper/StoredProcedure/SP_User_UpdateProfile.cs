@@ -11,28 +11,47 @@ namespace FTSS.DP.DapperORM.StoredProcedure
     public class SP_User_UpdateProfile : ISP<Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs>
     {
         private readonly string _cns;
+        private readonly ISQLExecuter _executer;
 
-        public SP_User_UpdateProfile(string cns)
+        public SP_User_UpdateProfile(string connectionString, ISQLExecuter executer = null)
         {
-            _cns = cns;
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentNullException("Could not create a new SP_Login instance with empty connectionString");
+
+            if (executer == null)
+                _executer = new SQLExecuter(connectionString);
+            else
+                _executer = executer;
+
+            _cns = connectionString;
         }
 
-        public DBResult Call(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs Data)
+        public DBResult Call(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
         {
-            if (Data == null)
-                throw new Exception("SP_User_UpdateProfile.Call can not be call without passing Data");
+            if (data == null)
+                throw new ArgumentNullException("UpdateProfile can not be execute without passing Data.");
 
+            return Execute(data);
+        }
+
+        /// <summary>
+        /// Execute SP_Login
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private DBResult Execute(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
+        {
             string sql = "dbo.SP_User_UpdateProfile";
             DBResult rst = null;
 
             using (var connection = new SqlConnection(_cns))
             {
-                var p = Common.GetDataParams(Data);
+                var p = Common.GetDataParams(data);
 
-                p.Add("@FirstName", Data.FirstName);
-                p.Add("@LastName", Data.LastName);
+                p.Add("@FirstName", data.FirstName);
+                p.Add("@LastName", data.LastName);
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_UpdateProfile.Outputs>(
+                var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_UpdateProfile.Outputs>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
                 rst = Common.GetResult(p, dbResult);
