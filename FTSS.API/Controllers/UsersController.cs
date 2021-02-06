@@ -11,9 +11,37 @@ namespace FTSS.API.Controllers
     [Route("/api/[controller]/[action]")]
     public class UsersController : BaseController
     {
-        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, Logic.Security.JWT JWT) 
-            : base(dbCTX, logger, JWT)
-        {            
+        /// <summary>
+        /// Read JWT key from appsettings.json
+        /// </summary>
+        public string JWTKey
+        {
+            get
+            {
+                var rst = this._configuration.GetValue<string>("JWT:Key");
+                return (rst);
+            }
+        }
+
+        public string JWTIssuer
+        {
+            get
+            {
+                var rst = this._configuration.GetValue<string>("JWT:Issuer");
+                return (rst);
+            }
+        }
+
+        /// <summary>
+        /// Access to appsettings.json
+        /// </summary>
+        public readonly IConfiguration _configuration;
+
+
+        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration) 
+            : base(dbCTX, logger)
+        {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -22,11 +50,18 @@ namespace FTSS.API.Controllers
         /// <param name="filterParams"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login_Params filterParams)
+        public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login.Inputs filterParams)
         {
             try
             {
-                var rst = Logic.Security.UserInfo.Login2(_ctx, filterParams);
+                var rst = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, filterParams);
+                //Generate JWT
+                if (rst.ErrorCode == 200)
+                {
+                    var jwt = new Logic.Security.UserJWT(rst, JWTKey, JWTIssuer);
+                    rst = new Models.Database.DBResult(200, "", jwt);
+                }
+
                 return FromDatabase(rst);
             }
             catch (Exception e)

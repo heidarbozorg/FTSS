@@ -4,8 +4,11 @@ using System.Text;
 
 namespace FTSS.Models.Database
 {
-    public class BaseModel
+    public class BaseDataModelWithToken
     {
+        /// <summary>
+        /// Database token
+        /// </summary>
         public string Token 
         {
             get;

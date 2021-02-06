@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FTSS.Models.Database.StoredProcedures
+namespace FTSS.Models.Database.StoredProcedures.SP_User_GetAccessMenu
 {
-    public class SP_User_GetAccessMenu : BaseModel
+    public class  Inputs : BaseDataModelWithToken
+    {
+        
+    }
+
+    public class Outputs
     {
         public int MenuId { get; set; }
 

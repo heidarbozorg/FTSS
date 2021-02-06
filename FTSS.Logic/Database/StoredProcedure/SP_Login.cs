@@ -13,7 +13,7 @@ namespace FTSS.Logic.Database.StoredProcedure
         /// <param name="filterParams"></param>
         /// <returns></returns>
         public static Models.Database.DBResult Call(IDatabaseContext ctx,
-            Models.Database.StoredProcedures.SP_Login_Params filterParams)
+            Models.Database.StoredProcedures.SP_Login.Inputs filterParams)
         {
             var connectionString = ctx.GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Login(connectionString);

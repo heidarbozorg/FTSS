@@ -23,7 +23,7 @@ namespace FTSS.API.Filters
             get; set;
         }
 
-        private Logic.Security.UserInfo _userModel
+        private Models.Database.StoredProcedures.SP_Login.Outputs _userModel
         {
             get; set;
         }
@@ -103,11 +103,6 @@ namespace FTSS.API.Filters
         /// <returns></returns>
         private bool GetUserModel(AuthorizationFilterContext context)
         {
-            var jwt = new Logic.Security.JWT(_jwtToken);
-            if (jwt == null || !jwt.IsValid())
-                return (false);
-
-            _userModel = jwt.User;
             return true;
         }        
 
@@ -118,11 +113,6 @@ namespace FTSS.API.Filters
         /// <returns></returns>
         private bool IsAccessToCurrentRequest(AuthorizationFilterContext context)
         {
-            if (_userModel.AccessMenu == null 
-                || _userModel.AccessMenu.Count == 0 ||
-                _userModel.AccessMenu.FirstOrDefault(a => a.MenuAddress.ToLower().Equals(_apiAddress.ToLower())) == null)
-                return (false);
-
             return true;
         }
         #endregion Private methods
@@ -162,10 +152,6 @@ namespace FTSS.API.Filters
                 context.Result = new UnauthorizedObjectResult("Access denied");
                 return;
             }
-
-            //Save database token for APIs body
-            //When we work with database, this token will be used
-            context.HttpContext.Request.Headers.Add("Token", _userModel.User.Token);
         }
     }
 }

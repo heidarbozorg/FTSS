@@ -40,7 +40,7 @@ namespace FTSS.DP.DapperORM
             return p;
         }
 
-        public static DynamicParameters GetDataParams(Models.Database.BaseModel data)
+        public static DynamicParameters GetDataParams(Models.Database.BaseDataModelWithToken data)
         {
             var p = GetSearchParams(data.Token);
             return p;

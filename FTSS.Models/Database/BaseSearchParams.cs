@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FTSS.Models.Database
 {
-    public class BaseSearchParams : BaseModel
+    public class BaseSearchParams : BaseDataModelWithToken
     {
         public int StartIndex { get; set; }
         

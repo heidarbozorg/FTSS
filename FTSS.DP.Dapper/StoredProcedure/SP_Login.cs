@@ -7,7 +7,7 @@ using FTSS.Models.Database;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_Login : ISP<Models.Database.StoredProcedures.SP_Login_Params>
+    public class SP_Login : ISP<Models.Database.StoredProcedures.SP_Login.Inputs>
     {
         private readonly string _cns;
 
@@ -16,7 +16,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             _cns = cns;
         }
 
-        public DBResult Call(Models.Database.StoredProcedures.SP_Login_Params filterParams)
+        public DBResult Call(Models.Database.StoredProcedures.SP_Login.Inputs filterParams)
         {
             if (filterParams == null)
                 throw new Exception("SP_Login.Call can not be call without passing username and password");
@@ -30,7 +30,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 p.Add("@Email", filterParams.Email);
                 p.Add("@Password", filterParams.Password);
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_Login>(
+                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_Login.Outputs>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
                 rst = Common.GetResult(p, dbResult);                

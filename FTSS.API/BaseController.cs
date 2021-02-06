@@ -11,13 +11,11 @@ namespace FTSS.API
     {
         public readonly Logic.Database.IDatabaseContext _ctx;
         public readonly Logic.Log.ILog _logger;
-        public readonly Logic.Security.JWT _JWT;
 
-        public BaseController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, Logic.Security.JWT JWT)
+        public BaseController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger)
         {
             _ctx = dbCTX;
             _logger = logger;
-            _JWT = JWT;
         }
 
         /// <summary>
@@ -29,9 +27,6 @@ namespace FTSS.API
         {
             if (dbResult == null)
                 return StatusCode(500, "Unhandled internal server error");
-
-            if (dbResult.Data == null && dbResult.ErrorCode == 200)
-                dbResult.ErrorCode = 500;
 
             if (dbResult.ErrorCode >= 200 && dbResult.ErrorCode < 300)
                 return Ok(dbResult);

@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Database\Functions\" />
+    <Compile Remove="Database\Functions\**" />
+    <EmbeddedResource Remove="Database\Functions\**" />
+    <None Remove="Database\Functions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Database\Views\" />
   </ItemGroup>
 

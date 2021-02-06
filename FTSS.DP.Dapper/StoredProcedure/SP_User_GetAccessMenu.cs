@@ -7,7 +7,7 @@ using FTSS.Models.Database;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_User_GetAccessMenu : ISP<Models.Database.StoredProcedures.SP_Login>
+    public class SP_User_GetAccessMenu : ISP<Models.Database.StoredProcedures.SP_User_GetAccessMenu.Inputs>
     {
         private readonly string _cns;
 
@@ -16,19 +16,19 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             _cns = cns;
         }
 
-        public DBResult Call(Models.Database.StoredProcedures.SP_Login Data)
+        public DBResult Call(Models.Database.StoredProcedures.SP_User_GetAccessMenu.Inputs data)
         {
-            if (Data == null || string.IsNullOrEmpty(Data.Token))
-                throw new Exception("SP_User_GetAccessMenu.Call can not be call without passing userInfo");
+            if (data == null || string.IsNullOrEmpty(data.Token))
+                throw new Exception("Invalid data for getting user access menu");
 
             string sql = "dbo.SP_User_GetAccessMenu";
             DBResult rst = null;
 
             using (var connection = new SqlConnection(_cns))
             {
-                var p = Common.GetSearchParams(Data.Token);
+                var p = Common.GetSearchParams(data.Token);
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_GetAccessMenu>(
+                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_GetAccessMenu.Outputs>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure);
 
                 rst = Common.GetResult(p, dbResult);
