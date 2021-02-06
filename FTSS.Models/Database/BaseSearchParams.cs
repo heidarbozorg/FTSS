@@ -10,8 +10,8 @@ namespace FTSS.Models.Database
         [Required]
         public int StartIndex { get; set; }
 
-        [Required]
-        public int PageSize { get; set; }
+        [Required]       
+        public byte PageSize { get; set; }
 
         
         /// <summary>
@@ -28,7 +28,10 @@ namespace FTSS.Models.Database
 
             if (this.PageSize <= 0)
                 results.Add(new ValidationResult("PageSize could not be equal or less than zero.", new string[] { "PageSize" }));
-            
+
+            if (this.PageSize > 100)
+                results.Add(new ValidationResult("PageSize could not be greater than 100.", new string[] { "PageSize" }));
+
             return results;
         }
 

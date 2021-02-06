@@ -32,7 +32,7 @@ namespace FTSS.DP.DapperORM
             
             //Pagination
             p.Add("@StartIndex", filterParams.StartIndex, System.Data.DbType.Int32);
-            p.Add("@PageSize", filterParams.PageSize, System.Data.DbType.Int32);
+            p.Add("@PageSize", filterParams.PageSize, System.Data.DbType.Byte);
 
             int actualSize = 0;
             p.Add("@ActualSize", actualSize, System.Data.DbType.Int32, System.Data.ParameterDirection.Output);
