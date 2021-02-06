@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using FTSS.Models.Database;
-using FTSS.Models.Database.Tables;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
