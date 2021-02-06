@@ -110,7 +110,7 @@ namespace FTSS.API.Controllers
         [HttpPost]
         [Filters.Auth]
         [Authorize]
-        public IActionResult Insert([FromBody] Models.Database.Tables.Users data)
+        public IActionResult Insert([FromBody] Models.Database.StoredProcedures.SP_User_Insert.Inputs data)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace FTSS.API.Controllers
         [HttpPut]
         [Filters.Auth]
         [Authorize]
-        public IActionResult Update([FromBody] Models.Database.Tables.Users data)
+        public IActionResult Update([FromBody] Models.Database.StoredProcedures.SP_User_Update.Inputs data)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace FTSS.API.Controllers
         [HttpDelete]
         [Filters.Auth]
         [Authorize]
-        public IActionResult Delete([FromBody] Models.Database.Tables.Users data)
+        public IActionResult Delete([FromBody] Models.Database.StoredProcedures.SP_User_Delete.Inputs data)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace FTSS.API.Controllers
         [HttpPut]
         [Filters.Auth]
         [Authorize]
-        public IActionResult SetPassword([FromBody] Models.Database.Tables.Users data)
+        public IActionResult SetPassword([FromBody] Models.Database.StoredProcedures.SP_User_SetPassword.Inputs data)
         {
             try
             {
@@ -202,7 +202,7 @@ namespace FTSS.API.Controllers
         [HttpPut]
         [Filters.Auth]
         [Authorize]
-        public IActionResult ChangePassword([FromBody] Models.Database.StoredProcedures.SP_User_ChangePassword data)
+        public IActionResult ChangePassword([FromBody] Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs data)
         {
             try
             {
@@ -225,7 +225,7 @@ namespace FTSS.API.Controllers
         [HttpPut]
         [Filters.Auth]
         [Authorize]
-        public IActionResult UpdateProfile([FromBody] Models.Database.Tables.Users data)
+        public IActionResult UpdateProfile([FromBody] Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
         {
             try
             {

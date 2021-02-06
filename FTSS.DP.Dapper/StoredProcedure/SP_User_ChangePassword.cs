@@ -9,7 +9,7 @@ using System.Text;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_User_ChangePassword : ISP<Models.Database.StoredProcedures.SP_User_ChangePassword>
+    public class SP_User_ChangePassword : ISP<Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs>
     {
         private readonly string _cns;
 
@@ -18,7 +18,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             _cns = cns;
         }
 
-        public DBResult Call(Models.Database.StoredProcedures.SP_User_ChangePassword Data)
+        public DBResult Call(Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs Data)
         {
             if (Data == null)
                 throw new Exception("SP_User_ChangePassword.Call can not be call without passing Data");
@@ -33,7 +33,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 p.Add("@OldPassword", Data.OldPassword);
                 p.Add("@NewPassword", Data.NewPassword);
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SingleId>(
+                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_ChangePassword.Outputs>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
                 rst = Common.GetResult(p, dbResult);

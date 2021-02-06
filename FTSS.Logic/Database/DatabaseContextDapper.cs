@@ -57,7 +57,7 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_ChangePassword(Models.Database.StoredProcedures.SP_User_ChangePassword inputs)
+        public DBResult SP_User_ChangePassword(Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs inputs)
         {
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_ChangePassword(connectionString);
@@ -65,7 +65,7 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_UpdateProfile(Models.Database.Tables.Users inputs)
+        public DBResult SP_User_UpdateProfile(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs inputs)
         {
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_UpdateProfile(connectionString);
@@ -73,7 +73,7 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_SetPassword(Models.Database.Tables.Users inputs)
+        public DBResult SP_User_SetPassword(Models.Database.StoredProcedures.SP_User_SetPassword.Inputs inputs)
         {
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_SetPassword(connectionString);
@@ -81,7 +81,7 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_Delete(Models.Database.Tables.Users inputs)
+        public DBResult SP_User_Delete(Models.Database.StoredProcedures.SP_User_Delete.Inputs inputs)
         {
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Delete(connectionString);
@@ -89,7 +89,7 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_Update(Models.Database.Tables.Users inputs)
+        public DBResult SP_User_Update(Models.Database.StoredProcedures.SP_User_Update.Inputs inputs)
         {
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Update(connectionString);
@@ -97,7 +97,7 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_Insert(Models.Database.Tables.Users inputs)
+        public DBResult SP_User_Insert(Models.Database.StoredProcedures.SP_User_Insert.Inputs inputs)
         {
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Insert(connectionString);

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_User_Update : ISP<Models.Database.Tables.Users>
+    public class SP_User_Update : ISP<Models.Database.StoredProcedures.SP_User_Update.Inputs>
     {
         private readonly string _cns;
 
@@ -18,7 +18,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             _cns = cns;
         }
 
-        public DBResult Call(Users Data)
+        public DBResult Call(Models.Database.StoredProcedures.SP_User_Update.Inputs Data)
         {
             if (Data == null)
                 throw new Exception("SP_User_Update.Call can not be call without passing Data");
@@ -35,7 +35,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 p.Add("@FirstName", Data.FirstName);
                 p.Add("@LastName", Data.LastName);
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SingleId>(
+                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_Update.Outputs>(
                     sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
                 rst = Common.GetResult(p, dbResult);
