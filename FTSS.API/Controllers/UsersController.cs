@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FTSS.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -85,7 +86,7 @@ namespace FTSS.API.Controllers
         {
             try
             {
-                filterParams.Token = HttpContext.Request.Headers["Token"];
+                filterParams.Token = User.GetToken();
                 var dbResult = Logic.Database.StoredProcedure.SP_Users_GetAll.Call(_ctx, filterParams);
                 return FromDatabase(dbResult);
             }
