@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -10,9 +11,9 @@ namespace FTSS.API.Controllers
     [Route("/api/[controller]/[action]")]
     public class UsersController : BaseController
     {
-        public UsersController(Logic.Database.IDBCTX dbCTX, Logic.Log.ILog logger) 
-            : base(dbCTX, logger)
-        {
+        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, Logic.Security.JWT JWT) 
+            : base(dbCTX, logger, JWT)
+        {            
         }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace FTSS.API.Controllers
         {
             try
             {
-                var rst = Logic.Security.UserInfo.Login(_ctx, filterParams);
+                var rst = Logic.Security.UserInfo.Login2(_ctx, filterParams);
                 return FromDatabase(rst);
             }
             catch (Exception e)
@@ -42,12 +43,13 @@ namespace FTSS.API.Controllers
         /// Filter parameters
         /// </param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet]        
         [Filters.Auth]
         public IActionResult GetAll([FromBody] Models.Database.StoredProcedures.SP_Users_GetAll_Params filterParams)
         {
             try
             {
+                var u = User;
                 filterParams.Token = HttpContext.Request.Headers["Token"];
                 var dbResult = Logic.Database.StoredProcedure.SP_Users_GetAll.Call(_ctx, filterParams);
                 return FromDatabase(dbResult);

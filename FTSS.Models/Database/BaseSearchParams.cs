@@ -4,13 +4,8 @@ using System.Text;
 
 namespace FTSS.Models.Database
 {
-    public class BaseSearchParams
+    public class BaseSearchParams : BaseModel
     {
-        /// <summary>
-        /// Database token
-        /// </summary>
-        public string Token { get; set; }
-
         public int StartIndex { get; set; }
         
         public int PageSize { get; set; }

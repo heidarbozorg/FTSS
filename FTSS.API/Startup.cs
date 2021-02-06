@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using FTSS.API.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FTSS.API
 {
@@ -37,11 +35,12 @@ namespace FTSS.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddJWT(Configuration);
             services.AddSingleton<IConfiguration>(Configuration);
+
             services.AddControllers();
-            services.AddDBCTX(cns);
+            services.AddDatabaseContext(cns);
             services.AddDBLogger(cns);
-            //services.AddDbContext<Dataprovider.FTSSDBContext>(options => options.UseSqlServer(cns));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +53,7 @@ namespace FTSS.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -6,7 +6,7 @@ namespace FTSS.Logic.Database.StoredProcedure
 {
     public class SP_User_GetAccessMenu
     {
-        public static Models.Database.DBResult Call(IDBCTX ctx,
+        public static Models.Database.DBResult Call(IDatabaseContext ctx,
             Models.Database.StoredProcedures.SP_Login userInfo)
         {
             var connectionString = ctx.GetConnectionString();

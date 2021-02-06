@@ -53,7 +53,6 @@ namespace FTSS.DP.DapperORM
         /// </summary>
         /// <param name="p"></param>
         /// <param name="data"></param>
-        /// <param name="actualSize"></param>
         /// <returns></returns>
         public static Models.Database.DBResult GetResult(DynamicParameters p, object data)
         {

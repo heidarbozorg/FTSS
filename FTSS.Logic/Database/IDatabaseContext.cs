@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FTSS.Logic.Database
 {
-    public interface IDBCTX
+    public interface IDatabaseContext
     {
         string GetConnectionString();
         SqlConnection GetSqlConnection();

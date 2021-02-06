@@ -6,7 +6,7 @@ namespace FTSS.Logic.Database.StoredProcedure
 {
     public class SP_User_ChangePassword
     {
-        public static Models.Database.DBResult Call(IDBCTX ctx,
+        public static Models.Database.DBResult Call(IDatabaseContext ctx,
             Models.Database.StoredProcedures.SP_User_ChangePassword Data)
         {
             var connectionString = ctx.GetConnectionString();

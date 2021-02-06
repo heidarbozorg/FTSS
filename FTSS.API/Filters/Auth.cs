@@ -69,6 +69,7 @@ namespace FTSS.API.Filters
             }
             catch (Exception)
             {
+                _apiAddress = "";
             }
         }
 
@@ -133,6 +134,8 @@ namespace FTSS.API.Filters
         /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            //var jwt = context.HttpContext.RequestServices.GetService(Logic.Security.JWT);
+
             //Get the API address
             GetAPIAddress(context);
 

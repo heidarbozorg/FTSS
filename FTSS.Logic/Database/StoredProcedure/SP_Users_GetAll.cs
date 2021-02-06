@@ -6,7 +6,7 @@ namespace FTSS.Logic.Database.StoredProcedure
 {
     public class SP_Users_GetAll
     {
-        public static Models.Database.DBResult Call(IDBCTX ctx,
+        public static Models.Database.DBResult Call(IDatabaseContext ctx,
             Models.Database.StoredProcedures.SP_Users_GetAll_Params filterParams)
         {
             var connectionString = ctx.GetConnectionString();

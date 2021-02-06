@@ -11,7 +11,12 @@ namespace FTSS.Logic.Security
 {
     public class JWT : IToken<UserInfo>
     {
-        private const string key = "501b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+        public const string key = "501b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+        private string _key
+        {
+            get;
+            set;
+        }
 
         private readonly UserInfo _user;
         public UserInfo User
@@ -67,6 +72,7 @@ namespace FTSS.Logic.Security
             var accessMenu = data.AccessMenu;
             var accessMenuJSON = CommonOperations.JSON.ObjToJson(accessMenu);
 
+            //var symmetricKey = Convert.FromBase64String(_key);
             var symmetricKey = Convert.FromBase64String(key);
             var tokenHandler = new JwtSecurityTokenHandler();
             
@@ -110,6 +116,11 @@ namespace FTSS.Logic.Security
             this._user = GetData(token);
         }
 
+        public JWT(string t, string key)
+        {
+            this._key = key;
+        }
+
         private ClaimsPrincipal GetPrincipal(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -118,6 +129,7 @@ namespace FTSS.Logic.Security
             if (jwtToken == null)
                 return null;
 
+            //var symmetricKey = Convert.FromBase64String(_key);
             var symmetricKey = Convert.FromBase64String(key);
 
             var validationParameters = new TokenValidationParameters()

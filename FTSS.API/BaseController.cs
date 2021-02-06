@@ -9,13 +9,15 @@ namespace FTSS.API
 {
     public class BaseController : Controller
     {
-        public readonly Logic.Database.IDBCTX _ctx;
+        public readonly Logic.Database.IDatabaseContext _ctx;
         public readonly Logic.Log.ILog _logger;
+        public readonly Logic.Security.JWT _JWT;
 
-        public BaseController(Logic.Database.IDBCTX dbCTX, Logic.Log.ILog logger)
+        public BaseController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, Logic.Security.JWT JWT)
         {
             _ctx = dbCTX;
             _logger = logger;
+            _JWT = JWT;
         }
 
         /// <summary>

@@ -1,22 +1,29 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FTSS.API.Extensions
 {
     public static class Services
     {
-        public static void AddDBCTX(this IServiceCollection services, string connectionString)
+        /// <summary>
+        /// Add DatabaseContext as a service to the service pool
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connectionString"></param>
+        /// <remarks>
+        /// With this service we could easily access to the database connection string
+        /// </remarks>
+        public static void AddDatabaseContext(this IServiceCollection services, string connectionString)
         {
             //Create a storedProcedure instance for saving log on database
-            var ctx = new Logic.Database.Ctx(connectionString);
+            var ctx = new Logic.Database.DatabaseContext(connectionString);
 
-            //Add dbLogger as a service to the service pool
-            services.AddSingleton<Logic.Database.IDBCTX>(ctx);
+            //Add DatabaseContext as a service to the service pool
+            services.AddSingleton<Logic.Database.IDatabaseContext>(ctx);
         }
 
 
@@ -38,6 +45,45 @@ namespace FTSS.API.Extensions
 
             //Add dbLogger as a service to the service pool
             services.AddSingleton<Logic.Log.ILog>(dbLogger);
+        }
+
+
+        /// <summary>
+        /// Setup JWT validator
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        public static void AddJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            string key = configuration.GetValue<string>("JWT:Key");
+            string issuer = configuration.GetValue<string>("JWT:Issuer");
+
+            //When a request receive, this operations check the JWT and set User object
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = issuer,
+                        ValidAudience = issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
         }
     }
 }

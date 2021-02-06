@@ -12,7 +12,7 @@ namespace FTSS.Logic.Database.StoredProcedure
         /// <param name="ctx"></param>
         /// <param name="filterParams"></param>
         /// <returns></returns>
-        public static Models.Database.DBResult Call(IDBCTX ctx,
+        public static Models.Database.DBResult Call(IDatabaseContext ctx,
             Models.Database.StoredProcedures.SP_Login_Params filterParams)
         {
             var connectionString = ctx.GetConnectionString();
