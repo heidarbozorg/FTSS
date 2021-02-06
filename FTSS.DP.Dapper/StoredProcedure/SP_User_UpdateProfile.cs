@@ -1,10 +1,6 @@
-﻿using Dapper;
-using FTSS.Models.Database;
-using Microsoft.Data.SqlClient;
+﻿using FTSS.Models.Database;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
@@ -16,7 +12,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         public SP_User_UpdateProfile(string connectionString, ISQLExecuter executer = null)
         {
             if (string.IsNullOrEmpty(connectionString))
-                throw new ArgumentNullException("Could not create a new SP_Login instance with empty connectionString");
+                throw new ArgumentNullException("Could not create a new SP_User_UpdateProfile instance with empty connectionString");
 
             if (executer == null)
                 _executer = new SQLExecuter(connectionString);
@@ -35,7 +31,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         }
 
         /// <summary>
-        /// Execute SP_Login
+        /// Execute SP_User_UpdateProfile
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -44,18 +40,14 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             string sql = "dbo.SP_User_UpdateProfile";
             DBResult rst = null;
 
-            using (var connection = new SqlConnection(_cns))
-            {
-                var p = Common.GetDataParams(data);
+            var p = Common.GetDataParams(data);
+            p.Add("@FirstName", data.FirstName);
+            p.Add("@LastName", data.LastName);
 
-                p.Add("@FirstName", data.FirstName);
-                p.Add("@LastName", data.LastName);
+            var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_UpdateProfile.Outputs>(
+                sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
-                var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_UpdateProfile.Outputs>(
-                    sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
-
-                rst = Common.GetResult(p, dbResult);
-            }
+            rst = Common.GetResult(p, dbResult);
 
             return rst;
         }
