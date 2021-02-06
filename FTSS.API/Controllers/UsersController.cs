@@ -89,6 +89,8 @@ namespace FTSS.API.Controllers
                 if (!filterParams.IsValid())
                     return StatusCode(400, filterParams.ValidationResults);     //Bad request
 
+                
+
                 filterParams.Token = User.GetToken();
                 var dbResult = Logic.Database.StoredProcedure.SP_Users_GetAll.Call(_ctx, filterParams);
                 return FromDatabase(dbResult);

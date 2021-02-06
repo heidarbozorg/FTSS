@@ -47,5 +47,20 @@ namespace FTSS.Logic.Security
             return jwt;
         }
 
+
+        public static bool IsUserAccessToAPI(Database.IDatabaseContext ctx,
+            Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs data)
+        {
+            var rst = Logic.Database.StoredProcedure.SP_User_AccessToAPI.Call(ctx, data);
+
+            if (rst == null || rst.ErrorCode != 200 || rst.Data == null)
+                return false;
+
+            if (!(rst.Data is Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs))
+                return false;
+
+            var result = rst.Data as Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs;
+            return result.Result;
+        }
     }
 }

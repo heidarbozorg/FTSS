@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Dapper;
+﻿using Dapper;
 using System;
 using Microsoft.Data.SqlClient;
 using System.Linq;
