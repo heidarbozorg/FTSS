@@ -51,7 +51,7 @@ namespace FTSS.Logic.Security
         public static bool IsUserAccessToAPI(Database.IDatabaseContext ctx,
             Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs data)
         {
-            var rst = Logic.Database.StoredProcedure.SP_User_AccessToAPI.Call(ctx, data);
+            var rst = ctx.SP_User_AccessToAPI(data);
 
             if (rst == null || rst.ErrorCode != 200 || rst.Data == null)
                 return false;

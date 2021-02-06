@@ -48,14 +48,14 @@ namespace FTSS.API.Controllers
         /// <summary>
         /// Login and get database token
         /// </summary>
-        /// <param name="filterParams"></param>
+        /// <param name="inputs"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login.Inputs filterParams)
+        public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login.Inputs inputs)
         {
             try
             {
-                var rst = Logic.Database.StoredProcedure.SP_Login.Call(_ctx, filterParams);
+                var rst = _ctx.SP_Login(inputs);
                 //Generate JWT
                 if (rst.ErrorCode == 200)
                 {
@@ -89,10 +89,8 @@ namespace FTSS.API.Controllers
                 if (!filterParams.IsValid())
                     return StatusCode(400, filterParams.ValidationResults);     //Bad request
 
-                
-
                 filterParams.Token = User.GetToken();
-                var dbResult = Logic.Database.StoredProcedure.SP_Users_GetAll.Call(_ctx, filterParams);
+                var dbResult = _ctx.SP_Users_GetAll(filterParams);
                 return FromDatabase(dbResult);
             }
             catch (Exception e)
@@ -111,12 +109,13 @@ namespace FTSS.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Filters.Auth]
+        [Authorize]
         public IActionResult Insert([FromBody] Models.Database.Tables.Users data)
         {
             try
             {
-                data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_Insert.Call(_ctx, data);
+                data.Token = User.GetToken();
+                var rst = _ctx.SP_User_Insert(data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
@@ -133,12 +132,13 @@ namespace FTSS.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Filters.Auth]
+        [Authorize]
         public IActionResult Update([FromBody] Models.Database.Tables.Users data)
         {
             try
             {
-                data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_Update.Call(_ctx, data);
+                data.Token = User.GetToken();
+                var rst = _ctx.SP_User_Update(data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
@@ -155,12 +155,13 @@ namespace FTSS.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Filters.Auth]
+        [Authorize]
         public IActionResult Delete([FromBody] Models.Database.Tables.Users data)
         {
             try
             {
-                data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_Delete.Call(_ctx, data);
+                data.Token = User.GetToken();
+                var rst = _ctx.SP_User_Delete(data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
@@ -177,12 +178,13 @@ namespace FTSS.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Filters.Auth]
+        [Authorize]
         public IActionResult SetPassword([FromBody] Models.Database.Tables.Users data)
         {
             try
             {
-                data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_SetPassword.Call(_ctx, data);
+                data.Token = User.GetToken();
+                var rst = _ctx.SP_User_SetPassword(data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
@@ -199,12 +201,13 @@ namespace FTSS.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Filters.Auth]
+        [Authorize]
         public IActionResult ChangePassword([FromBody] Models.Database.StoredProcedures.SP_User_ChangePassword data)
         {
             try
             {
-                data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_ChangePassword.Call(_ctx, data);
+                data.Token = User.GetToken();
+                var rst = _ctx.SP_User_ChangePassword(data);
                 return FromDatabase(rst);
             }
             catch (Exception e)
@@ -221,12 +224,13 @@ namespace FTSS.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Filters.Auth]
+        [Authorize]
         public IActionResult UpdateProfile([FromBody] Models.Database.Tables.Users data)
         {
             try
             {
-                data.Token = HttpContext.Request.Headers["Token"];
-                var rst = Logic.Database.StoredProcedure.SP_User_UpdateProfile.Call(_ctx, data);
+                data.Token = User.GetToken();
+                var rst = _ctx.SP_User_UpdateProfile(data);
                 return FromDatabase(rst);
             }
             catch (Exception e)

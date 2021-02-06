@@ -20,7 +20,7 @@ namespace FTSS.API.Extensions
         public static void AddDatabaseContext(this IServiceCollection services, string connectionString)
         {
             //Create a storedProcedure instance for saving log on database
-            var ctx = new Logic.Database.DatabaseContext(connectionString);
+            var ctx = new Logic.Database.DatabaseContextDapper(connectionString);
 
             //Add DatabaseContext as a service to the service pool
             services.AddSingleton<Logic.Database.IDatabaseContext>(ctx);
