@@ -10,35 +10,47 @@ namespace FTSS.DP.DapperORM.StoredProcedure
 {
     public class SP_User_Insert : ISP<Models.Database.StoredProcedures.SP_User_Insert.Inputs>
     {
-        private readonly string _cns;
+        private readonly ISQLExecuter _executer;
 
-        public SP_User_Insert(string cns)
+        public SP_User_Insert(string connectionString, ISQLExecuter executer = null)
         {
-            _cns = cns;
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentNullException("Could not create a new SP_User_Insert instance with empty connectionString.");
+
+            if (executer == null)
+                _executer = new SQLExecuter(connectionString);
+            else
+                _executer = executer;
         }
 
-        public DBResult Call(Models.Database.StoredProcedures.SP_User_Insert.Inputs Data)
+
+        public DBResult Call(Models.Database.StoredProcedures.SP_User_Insert.Inputs data)
         {
-            if (Data == null)
+            if (data == null)
                 throw new Exception("SP_User_Insert.Call can not be call without passing Data");
+            
+            return Execute(data);
+        }
 
+        /// <summary>
+        /// Execute SP_User_Insert
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private DBResult Execute(Models.Database.StoredProcedures.SP_User_Insert.Inputs data)
+        {
             string sql = "dbo.SP_User_Insert";
-            DBResult rst = null;
 
-            using (var connection = new SqlConnection(_cns))
-            {
-                var p = Common.GetDataParams(Data);
+            var p = Common.GetDataParams(data);
+            p.Add("@Email", data.Email);
+            p.Add("@Password", data.Password);
+            p.Add("@FirstName", data.FirstName);
+            p.Add("@LastName", data.LastName);
 
-                p.Add("@Email", Data.Email);
-                p.Add("@Password", Data.Password);
-                p.Add("@FirstName", Data.FirstName);
-                p.Add("@LastName", Data.LastName);
+            var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_Insert.Outputs>(
+                sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
-                var dbResult = connection.Query<Models.Database.StoredProcedures.SP_User_Insert.Outputs>(
-                    sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
-
-                rst = Common.GetResult(p, dbResult);
-            }
+            var rst = Common.GetResult(p, dbResult);
 
             return rst;
         }

@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
-using Dapper;
-using System;
-using Microsoft.Data.SqlClient;
-using System.Linq;
+﻿using System;
 using FTSS.Models.Database;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
 {
-    public class SP_Log_Insert : ISP<string>
+    public class SP_Log_Insert : ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>
     {
-        private readonly string _cns;
+        private readonly ISQLExecuter _executer;
 
-        public SP_Log_Insert(string cns)
+        public SP_Log_Insert(string connectionString, ISQLExecuter executer = null)
         {
-            _cns = cns;
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentNullException("Could not create a new SP_Log_Insert instance with empty connectionString");
+
+            if (executer == null)
+                _executer = new SQLExecuter(connectionString);
+            else
+                _executer = executer;
         }
 
         /// <summary>
@@ -21,27 +23,34 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        public DBResult Call(string msg)
+        public DBResult Call(Models.Database.StoredProcedures.SP_Log_Insert.Inputs data)
         {
-            if (string.IsNullOrEmpty(msg))
-                throw new Exception("SP_Log_Insert.Call need a text message as parameter");
+            if (data == null)
+                throw new ArgumentNullException("SP_Log_Insert.Call can not be call without passing data.");
 
+            if (string.IsNullOrEmpty(data.MSG))
+                throw new ArgumentException("SP_Log_Insert.Call need a text message as parameter");
+
+            return Execute(data);
+        }
+
+        /// <summary>
+        /// Execute SP_Log_Insert
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private DBResult Execute(Models.Database.StoredProcedures.SP_Log_Insert.Inputs data)
+        {
             string sql = "dbo.SP_Log_Insert";
-            //int PersonelId = -1;
-            string IPAddress = "test";
+            var p = Common.GetErrorCodeAndErrorMessageParams();
+            p.Add("@MSG", data.MSG);
+            p.Add("@IPAddress", data.IPAddress);
 
-            using (var connection = new SqlConnection(_cns))
-            {
-                connection.Execute(sql,
-                    new 
-                    {                        
-                        IPAddress,
-                        MSG = msg 
-                    }, 
-                    commandType: System.Data.CommandType.StoredProcedure);
-            }
+            var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_Log_Insert.Outputs>(
+                sql, data, commandType: System.Data.CommandType.StoredProcedure);
 
-            return new DBResult(0, "");
+            var rst = Common.GetResult(p, dbResult);
+            return rst;
         }
     }
 }

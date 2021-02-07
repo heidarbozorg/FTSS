@@ -44,7 +44,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             string sql = "dbo.SP_User_AccessToAPI";
             DBResult rst = null;
 
-            var p = Common.GetSearchParams();
+            var p = Common.GetErrorCodeAndErrorMessageParams();
             p.Add("@Token", data.Token);
             p.Add("@APIAddress", data.APIAddress);
 

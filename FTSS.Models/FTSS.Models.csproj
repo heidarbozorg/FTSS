@@ -6,12 +6,11 @@
 
   <ItemGroup>
     <Compile Remove="Database\Functions\**" />
+    <Compile Remove="Database\Views\**" />
     <EmbeddedResource Remove="Database\Functions\**" />
+    <EmbeddedResource Remove="Database\Views\**" />
     <None Remove="Database\Functions\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\Views\" />
+    <None Remove="Database\Views\**" />
   </ItemGroup>
 
 </Project>

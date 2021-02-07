@@ -9,11 +9,11 @@ namespace FTSS.Logic.Log
     /// </summary>
     public class DB : ILog
     {
-        Models.Database.ISP<string> _storedProcedure;
+        private readonly Logic.Database.IDatabaseContext _ctx;
 
-        public DB(Models.Database.ISP<string> storedProcedure)
+        public DB(Logic.Database.IDatabaseContext ctx)
         {
-            _storedProcedure = storedProcedure;
+            _ctx = ctx;
         }
 
         /// <summary>
@@ -33,9 +33,13 @@ namespace FTSS.Logic.Log
         /// </summary>
         /// <param name="msg"></param>
         public void Add(string msg)
-        {
+        {            
             string text = string.Format("{0}", msg);
-            _storedProcedure.Call(text);
+            var data = new Models.Database.StoredProcedures.SP_Log_Insert.Inputs()
+            {
+                MSG = text
+            };
+            _ctx.SP_Log_Insert(data);
         }
     }
 }

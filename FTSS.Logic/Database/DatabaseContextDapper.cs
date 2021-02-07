@@ -6,6 +6,9 @@ using System.Text;
 
 namespace FTSS.Logic.Database
 {
+    /// <summary>
+    /// Implement IDatabaseContext by Dapper ORM
+    /// </summary>
     public class DatabaseContextDapper : IDatabaseContext
     {
         #region properties
@@ -30,6 +33,14 @@ namespace FTSS.Logic.Database
         #endregion properties
 
         #region SPs
+        public DBResult SP_Log_Insert(Models.Database.StoredProcedures.SP_Log_Insert.Inputs inputs)
+        {
+            var connectionString = GetConnectionString();
+            var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Log_Insert(connectionString);
+            var rst = sp.Call(inputs);
+            return rst;
+        }
+
         public DBResult SP_Login(Models.Database.StoredProcedures.SP_Login.Inputs inputs)
         {
             var connectionString = GetConnectionString();
@@ -40,9 +51,6 @@ namespace FTSS.Logic.Database
 
         public DBResult SP_User_AccessToAPI(Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid input data.");
-
             var connectionString = GetConnectionString();
             var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_AccessToAPI(connectionString);
             var rst = sp.Call(inputs);

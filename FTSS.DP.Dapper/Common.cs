@@ -7,7 +7,7 @@ namespace FTSS.DP.DapperORM
 {
     public class Common
     {
-        public static DynamicParameters GetSearchParams()
+        public static DynamicParameters GetErrorCodeAndErrorMessageParams()
         {
             var p = new DynamicParameters();
             int errorCode = 0;
@@ -20,7 +20,7 @@ namespace FTSS.DP.DapperORM
 
         public static DynamicParameters GetSearchParams(string token)
         {
-            var p = GetSearchParams();
+            var p = GetErrorCodeAndErrorMessageParams();
             p.Add("@Token", token);
 
             return p;

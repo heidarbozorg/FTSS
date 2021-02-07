@@ -32,6 +32,28 @@ namespace FTSS.API
             Configuration = configuration;
         }        
 
+        /// <summary>
+        /// Get default ORM
+        /// </summary>
+        /// <returns></returns>
+        private Logic.Database.IDatabaseContext GetORM()
+        {
+            //Create Dapper ORM
+            var ctx = new Logic.Database.DatabaseContextDapper(cns);
+            return ctx;
+        }
+
+        /// <summary>
+        /// Get default logger
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        private Logic.Log.ILog GeLogger(Logic.Database.IDatabaseContext ctx)
+        {
+            var dbLogger = new Logic.Log.DB(ctx);
+            return dbLogger;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -39,8 +61,18 @@ namespace FTSS.API
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddControllers();
-            services.AddDatabaseContext(cns);
-            services.AddDBLogger(cns);
+
+            //Get default ORM
+            var ctx = GetORM();
+
+            //Get default logger
+            var logger = GeLogger(ctx);
+
+            //Add ORM to service pool
+            services.AddDatabaseContext(ctx);
+
+            //Add logger to service pool
+            services.AddDBLogger(logger);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

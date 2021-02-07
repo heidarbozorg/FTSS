@@ -6,7 +6,6 @@ namespace FTSS.DP.DapperORM.StoredProcedure
 {
     public class SP_User_UpdateProfile : ISP<Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs>
     {
-        private readonly string _cns;
         private readonly ISQLExecuter _executer;
 
         public SP_User_UpdateProfile(string connectionString, ISQLExecuter executer = null)
@@ -18,8 +17,6 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 _executer = new SQLExecuter(connectionString);
             else
                 _executer = executer;
-
-            _cns = connectionString;
         }
 
         public DBResult Call(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
@@ -38,7 +35,6 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         private DBResult Execute(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
         {
             string sql = "dbo.SP_User_UpdateProfile";
-            DBResult rst = null;
 
             var p = Common.GetDataParams(data);
             p.Add("@FirstName", data.FirstName);
@@ -47,7 +43,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_UpdateProfile.Outputs>(
                 sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
-            rst = Common.GetResult(p, dbResult);
+            var rst = Common.GetResult(p, dbResult);
 
             return rst;
         }

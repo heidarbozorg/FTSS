@@ -23,7 +23,7 @@ namespace FTSS.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] Models.Database.Log data)
+        public IActionResult Add([FromBody] Models.Database.StoredProcedures.SP_Log_Insert.Inputs data)
         {
             _logger.Add(data.MSG);
             return Ok(data);

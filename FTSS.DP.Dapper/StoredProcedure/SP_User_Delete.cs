@@ -10,7 +10,6 @@ namespace FTSS.DP.DapperORM.StoredProcedure
 {
     public class SP_User_Delete : ISP<Models.Database.StoredProcedures.SP_User_Delete.Inputs>
     {
-        private readonly string _cns;
         private readonly ISQLExecuter _executer;
 
         public SP_User_Delete(string connectionString, ISQLExecuter executer = null)
@@ -22,8 +21,6 @@ namespace FTSS.DP.DapperORM.StoredProcedure
                 _executer = new SQLExecuter(connectionString);
             else
                 _executer = executer;
-
-            _cns = connectionString;
         }
 
         public DBResult Call(Models.Database.StoredProcedures.SP_User_Delete.Inputs data)
@@ -42,7 +39,6 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         private DBResult Execute(Models.Database.StoredProcedures.SP_User_Delete.Inputs data)
         {
             string sql = "dbo.SP_User_Delete";
-            DBResult rst = null;
 
             var p = Common.GetDataParams(data);
             p.Add("@UserId", data.UserId);
@@ -50,7 +46,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_Delete.Outputs>(
                 sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
-            rst = Common.GetResult(p, dbResult);
+            var rst = Common.GetResult(p, dbResult);
 
             return rst;
         }
