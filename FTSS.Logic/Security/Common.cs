@@ -47,12 +47,25 @@ namespace FTSS.Logic.Security
             return jwt;
         }
 
-
-        public static bool IsUserAccessToAPI(Database.IDatabaseContext ctx,
+        /// <summary>
+        /// Check user authorization by calling a database stored-procedure
+        /// </summary>
+        /// <param name="dbCTX">Default ORM</param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool IsUserAccessToAPI(Database.IDatabaseContext dbCTX,
             Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs data)
         {
-            var rst = ctx.SP_User_AccessToAPI(data);
+            if (dbCTX == null)
+                throw new ArgumentNullException("In IsUserAccessToAPI the dbCTX could not be null.");
 
+            if (data == null)
+                throw new ArgumentNullException("In IsUserAccessToAPI the data could not be null.");
+
+            //Calling sp
+            var rst = dbCTX.SP_User_AccessToAPI(data);
+
+            //Check result
             if (rst == null || rst.ErrorCode != 200 || rst.Data == null)
                 return false;
 

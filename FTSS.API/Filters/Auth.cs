@@ -30,11 +30,11 @@ namespace FTSS.API.Filters
             {
                 _apiAddress = "";
             }
-        }        
-            
+        }
+
 
         /// <summary>
-        /// Check user access to this new request
+        /// Check user authorization for the new request
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -46,12 +46,12 @@ namespace FTSS.API.Filters
                 APIAddress = _apiAddress
             };
 
-            //Get access to database service
-            var ctx = context.HttpContext.RequestServices.GetService(typeof(FTSS.Logic.Database.IDatabaseContext)) 
+            //Get default ORM
+            var dbCTX = context.HttpContext.RequestServices.GetService(typeof(FTSS.Logic.Database.IDatabaseContext)) 
                             as FTSS.Logic.Database.IDatabaseContext;
 
-            //Check at database
-            var rst = Logic.Security.Common.IsUserAccessToAPI(ctx, data);
+            //Check user authorization
+            var rst = Logic.Security.Common.IsUserAccessToAPI(dbCTX, data);
             return rst;
         }
         #endregion Private methods
@@ -63,8 +63,6 @@ namespace FTSS.API.Filters
         /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            //var jwt = context.HttpContext.RequestServices.GetService(Logic.Security.JWT);
-
             //Get the API address
             GetAPIAddress(context);
 
