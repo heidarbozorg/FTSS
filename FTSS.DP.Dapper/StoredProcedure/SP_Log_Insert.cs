@@ -49,7 +49,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_Log_Insert.Outputs>(
                 sql, data, commandType: System.Data.CommandType.StoredProcedure);
 
-            var rst = Common.GetResult(p, dbResult);
+            var rst = new DBResult(200, "", dbResult);
             return rst;
         }
     }

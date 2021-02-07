@@ -7,9 +7,15 @@ namespace FTSS.DP.DapperORM
 {
     public class Common
     {
-        public static DynamicParameters GetErrorCodeAndErrorMessageParams()
+        public static DynamicParameters GetEmptyParams()
         {
             var p = new DynamicParameters();
+            return p;
+        }
+
+        public static DynamicParameters GetErrorCodeAndErrorMessageParams()
+        {
+            var p = GetEmptyParams();
             int errorCode = 0;
             string errorMessage = "";
             p.Add("@ErrorCode", errorCode, System.Data.DbType.Int32, System.Data.ParameterDirection.Output);

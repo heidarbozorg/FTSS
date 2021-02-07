@@ -41,6 +41,14 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
+        public DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs)
+        {
+            var connectionString = GetConnectionString();
+            var sp = new FTSS.DP.DapperORM.StoredProcedure.SP_APILog_Insert(connectionString);
+            var rst = sp.Call(inputs);
+            return rst;
+        }
+
         public DBResult SP_Login(Models.Database.StoredProcedures.SP_Login.Inputs inputs)
         {
             var connectionString = GetConnectionString();
