@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FTSS.Models.Database;
 
 namespace FTSS.DP.DapperORM.StoredProcedure
@@ -40,17 +41,17 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         {
             string sql = "dbo.SP_APILog_Insert";
             var p = Common.GetEmptyParams();
-            p.Add("@APILogId_Parent", data.APILogId_Parent);
             p.Add("@APIAddress", data.APIAddress);
             p.Add("@UserToken", data.UserToken);
-            p.Add("@DataJSON", data.DataJSON);
+            p.Add("@Params", data.Params);
+            p.Add("@Results", data.Results);
             p.Add("@ErrorMessage", data.ErrorMessage);
             p.Add("@StatusCode", data.StatusCode);
 
             var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_APILog_Insert.Outputs>(
-                sql, data, commandType: System.Data.CommandType.StoredProcedure);
+                sql, data, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
-            var rst = Common.GetResult(p, dbResult);
+            var rst = new DBResult(200, "", dbResult);
             return rst;
         }
     }

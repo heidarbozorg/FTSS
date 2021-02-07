@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FTSS.API.Extensions;
+using FTSS.API.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 namespace FTSS.API.Controllers
 {
     [Route("/api/[controller]/[action]")]
+    [APILogger]
     public class UsersController : BaseController
     {
         /// <summary>

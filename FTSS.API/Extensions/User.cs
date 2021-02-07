@@ -17,6 +17,11 @@ namespace FTSS.API.Extensions
 
         }
 
+        /// <summary>
+        /// Get user's database Token
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static string GetToken(this ClaimsPrincipal user)
         {
             return Get(user, "Token");

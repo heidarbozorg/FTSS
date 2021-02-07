@@ -5,13 +5,17 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FTSS.API.Filters
 {
     public class APILogger : ActionFilterAttribute
     {
         #region private methods
+        ActionExecutingContext executingContext;
+        Logic.Database.IDatabaseContext dbCTX;
+
         /// <summary>
         /// Get user Token (database Token) if user Authorized
         /// </summary>
@@ -32,27 +36,24 @@ namespace FTSS.API.Filters
             {
                 return null;
             }
-        }        
+        }
 
         /// <summary>
         /// Get parameters sent to the API at body
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private string getAPIParam(Microsoft.AspNetCore.Http.HttpContext ctx)
+        private string getAPIParams(ActionExecutingContext context)
         {
             try
             {
-                if (ctx.Request == null || ctx.Request.Body == null)
-                    return null;
+                StringBuilder sb = new StringBuilder();
+                foreach (var arg in context.ActionArguments)
+                    sb.Append(arg.Key.ToString() + ": " + JsonConvert.SerializeObject(arg.Value) + "\n");
 
-                var reader = new StreamReader(ctx.Request.Body);
-                reader.BaseStream.Seek(0, SeekOrigin.Begin);
-                var rst = reader.ReadToEnd();
-
-                return (rst);
+                return (sb.ToString());
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
@@ -107,41 +108,6 @@ namespace FTSS.API.Filters
         }
 
         /// <summary>
-        /// Get parameters LogId
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// We log two records per each API. The first one for comming, and the second one for result.
-        /// For logging the result, we need the first LogId as the ParentId.
-        /// </remarks>
-        private int getAPILog_Parent(Microsoft.AspNetCore.Http.HttpContext ctx)
-        {
-            try
-            {
-                if (ctx.Request == null || ctx.Request.Headers == null)
-                    return -1;
-
-                Microsoft.Extensions.Primitives.StringValues id;
-                if (!ctx.Request.Headers.TryGetValue("APILogId_Parent", out id))
-                    return (-1);
-
-                if (id.Count == 0)
-                    return -1;
-
-                int result = -1;
-                if (!int.TryParse(id[0], out result))
-                    return -1;
-
-                return (result);
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-        }
-
-        /// <summary>
         /// Get the API error message (if exist).
         /// </summary>
         /// <param name="ctx"></param>
@@ -192,53 +158,57 @@ namespace FTSS.API.Filters
         }
 
         /// <summary>
-        /// Get API inputs params as the Database model for inserting in database
+        /// Get API inputs/results as the Database model for inserting in database
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private Models.Database.StoredProcedures.SP_APILog_Insert.Inputs GetInputsModel(Microsoft.AspNetCore.Http.HttpContext ctx)
-        {
-            //Creat the object for save at database
-            var inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs
-            {
-                APIAddress = getAPIFulllAddress(ctx),
-                UserToken = GetUserToken(ctx),
-                DataJSON = getAPIParam(ctx)
-            };
-
-            return inputs;
-        }
-
-        /// <summary>
-        /// Get API results as the Database model for inserting in database
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        private Models.Database.StoredProcedures.SP_APILog_Insert.Inputs GetOutputsModel(ActionExecutedContext context)
+        private Models.Database.StoredProcedures.SP_APILog_Insert.Inputs GetModel(ActionExecutedContext context)
         {
             var ctx = context.HttpContext;
 
             //Creat the object for save at database
             var inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs
             {
-                APILogId_Parent = getAPILog_Parent(ctx),
                 APIAddress = getAPIFulllAddress(ctx),
                 UserToken = GetUserToken(ctx),
-                DataJSON = getAPIResult(context),
+                Params = getAPIParams(this.executingContext),
+                Results = getAPIResult(context),
                 ErrorMessage = getAPIErrorMessage(context),
                 StatusCode = getAPIStatusCode(context)
             };
 
             return inputs;
         }
+        
+        /// <summary>
+        /// Fetch database ORM from service pool
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private Logic.Database.IDatabaseContext GetDatabaseORM(ActionExecutedContext context)
+        {
+            var rst = context.HttpContext.RequestServices.GetService(typeof(Logic.Database.IDatabaseContext))
+                            as Logic.Database.IDatabaseContext;
+            return rst;
+        }
+
+        /// <summary>
+        /// Save API log in database
+        /// </summary>
+        /// <param name="context"></param>
+        private async void SaveInDatabaseAsync(ActionExecutedContext context)
+        {
+            await Task.Run(() =>
+            {
+                //Get input params as Database model
+                var data = GetModel(context);
+
+                //Save API results in database                
+                dbCTX.SP_APILog_Insert(data);
+            });
+        }
         #endregion private methods
 
-        private readonly Logic.Database.IDatabaseContext _dbCTX;
-
-        public APILogger(Logic.Database.IDatabaseContext ctx)
-        {
-            _dbCTX = ctx;
-        }
 
         /// <summary>
         /// Log API request params
@@ -246,24 +216,8 @@ namespace FTSS.API.Filters
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var ctx = context.HttpContext;
-
-            //Get input params as Database model
-            var data = GetInputsModel(ctx);
-
-            //Save inputs in database
-            var dbResult = _dbCTX.SP_APILog_Insert(data);
-
-            if (dbResult != null && dbResult.Data != null && dbResult.Data is Models.Database.StoredProcedures.SP_APILog_Insert.Outputs)
-            {
-                //If APILog was inserted successfully
-                //Get the database APILogId
-                var logId = (dbResult.Data as Models.Database.StoredProcedures.SP_APILog_Insert.Outputs).Id;
-
-                //Save APILogId at request header for using it later in order to save API results.
-                context.HttpContext.Request.Headers.Add("APILogId_Parent", logId.ToString());
-            }
-
+            //Save context for fetch inputs
+            executingContext = context;
             base.OnActionExecuting(context);
         }
 
@@ -273,11 +227,11 @@ namespace FTSS.API.Filters
         /// <param name="context"></param>
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            //Get input params as Database model
-            var data = GetOutputsModel(context);
+            //Get database ORM from service pool
+            dbCTX = GetDatabaseORM(context);
 
-            //Save API results in database
-            _dbCTX.SP_APILog_Insert(data);
+            //Save log in database
+            SaveInDatabaseAsync(context);
 
             base.OnActionExecuted(context);
         }

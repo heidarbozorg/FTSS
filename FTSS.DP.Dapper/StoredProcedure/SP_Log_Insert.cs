@@ -42,7 +42,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         private DBResult Execute(Models.Database.StoredProcedures.SP_Log_Insert.Inputs data)
         {
             string sql = "dbo.SP_Log_Insert";
-            var p = Common.GetErrorCodeAndErrorMessageParams();
+            var p = Common.GetEmptyParams();
             p.Add("@MSG", data.MSG);
             p.Add("@IPAddress", data.IPAddress);
 
