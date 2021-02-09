@@ -22,7 +22,7 @@ namespace FTSS.API.Extensions
             });
 
             AutoMapper.IMapper mapper = mapConfig.CreateMapper();
-            services.AddSingleton<AutoMapper.IMapper>(mapper);
+            services.AddSingleton(mapper);
             return mapper;
         }
 
@@ -84,6 +84,7 @@ namespace FTSS.API.Extensions
         /// <param name="configuration"></param>
         public static void AddJWT(this IServiceCollection services, IConfiguration configuration)
         {
+            //Fetch JWT key and issuer from the appsettings.json
             string key = configuration.GetValue<string>("JWT:Key");
             string issuer = configuration.GetValue<string>("JWT:Issuer");
 
