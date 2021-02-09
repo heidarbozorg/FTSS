@@ -7,6 +7,7 @@ using FTSS.API.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace FTSS.API.Controllers
 {
@@ -39,12 +40,14 @@ namespace FTSS.API.Controllers
         /// Access to appsettings.json
         /// </summary>
         public readonly IConfiguration _configuration;
+        private readonly ILogger _logger2;
 
-
-        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration) 
+        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration, 
+            ILogger<UsersController> logger2) 
             : base(dbCTX, logger)
         {
             _configuration = configuration;
+            _logger2 = logger2;
         }
 
         /// <summary>
@@ -88,6 +91,7 @@ namespace FTSS.API.Controllers
         {
             try
             {
+                _logger2.LogWarning("Warning! Get all start", filterParams);
                 if (!filterParams.IsValid())
                     return StatusCode(400, filterParams.ValidationResults);     //Bad request
 

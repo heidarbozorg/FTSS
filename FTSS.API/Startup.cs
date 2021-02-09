@@ -40,6 +40,7 @@ namespace FTSS.API
         {
             //Create Dapper ORM
             var ctx = new Logic.Database.DatabaseContextDapper(cns);
+            
             return ctx;
         }
 

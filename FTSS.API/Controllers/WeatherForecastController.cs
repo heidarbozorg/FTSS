@@ -20,7 +20,8 @@ namespace FTSS.API.Controllers
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
-            _logger = logger;            
+            _logger = logger;
+            _logger.LogInformation("Hello world! I'm here.");
         }
 
         [HttpGet]

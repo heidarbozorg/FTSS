@@ -9,8 +9,6 @@ namespace FTSS.Logic.Database
     public interface IDatabaseContext
     {
         string GetConnectionString();
-        SqlConnection GetSqlConnection();
-
         DBResult SP_Log_Insert(Models.Database.StoredProcedures.SP_Log_Insert.Inputs inputs);
         DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs);
 

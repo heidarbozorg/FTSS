@@ -13,22 +13,15 @@ namespace FTSS.Logic.Database
     {
         #region properties
         private string _connectionString { get; set; }
-        private SqlConnection _sqlConnection { get; set; }
 
         public DatabaseContextDapper(string ConnectionString)
         {
             _connectionString = ConnectionString;
-            _sqlConnection = new SqlConnection(_connectionString);
         }
 
         public string GetConnectionString()
         {
             return _connectionString;
-        }
-
-        public SqlConnection GetSqlConnection()
-        {
-            return _sqlConnection;
         }
         #endregion properties
 
