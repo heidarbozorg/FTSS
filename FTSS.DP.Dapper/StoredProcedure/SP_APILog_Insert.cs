@@ -48,8 +48,8 @@ namespace FTSS.DP.DapperORM.StoredProcedure
             p.Add("@ErrorMessage", data.ErrorMessage);
             p.Add("@StatusCode", data.StatusCode);
             
-            var dbResult = _executer.QueryAsync<Models.Database.StoredProcedures.SP_APILog_Insert.Outputs>(
-                sql, data, commandType: System.Data.CommandType.StoredProcedure).Result.FirstOrDefault();
+            var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_APILog_Insert.Outputs>(
+                sql, data, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
 
             var rst = new DBResult(200, "", dbResult);
             return rst;
