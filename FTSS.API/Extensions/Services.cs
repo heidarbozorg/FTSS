@@ -70,7 +70,7 @@ namespace FTSS.API.Extensions
                     Logic.Database.IDatabaseContext defaultORM,
                     AutoMapper.IMapper defaultMapper)
         {
-            var APILoggerDatabase = new Logic.Log.APILoggeDatabase(defaultORM, defaultMapper);
+            var APILoggerDatabase = new Logic.Log.APILoggerDatabase(defaultORM, defaultMapper);
 
             //Add logger as a service to the service pool
             services.AddSingleton<Logic.Log.IAPILogger>(APILoggerDatabase);

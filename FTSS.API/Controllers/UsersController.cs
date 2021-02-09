@@ -41,13 +41,15 @@ namespace FTSS.API.Controllers
         /// </summary>
         public readonly IConfiguration _configuration;
         private readonly ILogger _logger2;
+        private readonly AutoMapper.IMapper _mapper;
 
         public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration, 
-            ILogger<UsersController> logger2) 
+            ILogger<UsersController> logger2, AutoMapper.IMapper mapper) 
             : base(dbCTX, logger)
         {
             _configuration = configuration;
             _logger2 = logger2;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace FTSS.API.Controllers
                 //Generate JWT
                 if (rst.ErrorCode == 200)
                 {
-                    var jwt = new Logic.Security.UserJWT(rst, JWTKey, JWTIssuer);
+                    var jwt = Logic.Security.UserJWT.Get(rst, JWTKey, JWTIssuer, _mapper);
                     rst = new Models.Database.DBResult(200, "", jwt);
                 }
 

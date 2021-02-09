@@ -1,31 +1,30 @@
-﻿using FTSS.Models.Database;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 
 namespace FTSS.Logic.Security
 {
     public class UserJWT : Models.Database.StoredProcedures.SP_Login.Outputs, IToken
     {
-        public string JWT { get; set; }
+        #region Properties
+        /// <summary>
+        /// The user database token
+        /// </summary>
+        /// <remarks>
+        /// This field should not be reported to the end-point.
+        /// </remarks>
+        private string Token { get; set; }
 
         /// <summary>
-        /// Set user fields
+        /// Since I want to hide this field for end-point, I re-define it as a private property.
         /// </summary>
-        /// <param name="data"></param>
-        private void Initial(Models.Database.StoredProcedures.SP_Login.Outputs data)
-        {
-            this.Email = data.Email;
-            this.FirstName = data.FirstName;
-            this.LastName = data.LastName;
-            this.Token = data.Token;
-            this.ExpireDate = data.ExpireDate;
-            this.RoleTitle = data.RoleTitle;
-        }
+        private int UserId { get; set; }
+
+        /// <summary>
+        /// The JWT token for this user
+        /// </summary>
+        public string JWT { get; set; }
+        #endregion
 
         /// <summary>
         /// Initialize fields and generate JWT
@@ -33,15 +32,9 @@ namespace FTSS.Logic.Security
         /// <param name="data"></param>
         /// <param name="key"></param>
         /// <param name="issuer"></param>
-        public UserJWT(Models.Database.DBResult data, string key, string issuer)
+        private void Generate(string key, string issuer)
         {
-            if (data == null || data.Data == null)
-                throw new ArgumentNullException("In UserJWT, user could not be null.");
-
-            if (!(data.Data is Models.Database.StoredProcedures.SP_Login.Outputs))
-                throw new ArgumentException("Data is not valid.");
-
-            Initial(data.Data as Models.Database.StoredProcedures.SP_Login.Outputs);
+            var t = Token;
             this.JWT = Common.GenerateJWT(GetClaims(), key, issuer, this.ExpireDate);
         }
 
@@ -62,6 +55,30 @@ namespace FTSS.Logic.Security
             };
 
             return rst;
+        }
+    
+        /// <summary>
+        /// Generate JWT based on the Login results
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="key"></param>
+        /// <param name="issuer"></param>
+        /// <param name="mapper"></param>
+        /// <returns></returns>
+        public static UserJWT Get(Models.Database.DBResult data, string key, string issuer, AutoMapper.IMapper mapper)
+        {
+            if (data == null || data.Data == null)
+                throw new ArgumentNullException("In UserJWT, user could not be null.");
+
+            if (!(data.Data is Models.Database.StoredProcedures.SP_Login.Outputs))
+                throw new ArgumentException("Data is not valid.");
+
+            var loginResult = data.Data as Models.Database.StoredProcedures.SP_Login.Outputs;
+            var userJWT = mapper.Map<UserJWT>(loginResult);
+            userJWT.Token = loginResult.Token;
+
+            userJWT.Generate(key, issuer);
+            return userJWT;
         }
     }
 }
