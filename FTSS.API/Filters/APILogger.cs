@@ -14,7 +14,8 @@ namespace FTSS.API.Filters
     {
         #region private methods
         ActionExecutingContext executingContext;
-        Logic.Database.IDatabaseContext dbCTX;
+        //Logic.Database.IDatabaseContext dbCTX;
+        Logic.Log.IAPILogger _APILogger;
 
         /// <summary>
         /// Get user Token (database Token) if user Authorized
@@ -158,16 +159,16 @@ namespace FTSS.API.Filters
         }
 
         /// <summary>
-        /// Get API inputs/results as the Database model for inserting in database
+        /// Get API inputs/results as the model for save
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private Models.Database.StoredProcedures.SP_APILog_Insert.Inputs GetModel(ActionExecutedContext context)
+        private Models.API.Log GetModel(ActionExecutedContext context)
         {
             var ctx = context.HttpContext;
 
-            //Creat the object for save at database
-            var inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs
+            //Creat the object for save
+            var inputs = new Models.API.Log
             {
                 APIAddress = getAPIFulllAddress(ctx),
                 UserToken = GetUserToken(ctx),
@@ -181,30 +182,32 @@ namespace FTSS.API.Filters
         }
         
         /// <summary>
-        /// Fetch database ORM from service pool
+        /// Fetch APILogger
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        private Logic.Database.IDatabaseContext GetDatabaseORM(ActionExecutedContext context)
+        private Logic.Log.IAPILogger GetAPILogger(ActionExecutedContext context)
         {
-            var rst = context.HttpContext.RequestServices.GetService(typeof(Logic.Database.IDatabaseContext))
-                            as Logic.Database.IDatabaseContext;
+            var rst = context.HttpContext.RequestServices.GetService(typeof(Logic.Log.IAPILogger))
+                            as Logic.Log.IAPILogger;
             return rst;
         }
 
         /// <summary>
-        /// Save API log in database
+        /// Save API log
         /// </summary>
         /// <param name="context"></param>
         private async void SaveInDatabaseAsync(ActionExecutedContext context)
         {
+            if (_APILogger == null)
+                return;
             await Task.Run(() =>
             {
                 //Get input params as Database model
                 var data = GetModel(context);
 
                 //Save API results in database                
-                dbCTX.SP_APILog_Insert(data);
+                _APILogger.Save(data);
             });
         }
         #endregion private methods
@@ -228,7 +231,7 @@ namespace FTSS.API.Filters
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             //Get database ORM from service pool
-            dbCTX = GetDatabaseORM(context);
+            _APILogger = GetAPILogger(context);
 
             //Save log in database
             SaveInDatabaseAsync(context);

@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace FTSS.DP.DapperORM
 {
@@ -23,6 +23,19 @@ namespace FTSS.DP.DapperORM
             {
                 //Execute query
                 rst = connection.Query<T>(sql, param, commandType: commandType);
+            }
+
+            return rst;
+        }
+
+
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null, System.Data.CommandType? commandType = null)
+        {
+            IEnumerable<T> rst = null;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                //Execute query
+                rst = await connection.QueryAsync<T>(sql, param, commandType: commandType);
             }
 
             return rst;
