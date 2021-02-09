@@ -38,13 +38,9 @@ namespace FTSS.API
             //Add Mapper
             var mapper = services.AddMapper();
 
-
             services.AddJWT(Configuration);
 
-
             services.AddSingleton<IConfiguration>(Configuration);
-
-            services.AddControllers();
 
             //Add ORM to service pool
             var ctx = services.AddORM(cns);
@@ -54,6 +50,8 @@ namespace FTSS.API
             
             //Add API logger to service pool
             services.AddAPILogger(ctx, mapper);
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
