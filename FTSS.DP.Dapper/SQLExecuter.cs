@@ -9,7 +9,7 @@ namespace FTSS.DP.DapperORM
 {
     public class SQLExecuter : ISQLExecuter
     {
-        string _connectionString;
+        private readonly string _connectionString;
 
         public SQLExecuter(string connectionString)
         {

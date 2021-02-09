@@ -34,7 +34,6 @@ namespace FTSS.Logic.Security
         /// <param name="issuer"></param>
         private void Generate(string key, string issuer)
         {
-            var t = Token;
             this.JWT = Common.GenerateJWT(GetClaims(), key, issuer, this.ExpireDate);
         }
 

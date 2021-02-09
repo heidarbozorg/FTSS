@@ -5,13 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FTSS.API.Controllers
-{
-    public class complex
-    {
-        public string message { get; set; }
-    }
-
-
+{    
     [Route("/api/[controller]/[action]")]
     public class LogController : Controller
     {

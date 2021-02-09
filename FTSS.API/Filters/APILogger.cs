@@ -14,7 +14,6 @@ namespace FTSS.API.Filters
     {
         #region private methods
         ActionExecutingContext executingContext;
-        //Logic.Database.IDatabaseContext dbCTX;
         Logic.Log.IAPILogger _APILogger;
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace FTSS.API.Filters
                 var rst = user.GetToken();
                 return rst;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -44,7 +43,7 @@ namespace FTSS.API.Filters
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private string getAPIParams(ActionExecutingContext context)
+        private string GetAPIParams(ActionExecutingContext context)
         {
             try
             {
@@ -54,7 +53,7 @@ namespace FTSS.API.Filters
 
                 return (sb.ToString());
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -65,7 +64,7 @@ namespace FTSS.API.Filters
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private string getAPIFulllAddress(Microsoft.AspNetCore.Http.HttpContext ctx)
+        private string GetAPIFulllAddress(Microsoft.AspNetCore.Http.HttpContext ctx)
         {
             try
             {
@@ -92,7 +91,7 @@ namespace FTSS.API.Filters
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private string getAPIResult(ActionExecutedContext ctx)
+        private string GetAPIResult(ActionExecutedContext ctx)
         {
             try
             {
@@ -113,7 +112,7 @@ namespace FTSS.API.Filters
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private string getAPIErrorMessage(ActionExecutedContext ctx)
+        private string GetAPIErrorMessage(ActionExecutedContext ctx)
         {
             try
             {
@@ -143,7 +142,7 @@ namespace FTSS.API.Filters
         /// </summary>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        private int getAPIStatusCode(ActionExecutedContext ctx)
+        private int GetAPIStatusCode(ActionExecutedContext ctx)
         {
             try
             {
@@ -170,12 +169,12 @@ namespace FTSS.API.Filters
             //Creat the object for save
             var inputs = new Models.API.Log
             {
-                APIAddress = getAPIFulllAddress(ctx),
+                APIAddress = GetAPIFulllAddress(ctx),
                 UserToken = GetUserToken(ctx),
-                Params = getAPIParams(this.executingContext),
-                Results = getAPIResult(context),
-                ErrorMessage = getAPIErrorMessage(context),
-                StatusCode = getAPIStatusCode(context)
+                Params = GetAPIParams(this.executingContext),
+                Results = GetAPIResult(context),
+                ErrorMessage = GetAPIErrorMessage(context),
+                StatusCode = GetAPIStatusCode(context)
             };
 
             return inputs;
