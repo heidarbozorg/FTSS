@@ -158,6 +158,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_Delete(Models.Database.StoredProcedures.SP_User_Delete.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_Delete.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid input data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Delete(GetConnectionString());
             var rst = sp.Call(inputs);
@@ -167,6 +173,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_Update(Models.Database.StoredProcedures.SP_User_Update.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_Update.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid input data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Update(GetConnectionString());
             var rst = sp.Call(inputs);

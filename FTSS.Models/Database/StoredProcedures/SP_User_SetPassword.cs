@@ -7,6 +7,8 @@ namespace FTSS.Models.Database.StoredProcedures.SP_User_SetPassword
 {
     public class Inputs : Models.Database.BaseDataModelWithToken, IValidatableObject
     {
+        [Required]
+        [Range(1, int.MaxValue)]
         public int UserId { get; set; }
 
         [Required]
