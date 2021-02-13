@@ -53,6 +53,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (string.IsNullOrEmpty(inputs.APIAddress))
+                throw new ArgumentNullException("APIAddress could not be empty.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_APILog_Insert(GetConnectionString());
             var rst = sp.Call(inputs);
