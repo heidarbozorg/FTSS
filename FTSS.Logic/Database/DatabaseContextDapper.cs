@@ -101,9 +101,6 @@ namespace FTSS.Logic.Database
             if (inputs == null)
                 throw new ArgumentNullException("Invalid inputs data.");
 
-            if (string.IsNullOrEmpty(inputs.Token))
-                throw new ArgumentException("Token could not be empty.");
-
             if (!inputs.IsValid())
                 throw new ArgumentException("Invalid data.");
 
@@ -116,6 +113,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_ChangePassword(Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid input data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_ChangePassword(GetConnectionString());
             var rst = sp.Call(inputs);

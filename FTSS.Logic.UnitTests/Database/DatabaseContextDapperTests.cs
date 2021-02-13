@@ -334,5 +334,72 @@ namespace FTSS.Logic.UnitTests.Database
             sp.Verify(s => s.Call(inputs));
         }
         #endregion SP_Users_GetAll
+
+        #region SP_User_ChangePassword
+        [Test]
+        public void SP_User_ChangePassword_WhenPassingNullInputs_ThrowsArgumentNullException()
+        {
+            Assert.That(() => _dbCTX.SP_User_ChangePassword(null),
+                Throws.ArgumentNullException);
+        }
+
+        [TestCase("", "", "")]
+        [TestCase(null, "", "")]
+        [TestCase(null, null, "")]
+        [TestCase(null, null, null)]
+        [TestCase("Token", null, null)]
+        [TestCase("Token", "P0", null)]
+        [TestCase("Token", null, "P1")]
+        [TestCase(null, "P0", "P1")]
+        [TestCase("Token", "", "P1")]
+        [TestCase("Token", "P0", "")]
+        [Test]
+        public void SP_User_ChangePassword_WhenPassingInvalidData_ThrowsArgumentException(string token, string oldPassword, string newPassword)
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs()
+            {
+                Token = token,
+                OldPassword = oldPassword,
+                NewPassword = newPassword
+            };
+
+            Assert.That(() => _dbCTX.SP_User_ChangePassword(inputs),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void SP_User_ChangePassword_WhenPassingValidData_ItReturnDBResult()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs()
+            {
+                Token = "TokenValue",
+                OldPassword = "P0",
+                NewPassword = "P1"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs>>();
+            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+
+            var result = _dbCTX.SP_User_ChangePassword(inputs, sp.Object);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
+        }
+
+        [Test]
+        public void SP_User_ChangePassword_WhenPassingValidData_ItRunsCallMethod()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs()
+            {
+                Token = "TokenValue",
+                OldPassword = "P0",
+                NewPassword = "P1"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs>>();
+
+            _dbCTX.SP_User_ChangePassword(inputs, sp.Object);
+
+            sp.Verify(s => s.Call(inputs));
+        }
+        #endregion SP_User_ChangePassword
     }
 }

@@ -24,6 +24,9 @@ namespace FTSS.Models.Database
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
+            if (string.IsNullOrEmpty(this.Token))
+                results.Add(new ValidationResult("Token could not be empty.", new string[] { "Token" }));
+
             if (this.StartIndex < 0)
                 results.Add(new ValidationResult("StartIndex could not be under zero.", new string[] { "StartIndex" }));
 
