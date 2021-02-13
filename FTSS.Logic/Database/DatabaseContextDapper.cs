@@ -188,6 +188,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_Insert(Models.Database.StoredProcedures.SP_User_Insert.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_Insert.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid input data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Insert(GetConnectionString());
             var rst = sp.Call(inputs);

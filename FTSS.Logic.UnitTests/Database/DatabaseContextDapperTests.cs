@@ -649,7 +649,6 @@ namespace FTSS.Logic.UnitTests.Database
                 UserId = 1,
                 Email = "email",
                 LastName = "lastName"
-
             };
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Update.Inputs>>();
 
@@ -658,5 +657,76 @@ namespace FTSS.Logic.UnitTests.Database
             sp.Verify(s => s.Call(inputs));
         }
         #endregion SP_User_Update
+
+        #region SP_User_Insert
+        [Test]
+        public void SP_User_Insert_WhenPassingNullInputs_ThrowsArgumentNullException()
+        {
+            Assert.That(() => _dbCTX.SP_User_Insert(null),
+                Throws.ArgumentNullException);
+        }
+
+        [TestCase("", "email", "lastName", "password")]
+        [TestCase("Token", "", "lastName", "password")]
+        [TestCase("Token", "email", "", "password")]
+        [TestCase("Token", "email", "lastName", "")]
+        [TestCase(null, "email", "lastName", "password")]
+        [TestCase("Token", null, "lastName", "password")]
+        [TestCase("Token", "email", null, "password")]
+        [TestCase("Token", "email", "lastName", null)]
+        [TestCase("Token", "email", null, null)]
+        [TestCase("Token", null, null, null)]
+        [TestCase(null, null, null, null)]
+        [Test]
+        public void SP_User_Insert_WhenPassingInvalidData_ThrowsArgumentException(string token, string email, string lastName, string password)
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_Insert.Inputs()
+            {
+                Token = token,
+                Email = email,
+                LastName = lastName,
+                Password = password
+            };
+
+            Assert.That(() => _dbCTX.SP_User_Insert(inputs),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void SP_User_Insert_WhenPassingValidData_ItReturnDBResult()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_Insert.Inputs()
+            {
+                Token = "TokenValue",
+                Email = "email",
+                LastName = "lastName",
+                Password = "password"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Insert.Inputs>>();
+            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+
+            var result = _dbCTX.SP_User_Insert(inputs, sp.Object);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
+        }
+
+        [Test]
+        public void SP_User_Insert_WhenPassingValidData_ItRunsCallMethod()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_Insert.Inputs()
+            {
+                Token = "TokenValue",
+                Email = "email",
+                LastName = "lastName",
+                Password = "password"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Insert.Inputs>>();
+
+            _dbCTX.SP_User_Insert(inputs, sp.Object);
+
+            sp.Verify(s => s.Call(inputs));
+        }
+        #endregion SP_User_Insert
     }
 }
