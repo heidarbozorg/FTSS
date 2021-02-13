@@ -40,5 +40,25 @@ namespace FTSS.Logic.Log
             string text = string.Format("{0}: {1}\n", DateTime.Now, msg);
             _file.Append(text);
         }
+
+        public void Debug(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Error(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Information(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Warning(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

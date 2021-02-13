@@ -8,6 +8,7 @@ using FTSS.API.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FTSS.Logic.Log;
 
 namespace FTSS.API
 {
@@ -35,6 +36,8 @@ namespace FTSS.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<Logic.Log.ILog, Logic.Log.LogNLog>();
+
             //Add Mapper
             var mapper = services.AddMapper();
 
@@ -55,12 +58,16 @@ namespace FTSS.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Logic.Log.ILog logger)
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //app.ConfigureExceptionHandler(logger);
+            //app.UseExceptionHandler(o => o.(logger));
 
             app.UseRouting();
 

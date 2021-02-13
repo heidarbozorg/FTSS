@@ -26,8 +26,7 @@ namespace FTSS.API.Controllers
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
-        {
-            _logger.Log(LogLevel.Information, "This log just for test logger");
+        {            
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -35,7 +34,7 @@ namespace FTSS.API.Controllers
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
-            .ToArray();
+            .ToArray();          
         }
     }
 }

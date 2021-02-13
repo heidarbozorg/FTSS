@@ -8,6 +8,11 @@ namespace FTSS.Logic.Log
     {
         void Add(Exception e, string customMessage = null);
 
-        void Add(string msg);
+        void Add(string message);
+
+        void Information(string message);
+        void Warning(string message);
+        void Debug(string message);
+        void Error(string message);
     }
 }

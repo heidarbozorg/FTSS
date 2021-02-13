@@ -41,5 +41,25 @@ namespace FTSS.Logic.Log
             };
             _ctx.SP_Log_Insert(data);
         }
+
+        public void Debug(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Error(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Information(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Warning(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
