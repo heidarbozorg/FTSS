@@ -37,6 +37,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_Log_Insert(Models.Database.StoredProcedures.SP_Log_Insert.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (string.IsNullOrEmpty(inputs.MSG))
+                throw new ArgumentNullException("Text message could not be empty.");
+
             var connectionString = GetConnectionString();
             if (sp == null)
                 sp = new DP.DapperORM.StoredProcedure.SP_Log_Insert(connectionString);

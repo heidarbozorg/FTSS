@@ -8,6 +8,14 @@ namespace FTSS.Logic.UnitTests.Database
     [TestFixture]
     class DatabaseContextDapperTests
     {
+        readonly string _connectionString = "Not empty string";
+        Logic.Database.IDatabaseContext _dbCTX;
+        [SetUp]
+        public void Setup()
+        {
+            _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString);
+        }
+
         [Test]
         [TestCase("")]
         [TestCase(null)]
@@ -27,6 +35,27 @@ namespace FTSS.Logic.UnitTests.Database
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.InstanceOf<Logic.Database.IDatabaseContext>());
+        }
+
+        [Test]
+        public void SP_Log_Insert_WhenPassingNullInputs_ThrowsArgumentNullException()
+        {
+            Assert.That(() => _dbCTX.SP_Log_Insert(null),
+                Throws.ArgumentNullException);
+        }
+
+        [TestCase("")]
+        [TestCase(null)]
+        [Test]
+        public void SP_Log_Insert_WhenPassingEmptyMSG_ThrowsArgumentNullException(string msg)
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_Log_Insert.Inputs()
+            {
+                MSG = msg
+            };
+
+            Assert.That(() => _dbCTX.SP_Log_Insert(inputs),
+                Throws.ArgumentNullException);
         }
     }
 }
