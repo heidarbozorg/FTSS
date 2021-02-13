@@ -98,6 +98,15 @@ namespace FTSS.Logic.Database
         public DBResult SP_Users_GetAll(Models.Database.StoredProcedures.SP_Users_GetAll.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_Users_GetAll.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (string.IsNullOrEmpty(inputs.Token))
+                throw new ArgumentException("Token could not be empty.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Users_GetAll(GetConnectionString());
             var rst = sp.Call(inputs);

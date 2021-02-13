@@ -10,7 +10,8 @@ namespace FTSS.Models.Database
         [Required]
         public int StartIndex { get; set; }
 
-        [Required]       
+        [Required]
+        [Range(minimum: 1, maximum: 100)]
         public byte PageSize { get; set; }
 
         
