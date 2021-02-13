@@ -36,11 +36,13 @@ namespace FTSS.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Add logger service
             services.AddSingleton<Logic.Log.ILog, Logic.Log.LogNLog>();
 
             //Add Mapper
             var mapper = services.AddMapper();
 
+            //Add Authuntication service based on JWT
             services.AddJWT(Configuration);
 
             services.AddSingleton<IConfiguration>(Configuration);
