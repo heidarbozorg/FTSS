@@ -143,6 +143,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_SetPassword(Models.Database.StoredProcedures.SP_User_SetPassword.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_SetPassword.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid input data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_SetPassword(GetConnectionString());
             var rst = sp.Call(inputs);
