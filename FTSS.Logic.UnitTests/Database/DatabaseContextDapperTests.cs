@@ -401,5 +401,67 @@ namespace FTSS.Logic.UnitTests.Database
             sp.Verify(s => s.Call(inputs));
         }
         #endregion SP_User_ChangePassword
+
+        #region SP_User_UpdateProfile
+        [Test]
+        public void SP_User_UpdateProfile_WhenPassingNullInputs_ThrowsArgumentNullException()
+        {
+            Assert.That(() => _dbCTX.SP_User_UpdateProfile(null),
+                Throws.ArgumentNullException);
+        }
+
+        [TestCase("", "")]
+        [TestCase(null, "")]
+        [TestCase(null, null)]
+        [TestCase("", null)]
+        [TestCase("Token", null)]
+        [TestCase("Token", "")]
+        [TestCase("", "Lastname")]
+        [TestCase(null, "Lastname")]
+        [Test]
+        public void SP_User_UpdateProfile_WhenPassingInvalidData_ThrowsArgumentException(string token, string lastName)
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs()
+            {
+                Token = token,
+                LastName = lastName
+            };
+
+            Assert.That(() => _dbCTX.SP_User_UpdateProfile(inputs),
+                Throws.ArgumentException);
+        }
+
+        [Test]
+        public void SP_User_UpdateProfile_WhenPassingValidData_ItReturnDBResult()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs()
+            {
+                Token = "TokenValue",
+                LastName = "lastname"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs>>();
+            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+
+            var result = _dbCTX.SP_User_UpdateProfile(inputs, sp.Object);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
+        }
+
+        [Test]
+        public void SP_User_UpdateProfile_WhenPassingValidData_ItRunsCallMethod()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs()
+            {
+                Token = "TokenValue",
+                LastName = "lastname"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs>>();
+
+            _dbCTX.SP_User_UpdateProfile(inputs, sp.Object);
+
+            sp.Verify(s => s.Call(inputs));
+        }
+        #endregion SP_User_UpdateProfile
     }
 }

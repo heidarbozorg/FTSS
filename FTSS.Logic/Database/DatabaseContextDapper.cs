@@ -128,6 +128,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_UpdateProfile(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (!inputs.IsValid())
+                throw new ArgumentException("Invalid input data.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_UpdateProfile(GetConnectionString());
             var rst = sp.Call(inputs);
