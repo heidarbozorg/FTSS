@@ -68,6 +68,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_Login(Models.Database.StoredProcedures.SP_Login.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_Login.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (string.IsNullOrEmpty(inputs.Email) || string.IsNullOrEmpty(inputs.Password))
+                throw new ArgumentNullException("Email and Password could not be empty.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Login(GetConnectionString());
             var rst = sp.Call(inputs);

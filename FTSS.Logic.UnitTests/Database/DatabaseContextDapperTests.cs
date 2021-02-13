@@ -146,5 +146,63 @@ namespace FTSS.Logic.UnitTests.Database
             sp.Verify(s => s.Call(inputs));
         }
         #endregion SP_APILog_Insert
+
+        #region SP_Login
+        [Test]
+        public void SP_Login_WhenPassingNullInputs_ThrowsArgumentNullException()
+        {
+            Assert.That(() => _dbCTX.SP_Login(null),
+                Throws.ArgumentNullException);
+        }
+
+        [TestCase("", "Pass")]
+        [TestCase(null, "Pass")]
+        [TestCase("Email", "")]
+        [TestCase("Email", null)]
+        [Test]
+        public void SP_Login_WhenPassingEmptyEmailOrPassword_ThrowsArgumentNullException(string email, string password)
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
+            {
+                Email = email,
+                Password = password
+            };
+
+            Assert.That(() => _dbCTX.SP_Login(inputs),
+                Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void SP_Login_WhenPassingValidData_ItReturnDBResult()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
+            {
+                Email = "Username",
+                Password = "Password"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
+            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+
+            var result = _dbCTX.SP_Login(inputs, sp.Object);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
+        }
+
+        [Test]
+        public void SP_Login_WhenPassingValidData_ItRunsCallMethod()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
+            {
+                Email = "Username",
+                Password = "Password"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
+
+            _dbCTX.SP_Login(inputs, sp.Object);
+
+            sp.Verify(s => s.Call(inputs));
+        }
+        #endregion SP_Login
     }
 }
