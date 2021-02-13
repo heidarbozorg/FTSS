@@ -83,6 +83,12 @@ namespace FTSS.Logic.Database
         public DBResult SP_User_AccessToAPI(Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs> sp = null)
         {
+            if (inputs == null)
+                throw new ArgumentNullException("Invalid inputs data.");
+
+            if (string.IsNullOrEmpty(inputs.Token) || string.IsNullOrEmpty(inputs.APIAddress))
+                throw new ArgumentNullException("Token and APIAddress could not be empty.");
+
             if (sp == null)
                 sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_AccessToAPI(GetConnectionString());
             var rst = sp.Call(inputs);

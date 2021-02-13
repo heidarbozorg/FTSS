@@ -159,6 +159,10 @@ namespace FTSS.Logic.UnitTests.Database
         [TestCase(null, "Pass")]
         [TestCase("Email", "")]
         [TestCase("Email", null)]
+        [TestCase("", null)]
+        [TestCase("", "")]
+        [TestCase(null, "")]
+        [TestCase(null, null)]
         [Test]
         public void SP_Login_WhenPassingEmptyEmailOrPassword_ThrowsArgumentNullException(string email, string password)
         {
@@ -204,5 +208,67 @@ namespace FTSS.Logic.UnitTests.Database
             sp.Verify(s => s.Call(inputs));
         }
         #endregion SP_Login
+
+        #region SP_User_AccessToAPI
+        [Test]
+        public void SP_User_AccessToAPI_WhenPassingNullInputs_ThrowsArgumentNullException()
+        {
+            Assert.That(() => _dbCTX.SP_User_AccessToAPI(null),
+                Throws.ArgumentNullException);
+        }
+
+        [TestCase("", "APIAddress")]
+        [TestCase(null, "APIAddress")]
+        [TestCase("TokenValue", "")]
+        [TestCase("TokenValue", null)]
+        [TestCase("", null)]
+        [TestCase("", "")]
+        [TestCase(null, "")]
+        [TestCase(null, null)]
+        [Test]
+        public void SP_User_AccessToAPI_WhenPassingEmptyAPIAddressOrEmptyToken_ThrowsArgumentNullException(string token, string apiAddress)
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs()
+            {
+                Token = token,
+                APIAddress = apiAddress
+            };
+
+            Assert.That(() => _dbCTX.SP_User_AccessToAPI(inputs),
+                Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void SP_User_AccessToAPI_WhenPassingValidData_ItReturnDBResult()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs()
+            {
+                Token = "TokenValue",
+                APIAddress = "http://Domain.com/api"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>();
+            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+
+            var result = _dbCTX.SP_User_AccessToAPI(inputs, sp.Object);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
+        }
+
+        [Test]
+        public void SP_User_AccessToAPI_WhenPassingValidData_ItRunsCallMethod()
+        {
+            var inputs = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs()
+            {
+                Token = "TokenValue",
+                APIAddress = "http://Domain.com/api"
+            };
+            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>();
+
+            _dbCTX.SP_User_AccessToAPI(inputs, sp.Object);
+
+            sp.Verify(s => s.Call(inputs));
+        }
+        #endregion SP_User_AccessToAPI
     }
 }
