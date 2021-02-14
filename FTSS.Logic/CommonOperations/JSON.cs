@@ -18,6 +18,8 @@ namespace FTSS.Logic.CommonOperations
         /// <returns></returns>
         public static T jsonToT<T>(string json)
         {
+            if (string.IsNullOrEmpty(json))
+                throw new ArgumentNullException("Invalid json");
             var rst = JsonConvert.DeserializeObject<T>(json);
             return (rst);
         }
@@ -29,6 +31,9 @@ namespace FTSS.Logic.CommonOperations
         /// <returns></returns>
         public static string ObjToJson(object data)
         {
+            if (data == null)
+                throw new ArgumentNullException("Invalid data");
+
             var rst = JsonConvert.SerializeObject(data);
             return rst;
         }
