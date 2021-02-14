@@ -11,6 +11,9 @@ namespace FTSS.Logic.FileIO
 
         public TextFile(string path, System.IO.StreamWriter f = null)
         {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("Invalid path.");
+
             if (f == null)
                 _file = System.IO.File.AppendText(path);
             else
@@ -23,6 +26,9 @@ namespace FTSS.Logic.FileIO
         /// <param name="text"></param>
         public void Append(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentNullException("Invalid text.");
+
             _file.WriteLine(text);
         }
 
