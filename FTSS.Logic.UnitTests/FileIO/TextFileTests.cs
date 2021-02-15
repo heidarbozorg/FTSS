@@ -5,24 +5,21 @@ namespace FTSS.Logic.UnitTests.FileIO
 {
     [TestFixture]
     class TextFileTests
-    {
-        private Logic.FileIO.TextFile textFile;
+    {        
         private string simpleMessage;
-        private string path;
-        Mock<System.IO.StreamWriter> file;
+        private Logic.FileIO.TextFile _textFile;
+        Mock<System.IO.StreamWriter> _writer;
 
         [SetUp]
         public void Setup()
         {
-            path = "c:\t.txt";
             simpleMessage = "This is a simple message.";
-
-            //Creating new textFile writer mock
-            var stream = new System.IO.MemoryStream();
-            file = new Mock<System.IO.StreamWriter>(stream);
+            
+            var stream = new System.IO.MemoryStream();          //Write on the fly
+            _writer = new Mock<System.IO.StreamWriter>(stream);    //Creating new textFile writer mock
 
             //Create TextFile object from the mock
-            textFile = new Logic.FileIO.TextFile(path, file.Object);
+            _textFile = new Logic.FileIO.TextFile(_writer.Object);
         }
 
         [TestCase("")]
@@ -34,22 +31,28 @@ namespace FTSS.Logic.UnitTests.FileIO
                 Throws.ArgumentNullException);
         }
 
+        [Test]
+        public void Constructor_WhenWriterIsNull_ThrowsNullException()
+        {
+            System.IO.StreamWriter Writer = null;
+            Assert.That(() => new Logic.FileIO.TextFile(Writer),
+                Throws.ArgumentNullException);
+        }
+
         [TestCase("")]
         [TestCase(null)]
         [Test]
         public void Append_WhenPassingEmptyMessage_ThrowsNullException(string msg)
         {
-            Assert.That(() => textFile.Append(msg), Throws.ArgumentNullException);
+            Assert.That(() => _textFile.Append(msg), Throws.ArgumentNullException);
         }
 
         [Test]
         public void Append_WhenPassingMessage_CallWriteLine()
         {
-            file.Setup(s => s.WriteLine(simpleMessage));
+            _textFile.Append(simpleMessage);
 
-            textFile.Append(simpleMessage);
-
-            file.Verify(s => s.WriteLine(simpleMessage));
+            _writer.Verify(s => s.WriteLine(simpleMessage));
         }
     }
 }

@@ -11,13 +11,19 @@ namespace FTSS.Logic.Log
     {
         private FileIO.IFileOperation _file;
 
-        public LogAtFile(FileIO.IFileOperation f = null, string fileName = "FTSS.txt")
+        public LogAtFile(FileIO.IFileOperation f)
         {
             if (f == null)
-                _file = new FileIO.TextFile(fileName);
-            else
-                _file = f;
+                throw new ArgumentNullException("Invalid FileOperation.");            
+
+            _file = f;
         }
+
+        public LogAtFile(string fileName = "FTSS.txt")
+        {
+            _file = new FileIO.TextFile(fileName);
+        }
+
 
         /// <summary>
         /// Log an Exception with custom message

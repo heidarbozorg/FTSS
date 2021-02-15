@@ -7,17 +7,22 @@ namespace FTSS.Logic.FileIO
 {
     public class TextFile : IFileOperation, IDisposable
     {
-        private System.IO.StreamWriter _file;
+        private System.IO.StreamWriter _writer;
 
-        public TextFile(string path, System.IO.StreamWriter f = null)
+        public TextFile(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("Invalid path.");
 
+            _writer = System.IO.File.AppendText(path);
+        }
+
+        public TextFile(System.IO.StreamWriter f)
+        {
             if (f == null)
-                _file = System.IO.File.AppendText(path);
-            else
-                _file = f;
+                throw new ArgumentNullException("Invalud Writer.");
+
+            _writer = f;
         }
 
         /// <summary>
@@ -29,7 +34,7 @@ namespace FTSS.Logic.FileIO
             if (string.IsNullOrEmpty(text))
                 throw new ArgumentNullException("Invalid text.");
 
-            _file.WriteLine(text);
+            _writer.WriteLine(text);
         }
 
         /// <summary>
@@ -37,7 +42,7 @@ namespace FTSS.Logic.FileIO
         /// </summary>
         public void Dispose()
         {
-            _file.Dispose();
+            _writer.Dispose();
         }
     }
 }
