@@ -36,7 +36,7 @@ namespace FTSS.DP.DapperORM.StoredProcedure
         {
             string sql = "dbo.SP_User_GetAccessMenu";
 
-            var p = Common.GetSearchParams(data.Token);
+            var p = Common.GetToken(data.Token);
 
             var dbResult = _executer.Query<Models.Database.StoredProcedures.SP_User_GetAccessMenu.Outputs>(
                 sql, p, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();

@@ -24,8 +24,11 @@ namespace FTSS.DP.DapperORM
             return p;
         }
 
-        public static DynamicParameters GetSearchParams(string token)
+        public static DynamicParameters GetToken(string token)
         {
+            if (string.IsNullOrEmpty(token))
+                throw new ArgumentNullException("Token could not be empty.");
+
             var p = GetErrorCodeAndErrorMessageParams();
             p.Add("@Token", token);
 
@@ -34,8 +37,18 @@ namespace FTSS.DP.DapperORM
 
         public static DynamicParameters GetSearchParams(Models.Database.BaseSearchParams filterParams)
         {
-            var p = GetSearchParams(filterParams.Token);
-            
+            if (filterParams == null)
+                throw new ArgumentNullException("Invalid params.");
+
+            if (filterParams.StartIndex < 0)
+                throw new ArgumentOutOfRangeException("StartIndex could not be less than zero.");
+
+            if (filterParams.PageSize < 1)
+                throw new ArgumentOutOfRangeException("PageSize could not be less than one.");
+
+            //Get token param
+            var p = GetToken(filterParams.Token);
+
             //Pagination
             p.Add("@StartIndex", filterParams.StartIndex, System.Data.DbType.Int32);
             p.Add("@PageSize", filterParams.PageSize, System.Data.DbType.Byte);
@@ -48,7 +61,10 @@ namespace FTSS.DP.DapperORM
 
         public static DynamicParameters GetDataParams(Models.Database.BaseDataModelWithToken data)
         {
-            var p = GetSearchParams(data.Token);
+            if (data == null)
+                throw new ArgumentNullException("Invalid data");
+
+            var p = GetToken(data.Token);
             return p;
         }
 
@@ -57,15 +73,18 @@ namespace FTSS.DP.DapperORM
         /// <summary>
         /// Convert database query result to DBResult type
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="outputParams"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Models.Database.DBResult GetResult(DynamicParameters p, object data)
+        public static Models.Database.DBResult GetResult(DynamicParameters outputParams, object data)
         {
+            if (outputParams == null)
+                throw new ArgumentNullException("Invalid outputParams");
+
             var rst = new Models.Database.DBResult()
             {
-                ErrorCode = p.Get<int>("ErrorCode"),
-                ErrorMessage = p.Get<string>("ErrorMessage"),
+                ErrorCode = outputParams.Get<int>("ErrorCode"),
+                ErrorMessage = outputParams.Get<string>("ErrorMessage"),
 
                 Data = data
             };
@@ -73,7 +92,7 @@ namespace FTSS.DP.DapperORM
             try
             {
                 //if database query for searching, try to catch ActualSize output param for pagination
-                rst.ActualSize = p.Get<int>("ActualSize");
+                rst.ActualSize = outputParams.Get<int>("ActualSize");
             }
             catch (Exception)
             {
