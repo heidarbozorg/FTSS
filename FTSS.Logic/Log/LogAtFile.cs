@@ -19,8 +19,11 @@ namespace FTSS.Logic.Log
             _file = f;
         }
 
-        public LogAtFile(string fileName = "FTSS.txt")
+        public LogAtFile(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException("Filename could not be empty.");
+
             _file = new FileIO.TextFile(fileName);
         }
 
@@ -32,6 +35,9 @@ namespace FTSS.Logic.Log
         /// <param name="e"></param>
         public void Add(Exception e, string customMessage = null)
         {
+            if (e == null)
+                throw new ArgumentNullException("Invalid exception.");
+
             string text = string.Format("{0}\nException: {1}\nStackTrace: {2}\n",
                 customMessage ?? "", e.Message, e.StackTrace);
             this.Add(text);
@@ -43,6 +49,9 @@ namespace FTSS.Logic.Log
         /// <param name="msg"></param>
         public void Add(string msg)
         {
+            if (string.IsNullOrEmpty(msg))
+                throw new ArgumentNullException("Message could not be empty.");
+
             string text = string.Format("{0}: {1}\n", DateTime.Now, msg);
             _file.Append(text);
         }

@@ -48,11 +48,11 @@ namespace FTSS.Logic.UnitTests.FileIO
         }
 
         [Test]
-        public void Append_WhenPassingMessage_CallWriteLine()
+        public void Append_WhenPassingMessage_CallWriteLineOnce()
         {
             _textFile.Append(simpleMessage);
 
-            _writer.Verify(s => s.WriteLine(simpleMessage));
+            _writer.Verify(s => s.WriteLine(simpleMessage), Times.Once());
         }
     }
 }
