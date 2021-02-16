@@ -184,6 +184,16 @@ namespace FTSS.Logic.UnitTests.Security
 
             Assert.That(rst, Is.False);
         }
+
+        [Test]
+        public void IsUserAccessToAPI_WhenDatabaseThrowsException_ThrowsException()
+        {
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+                .Throws(new System.Exception("Unknown error"));
+            Assert.That(() => 
+                Logic.Security.Common.IsUserAccessToAPI(_ctx.Object, _data), 
+                Throws.Exception);
+        }
         #endregion IsUserAccessToAPI
     }
 }
