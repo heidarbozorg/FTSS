@@ -13,6 +13,8 @@ namespace FTSS.Logic.Log
 
         public LogAtDatabase(Logic.Database.IDatabaseContext ctx)
         {
+            if (ctx == null)
+                throw new ArgumentNullException("Invalid DatabaseContext.");
             _ctx = ctx;           
         }
 
@@ -23,6 +25,9 @@ namespace FTSS.Logic.Log
         /// <param name="e"></param>
         public void Add(Exception e, string customMessage = null)
         {
+            if (e == null)
+                throw new ArgumentNullException("Invalid exception.");
+
             string text = string.Format("{0}\nException: {1}\nStackTrace: {2}\n",
                 customMessage ?? "", e.Message, e.StackTrace);
             this.Add(text);
@@ -33,7 +38,10 @@ namespace FTSS.Logic.Log
         /// </summary>
         /// <param name="msg"></param>
         public void Add(string msg)
-        {            
+        {
+            if (string.IsNullOrEmpty(msg))
+                throw new ArgumentNullException("Message could not be empty.");
+
             string text = string.Format("{0}", msg);
             var data = new Models.Database.StoredProcedures.SP_Log_Insert.Inputs()
             {
