@@ -69,10 +69,17 @@ namespace FTSS.Logic.Security
             if (data == null || data.Data == null)
                 throw new ArgumentNullException("In UserJWT, user could not be null.");
 
+            if (data.ErrorCode != 200 || !string.IsNullOrEmpty(data.ErrorMessage))
+                throw new ArgumentException("User data is not valid.");
+
+            if (mapper == null)
+                throw new ArgumentNullException("Mapper could not be null.");
+
             if (!(data.Data is Models.Database.StoredProcedures.SP_Login.Outputs))
                 throw new ArgumentException("Data is not valid.");
 
             var loginResult = data.Data as Models.Database.StoredProcedures.SP_Login.Outputs;
+
             var userJWT = mapper.Map<UserJWT>(loginResult);
             userJWT.Token = loginResult.Token;
 
