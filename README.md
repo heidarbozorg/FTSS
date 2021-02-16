@@ -25,16 +25,16 @@ I using Microsoft stacks for developing and Postman for running APIs:
 This project is completely open-source and everyone can branch, download, redeploy, using for learning or enterprise purpose.
 
 ## Responsibility:
-I created this project to share my knowledge and experience in order to get feedback from other developers to correct myself and improve my skills. However, I work hardly to create a clean and trust code, it maybe contains ambiguous class or method that I hope it gets better by your comments in future.
+I created this project to share my knowledge and experience to get feedback from other developers to correct myself and improve my skills. However, I work hard to create a clean and trust code, it may contain ambiguous classes or methods that I hope get better by your comments in the future.
 
 ## Code-First or DB-First:
-Since this project created for developing complex and huge projects with vast variety of functionalities, my approach is DB-First.
+Since this project created for developing complex and huge projects with a vast variety of functionalities, my approach is DB-First.
 
 ## Authentication:
-I defined users and roles inside Database. All authentication functions such as Login, remember password, change and reset password, and create a new user are implemented by Stored-Procedures inside database.
+I defined users and roles inside Database. All authentication functions such as Login, remember the password, change and reset the password, and create a new user are implemented by Stored-Procedures inside the database.
 
 ## Security and Authorization:
-Each end-points must send their JWT in request header for authorization. Before doing anything, the application tries to find-out user info, roles, and authorization.
+Each end-points must send their JWT in the request header for authorization. Before doing anything, the application tries to find-out user info, roles, and authorization. For checking user or role access to a certain API, I used Stored-Procedure to check the database.
 
 ## Tiers:
 I used a seperate project for each tier:
