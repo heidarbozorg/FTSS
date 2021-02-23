@@ -50,5 +50,5 @@ I used a seperate project for each tier:
 In this section I described the source code in details.
 
 ## Login
-End-Point calling api/Users/Login and send Username & Password. If Username & Password is valid, Login will return JWT token + User non-sensitive data.
+End-Point calling api/Users/Login and send Email & Password. If Email & Password is valid, Login will return JWT token + User non-sensitive data.
 ![Login flowchart](https://github.com/heidarbozorg/FTSS/raw/master/FTSS.API/Documents/Login/FTSS%20Login.png)
