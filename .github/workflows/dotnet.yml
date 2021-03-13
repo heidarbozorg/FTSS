@@ -20,8 +20,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore    
-      
-      # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test
+      run: dotnet build --no-restore 
+
+tests:
+    name: Unit Testing
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - run: dotnet test
