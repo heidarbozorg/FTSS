@@ -21,3 +21,7 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore    
+      
+      # Execute all unit tests in the solution
+    - name: Execute unit tests
+      run: dotnet test
