@@ -27,7 +27,7 @@ namespace FTSS.Models.Database
         {
         }
 
-        public DBResult(int errorCode, string errorMessage, object data = null, int actualSize = -1)
+        public DBResult(int errorCode, string errorMessage, object data = null, int actualSize = 0)
         {
             this.ErrorCode = errorCode;
             this.ErrorMessage = errorMessage;
