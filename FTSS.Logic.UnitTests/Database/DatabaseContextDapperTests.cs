@@ -8,11 +8,25 @@ namespace FTSS.Logic.UnitTests.Database
     {
         readonly string _connectionString = "Not empty string";
         Logic.Database.IDatabaseContext _dbCTX;
+        Models.Database.StoredProcedures.SP_Login.Inputs _loginInputs;
+        Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs _accessToAPIInputs;
+
 
         [SetUp]
         public void Setup()
         {
             _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString);
+            _loginInputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
+            {
+                Email = "username",
+                Password = "password"
+            };
+
+            _accessToAPIInputs = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs()
+            {
+                Token = "TokenValue",
+                APIAddress = "http://Domain.com/api"
+            };
         }
 
         #region Constractor
@@ -37,59 +51,7 @@ namespace FTSS.Logic.UnitTests.Database
             Assert.That(result, Is.InstanceOf<Logic.Database.IDatabaseContext>());
         }
         #endregion Constractor
-
-        #region SP_Log_Insert
-        [Test]
-        public void SP_Log_Insert_WhenPassingNullInputs_ThrowsArgumentNullException()
-        {
-            Assert.That(() => _dbCTX.SP_Log_Insert(null),
-                Throws.ArgumentNullException);
-        }
-
-        [TestCase("")]
-        [TestCase(null)]
-        [Test]
-        public void SP_Log_Insert_WhenPassingEmptyMSG_ThrowsArgumentNullException(string msg)
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Log_Insert.Inputs()
-            {
-                MSG = msg
-            };
-
-            Assert.That(() => _dbCTX.SP_Log_Insert(inputs),
-                Throws.ArgumentNullException);
-        }
-
-        [Test]
-        public void SP_Log_Insert_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Log_Insert.Inputs()
-            {
-                MSG = "Simple log message"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
-
-            var result = _dbCTX.SP_Log_Insert(inputs, sp.Object);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
-        }
-
-        [Test]
-        public void SP_Log_Insert_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Log_Insert.Inputs()
-            {
-                MSG = "Simple log message"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>>();
-
-            _dbCTX.SP_Log_Insert(inputs, sp.Object);
-
-            sp.Verify(s => s.Call(inputs));
-        }
-        #endregion SP_Log_Insert
+        
 
         #region SP_APILog_Insert
         [Test]
@@ -176,15 +138,10 @@ namespace FTSS.Logic.UnitTests.Database
         [Test]
         public void SP_Login_WhenPassingValidData_ItReturnDBResult()
         {
-            var inputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
-            {
-                Email = "Username",
-                Password = "Password"
-            };
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+            sp.Setup(s => s.Call(_loginInputs)).Returns(new Models.Database.DBResult());
 
-            var result = _dbCTX.SP_Login(inputs, sp.Object);
+            var result = _dbCTX.SP_Login(_loginInputs, sp.Object);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
@@ -192,17 +149,12 @@ namespace FTSS.Logic.UnitTests.Database
 
         [Test]
         public void SP_Login_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
-            {
-                Email = "Username",
-                Password = "Password"
-            };
+        {            
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
 
-            _dbCTX.SP_Login(inputs, sp.Object);
+            _dbCTX.SP_Login(_loginInputs, sp.Object);
 
-            sp.Verify(s => s.Call(inputs));
+            sp.Verify(s => s.Call(_loginInputs));
         }
         #endregion SP_Login
 
@@ -237,16 +189,11 @@ namespace FTSS.Logic.UnitTests.Database
 
         [Test]
         public void SP_User_AccessToAPI_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs()
-            {
-                Token = "TokenValue",
-                APIAddress = "http://Domain.com/api"
-            };
+        {            
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
+            sp.Setup(s => s.Call(_accessToAPIInputs)).Returns(new Models.Database.DBResult());
 
-            var result = _dbCTX.SP_User_AccessToAPI(inputs, sp.Object);
+            var result = _dbCTX.SP_User_AccessToAPI(_accessToAPIInputs, sp.Object);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
@@ -254,17 +201,12 @@ namespace FTSS.Logic.UnitTests.Database
 
         [Test]
         public void SP_User_AccessToAPI_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs()
-            {
-                Token = "TokenValue",
-                APIAddress = "http://Domain.com/api"
-            };
+        {            
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>();
 
-            _dbCTX.SP_User_AccessToAPI(inputs, sp.Object);
+            _dbCTX.SP_User_AccessToAPI(_accessToAPIInputs, sp.Object);
 
-            sp.Verify(s => s.Call(inputs));
+            sp.Verify(s => s.Call(_accessToAPIInputs));
         }
         #endregion SP_User_AccessToAPI
 
