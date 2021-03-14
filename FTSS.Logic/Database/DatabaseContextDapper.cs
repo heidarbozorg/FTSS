@@ -26,7 +26,7 @@ namespace FTSS.Logic.Database
         /// <param name="ConnectionString"></param>
         public DatabaseContextDapper(string ConnectionString)
         {
-            if (string.IsNullOrEmpty(ConnectionString))
+            if (string.IsNullOrWhiteSpace(ConnectionString))
                 throw new ArgumentNullException("ConnectionString could not be empty for creating DapperCRM.");
 
             _connectionString = ConnectionString;
