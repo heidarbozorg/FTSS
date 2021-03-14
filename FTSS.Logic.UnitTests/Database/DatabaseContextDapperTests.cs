@@ -53,59 +53,6 @@ namespace FTSS.Logic.UnitTests.Database
         #endregion Constractor
         
 
-        #region SP_APILog_Insert
-        [Test]
-        public void SP_APILog_Insert_WhenPassingNullInputs_ThrowsArgumentNullException()
-        {
-            Assert.That(() => _dbCTX.SP_APILog_Insert(null),
-                Throws.ArgumentNullException);
-        }
-
-        [TestCase("")]
-        [TestCase(null)]
-        [Test]
-        public void SP_APILog_Insert_WhenPassingEmptyMSG_ThrowsArgumentNullException(string apiAddress)
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs()
-            {
-                APIAddress = apiAddress
-            };
-
-            Assert.That(() => _dbCTX.SP_APILog_Insert(inputs),
-                Throws.ArgumentNullException);
-        }
-
-        [Test]
-        public void SP_APILog_Insert_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs()
-            {
-                APIAddress = "http://Domain.com/api"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
-
-            var result = _dbCTX.SP_APILog_Insert(inputs, sp.Object);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
-        }
-
-        [Test]
-        public void SP_APILog_Insert_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs()
-            {
-                APIAddress = "http://Domain.com/api"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs>>();
-
-            _dbCTX.SP_APILog_Insert(inputs, sp.Object);
-
-            sp.Verify(s => s.Call(inputs));
-        }
-        #endregion SP_APILog_Insert
-
         #region SP_Login
         [Test]
         public void SP_Login_WhenPassingNullInputs_ThrowsArgumentNullException()
