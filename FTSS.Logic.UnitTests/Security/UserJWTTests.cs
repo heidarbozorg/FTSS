@@ -6,12 +6,13 @@ namespace FTSS.Logic.UnitTests.Security
     [TestFixture]
     class UserJWTTests
     {
-        private string _key;
-        private string _issuer;
-        private string _dbToken;
-        private string _roleTitle;
-        private string _email;
-        private System.DateTime _expireDate;
+        private string _key = "A simple key for generating JWT and test the common class.";
+        private string _issuer = "http://FTSS.com";
+        private string _dbToken = "DatabaseToken";
+        private string _roleTitle = "DBRoleTitle";
+        private string _email = "Username";
+        private System.DateTime _expireDate = System.DateTime.Now.AddDays(1);
+
         private Models.Database.DBResult _data;
         private Models.Database.StoredProcedures.SP_Login.Outputs _loginResult;
         private Logic.Security.UserJWT _userJWT;
@@ -20,14 +21,6 @@ namespace FTSS.Logic.UnitTests.Security
         [SetUp]
         public void Setup()
         {
-            _key = "A simple key for generating JWT and test the common class.";
-            _issuer = "http://FTSS.com";
-            _dbToken = "DatabaseToken";
-            _roleTitle = "DBRoleTitle";
-            _email = "Username";
-
-            _expireDate = System.DateTime.Now.AddDays(1);
-
             _loginResult = new Models.Database.StoredProcedures.SP_Login.Outputs()
             {
                 UserId = 1,
