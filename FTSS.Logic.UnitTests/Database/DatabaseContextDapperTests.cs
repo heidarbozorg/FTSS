@@ -41,64 +41,7 @@ namespace FTSS.Logic.UnitTests.Database
         
         
 
-        #region SP_User_Delete
-        [Test]
-        public void SP_User_Delete_WhenPassingNullInputs_ThrowsArgumentNullException()
-        {
-            Assert.That(() => _dbCTX.SP_User_Delete(null),
-                Throws.ArgumentNullException);
-        }
-
-        [TestCase("", 1)]
-        [TestCase(null, 1)]
-        [TestCase("Token", 0)]
-        [TestCase("", 0)]
-        [TestCase(null, 0)]
-        [Test]
-        public void SP_User_Delete_WhenPassingInvalidData_ThrowsArgumentException(string token, int userId)
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_Delete.Inputs()
-            {
-                Token = token,
-                UserId = userId
-            };
-
-            Assert.That(() => _dbCTX.SP_User_Delete(inputs),
-                Throws.ArgumentException);
-        }
-
-        [Test]
-        public void SP_User_Delete_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_Delete.Inputs()
-            {
-                Token = "TokenValue",
-                UserId = 1
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Delete.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
-
-            var result = _dbCTX.SP_User_Delete(inputs, sp.Object);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
-        }
-
-        [Test]
-        public void SP_User_Delete_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_Delete.Inputs()
-            {
-                Token = "TokenValue",
-                UserId = 1
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Delete.Inputs>>();
-
-            _dbCTX.SP_User_Delete(inputs, sp.Object);
-
-            sp.Verify(s => s.Call(inputs));
-        }
-        #endregion SP_User_Delete
+        
 
         #region SP_User_Update
         [Test]
