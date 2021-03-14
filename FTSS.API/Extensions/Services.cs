@@ -76,6 +76,51 @@ namespace FTSS.API.Extensions
             services.AddSingleton<Logic.Log.IAPILogger>(APILoggerDatabase);
         }
 
+        #region JWT
+        /// <summary>
+        /// Fetch key and issuer fom setting file and generate token validation
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        private static TokenValidationParameters getTokenValidationParameters(IConfiguration configuration)
+        {
+            //Fetch JWT key and issuer from the appsettings.json
+            string key = configuration.GetValue<string>("JWT:Key");
+            string issuer = configuration.GetValue<string>("JWT:Issuer");
+            
+            var rst = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = issuer,
+                ValidAudience = issuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+            };
+            
+            return rst;
+        }
+
+        /// <summary>
+        /// Get authentication event handler by jwt
+        /// </summary>
+        /// <returns></returns>
+        private static JwtBearerEvents getJWTEvents()
+        {
+            var rst = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    {
+                        context.Response.Headers.Add("Token-Expired", "true");
+                    }
+                    return Task.CompletedTask;
+                }
+            };
+            
+            return rst;
+        }
 
         /// <summary>
         /// Setup JWT validator
@@ -84,36 +129,15 @@ namespace FTSS.API.Extensions
         /// <param name="configuration"></param>
         public static void AddJWT(this IServiceCollection services, IConfiguration configuration)
         {
-            //Fetch JWT key and issuer from the appsettings.json
-            string key = configuration.GetValue<string>("JWT:Key");
-            string issuer = configuration.GetValue<string>("JWT:Issuer");
-
             //When a request receive, this operations check the JWT and set User object
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = issuer,
-                        ValidAudience = issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                    };
-
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            {
-                                context.Response.Headers.Add("Token-Expired", "true");
-                            }
-                            return Task.CompletedTask;
-                        }
-                    };
+                    options.TokenValidationParameters = getTokenValidationParameters(configuration);
+                    options.Events = getJWTEvents();
                 });
         }
+        #endregion JWT
     }
 }
