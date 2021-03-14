@@ -13,8 +13,8 @@ namespace FTSS.API.Filters
     public class APILogger : ActionFilterAttribute
     {
         #region private methods
-        ActionExecutingContext executingContext;
-        Logic.Log.IAPILogger _APILogger;
+        ActionExecutingContext _executingContext;
+        Logic.Log.IAPILogger _apiLogger;
 
         /// <summary>
         /// Get user Token (database Token) if user Authorized
@@ -25,10 +25,10 @@ namespace FTSS.API.Filters
         {
             try
             {
-                var user = ctx.User;
-                if (user == null)
+                if (ctx == null || ctx.User == null)
                     return null;
 
+                var user = ctx.User;
                 var rst = user.GetToken();
                 return rst;
             }
@@ -114,27 +114,25 @@ namespace FTSS.API.Filters
         /// <returns></returns>
         private string GetAPIErrorMessage(ActionExecutedContext ctx)
         {
-            try
+            if (ctx == null || ctx.Result == null)
+                return ("null");
+
+            string rst = "";
+
+            switch (ctx.Result)
             {
-                if (ctx.Result == null)
-                    return ("null");
+                case OkObjectResult ok:
+                    rst = "OK";
+                    break;
 
-                if (ctx.Result is OkObjectResult)
-                    return "OK";
-
-                if (ctx.Result is ObjectResult)
-                {
+                case ObjectResult result:
                     var value = (ctx.Result as ObjectResult).Value;
                     if (value != null)
-                        return (value.ToString());
-                }
+                        rst = value.ToString();
+                    break;
+            }
 
-                return ("");
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return rst;
         }
 
         /// <summary>
@@ -171,7 +169,7 @@ namespace FTSS.API.Filters
             {
                 APIAddress = GetAPIFulllAddress(ctx),
                 UserToken = GetUserToken(ctx),
-                Params = GetAPIParams(this.executingContext),
+                Params = GetAPIParams(_executingContext),
                 Results = GetAPIResult(context),
                 ErrorMessage = GetAPIErrorMessage(context),
                 StatusCode = GetAPIStatusCode(context)
@@ -198,7 +196,7 @@ namespace FTSS.API.Filters
         /// <param name="context"></param>
         private async void SaveInDatabaseAsync(ActionExecutedContext context)
         {
-            if (_APILogger == null)
+            if (_apiLogger == null)
                 return;
             await Task.Run(() =>
             {
@@ -206,7 +204,7 @@ namespace FTSS.API.Filters
                 var data = GetModel(context);
 
                 //Save API results in database                
-                _APILogger.Save(data);
+                _apiLogger.Save(data);
             });
         }
         #endregion private methods
@@ -219,7 +217,7 @@ namespace FTSS.API.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             //Save context for fetch inputs
-            executingContext = context;
+            _executingContext = context;
             base.OnActionExecuting(context);
         }
 
@@ -230,7 +228,7 @@ namespace FTSS.API.Filters
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             //Get database ORM from service pool
-            _APILogger = GetAPILogger(context);
+            _apiLogger = GetAPILogger(context);
 
             //Save log in database
             SaveInDatabaseAsync(context);
