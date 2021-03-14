@@ -39,71 +39,7 @@ namespace FTSS.Logic.UnitTests.Database
         }
         #endregion Constractor
         
-        #region SP_User_SetPassword
-        [Test]
-        public void SP_User_SetPassword_WhenPassingNullInputs_ThrowsArgumentNullException()
-        {
-            Assert.That(() => _dbCTX.SP_User_SetPassword(null),
-                Throws.ArgumentNullException);
-        }
-
-        [TestCase("", 1, "")]
-        [TestCase(null, 1, "")]
-        [TestCase(null, 1, null)]
-        [TestCase("", 1, null)]
-        [TestCase("Token", 1, null)]
-        [TestCase("Token", 1, "")]
-        [TestCase("", 1, "Lastname")]
-        [TestCase(null, 1, "Lastname")]
-        [TestCase("Token", 0, "Lastname")]
-        [Test]
-        public void SP_User_SetPassword_WhenPassingInvalidData_ThrowsArgumentException(string token, int userId, string password)
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_SetPassword.Inputs()
-            {
-                Token = token,
-                UserId = userId,
-                Password = password
-            };
-
-            Assert.That(() => _dbCTX.SP_User_SetPassword(inputs),
-                Throws.ArgumentException);
-        }
-
-        [Test]
-        public void SP_User_SetPassword_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_SetPassword.Inputs()
-            {
-                Token = "TokenValue",
-                UserId = 1,
-                Password = "Password"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_SetPassword.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
-
-            var result = _dbCTX.SP_User_SetPassword(inputs, sp.Object);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
-        }
-
-        [Test]
-        public void SP_User_SetPassword_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_SetPassword.Inputs()
-            {
-                Token = "TokenValue",
-                UserId = 1,
-                Password = "Password"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_SetPassword.Inputs>>();
-
-            _dbCTX.SP_User_SetPassword(inputs, sp.Object);
-
-            sp.Verify(s => s.Call(inputs));
-        }
-        #endregion SP_User_SetPassword
+        
 
         #region SP_User_Delete
         [Test]
