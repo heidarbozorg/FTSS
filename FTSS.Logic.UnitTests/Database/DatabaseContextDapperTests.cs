@@ -41,69 +41,7 @@ namespace FTSS.Logic.UnitTests.Database
         
         
 
-        #region SP_Users_GetAll
-        [Test]
-        public void SP_Users_GetAll_WhenPassingNullInputs_ThrowsArgumentNullException()
-        {
-            Assert.That(() => _dbCTX.SP_Users_GetAll(null),
-                Throws.ArgumentNullException);
-        }
-
-        [TestCase("", 1, 10)]
-        [TestCase(null, 1, 10)]
-        [TestCase("TokenValue", -1, 10)]
-        [TestCase("TokenValue", 1, 0)]
-        [TestCase("TokenValue", -1, 0)]
-        [TestCase("TokenValue", 1, 101)]
-        [TestCase("TokenValue", -1, 101)]
-        [Test]
-        public void SP_Users_GetAll_WhenPassingInvalidData_ThrowsArgumentException(string token, int startIndex, byte pageSize)
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Users_GetAll.Inputs()
-            {
-                Token = token,
-                StartIndex = startIndex,
-                PageSize = pageSize
-            };
-
-            Assert.That(() => _dbCTX.SP_Users_GetAll(inputs),
-                Throws.ArgumentException);
-        }
-
-        [Test]
-        public void SP_Users_GetAll_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Users_GetAll.Inputs()
-            {
-                Token = "TokenValue",
-                StartIndex = 1,
-                PageSize = 10
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Users_GetAll.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
-
-            var result = _dbCTX.SP_Users_GetAll(inputs, sp.Object);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
-        }
-
-        [Test]
-        public void SP_Users_GetAll_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_Users_GetAll.Inputs()
-            {
-                Token = "TokenValue",
-                StartIndex = 1,
-                PageSize = 10
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Users_GetAll.Inputs>>();
-
-            _dbCTX.SP_Users_GetAll(inputs, sp.Object);
-
-            sp.Verify(s => s.Call(inputs));
-        }
-        #endregion SP_Users_GetAll
+        
 
         #region SP_User_ChangePassword
         [Test]
