@@ -43,74 +43,7 @@ namespace FTSS.Logic.UnitTests.Database
 
         
 
-        #region SP_User_Update
-        [Test]
-        public void SP_User_Update_WhenPassingNullInputs_ThrowsArgumentNullException()
-        {
-            Assert.That(() => _dbCTX.SP_User_Update(null),
-                Throws.ArgumentNullException);
-        }
-
-        [TestCase("", 1, "email", "lastName")]
-        [TestCase("Token", 0, "email", "lastName")]
-        [TestCase("Token", 1, "", "lastName")]
-        [TestCase("Token", 1, "email", "")]
-        [TestCase("", 0, "", "")]
-        [TestCase(null, 0, null, null)]
-        [TestCase(null, 1, "email", "lastName")]
-        [TestCase("Token", 1, null, "lastName")]
-        [TestCase("Token", 1, "email", null)]        
-        [Test]
-        public void SP_User_Update_WhenPassingInvalidData_ThrowsArgumentException(string token, int userId, string email, string lastName)
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_Update.Inputs()
-            {
-                Token = token,
-                UserId = userId,
-                Email = email,
-                LastName = lastName
-            };
-
-            Assert.That(() => _dbCTX.SP_User_Update(inputs),
-                Throws.ArgumentException);
-        }
-
-        [Test]
-        public void SP_User_Update_WhenPassingValidData_ItReturnDBResult()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_Update.Inputs()
-            {
-                Token = "TokenValue",
-                UserId = 1,
-                Email = "email",
-                LastName = "lastName"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Update.Inputs>>();
-            sp.Setup(s => s.Call(inputs)).Returns(new Models.Database.DBResult());
-
-            var result = _dbCTX.SP_User_Update(inputs, sp.Object);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
-        }
-
-        [Test]
-        public void SP_User_Update_WhenPassingValidData_ItRunsCallMethod()
-        {
-            var inputs = new Models.Database.StoredProcedures.SP_User_Update.Inputs()
-            {
-                Token = "TokenValue",
-                UserId = 1,
-                Email = "email",
-                LastName = "lastName"
-            };
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_Update.Inputs>>();
-
-            _dbCTX.SP_User_Update(inputs, sp.Object);
-
-            sp.Verify(s => s.Call(inputs));
-        }
-        #endregion SP_User_Update
+        
 
         #region SP_User_Insert
         [Test]
