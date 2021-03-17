@@ -40,15 +40,15 @@ namespace FTSS.API.Controllers
         /// Access to appsettings.json
         /// </summary>
         public readonly IConfiguration _configuration;
-        private readonly ILogger _logger2;
+        private readonly ILogger _defaultLogger;
         private readonly AutoMapper.IMapper _mapper;
 
         public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration, 
-            ILogger<UsersController> logger2, AutoMapper.IMapper mapper) 
+            ILogger<UsersController> defaultLogger, AutoMapper.IMapper mapper) 
             : base(dbCTX, logger)
         {
             _configuration = configuration;
-            _logger2 = logger2;
+            _defaultLogger = defaultLogger;            
             _mapper = mapper;
         }
 
@@ -74,7 +74,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.Login(filterParams)");
+                _errorLogger.Add(e, "Error in UsersController.Login(filterParams)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in Login");
             }
         }
@@ -93,7 +93,6 @@ namespace FTSS.API.Controllers
         {
             try
             {
-                _logger2.LogWarning("Warning! Get all start", filterParams);
                 if (!filterParams.IsValid())
                     return StatusCode(400, filterParams.ValidationResults);     //Bad request
 
@@ -103,7 +102,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.GetAll(filterParams)");
+                _errorLogger.Add(e, "Error in UsersController.GetAll(filterParams)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in GetAll");
             }
         }
@@ -128,7 +127,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.Insert(data)");
+                _errorLogger.Add(e, "Error in UsersController.Insert(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in Insert");
             }
         }
@@ -151,7 +150,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.Update(data)");
+                _errorLogger.Add(e, "Error in UsersController.Update(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in Update");
             }
         }
@@ -174,7 +173,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.Delete(data)");
+                _errorLogger.Add(e, "Error in UsersController.Delete(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in Update");
             }
         }
@@ -197,7 +196,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.SetPassword(data)");
+                _errorLogger.Add(e, "Error in UsersController.SetPassword(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in SetPassword");
             }
         }
@@ -220,7 +219,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.SP_User_ChangePassword(data)");
+                _errorLogger.Add(e, "Error in UsersController.SP_User_ChangePassword(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in SP_User_ChangePassword");
             }
         }
@@ -243,7 +242,7 @@ namespace FTSS.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.Add(e, "Error in UsersController.UpdateProfile(data)");
+                _errorLogger.Add(e, "Error in UsersController.UpdateProfile(data)");
                 return Problem(e.Message, e.StackTrace, 500, "Error in UpdateProfile");
             }
         }

@@ -15,7 +15,7 @@ namespace FTSS.API.Extensions
         /// <param name="services"></param>
         public static AutoMapper.IMapper AddMapper(this IServiceCollection services)
         {
-            //Create database logger
+            //Create default mapper
             var mapConfig = new AutoMapper.MapperConfiguration(mc =>
             {
                 mc.AddProfile(new Logic.CommonOperations.Mapper());
