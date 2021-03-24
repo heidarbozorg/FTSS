@@ -19,6 +19,8 @@ namespace FTSS.Logic.Database
         #endregion properties
 
         private readonly DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs> _SP_Login;
+        private readonly DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs> _SP_APILog_Insert;
+        
 
         /// <summary>
         /// Constructor
@@ -33,22 +35,17 @@ namespace FTSS.Logic.Database
             if (executer == null)
                 executer = new DP.DapperORM.SQLExecuter(GetConnectionString());
             _SP_Login = new DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs>("SP_Login", executer);
+            _SP_APILog_Insert = new DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs>("SP_APILog_Insert", executer);
         }
 
 
         #region SPs
-        public DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs> sp = null)
+        public DBResult SP_APILog_Insert(SP_APILog_Insert.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
             if (string.IsNullOrEmpty(inputs.APIAddress))
                 throw new ArgumentNullException("APIAddress could not be empty.");
 
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_APILog_Insert(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_APILog_Insert.Single(inputs);
             return rst;
         }
 

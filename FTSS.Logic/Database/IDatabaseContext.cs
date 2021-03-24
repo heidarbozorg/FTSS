@@ -8,7 +8,7 @@ namespace FTSS.Logic.Database
 {
     public interface IDatabaseContext
     {
-        DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs, ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs> sp = null);
+        DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs);
         DBResult SP_Login(Models.Database.StoredProcedures.SP_Login.Inputs inputs);
         DBResult SP_User_AccessToAPI(Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs inputs, ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs> sp = null);
         DBResult SP_Users_GetAll(Models.Database.StoredProcedures.SP_Users_GetAll.Inputs inputs, ISP<Models.Database.StoredProcedures.SP_Users_GetAll.Inputs> sp = null);

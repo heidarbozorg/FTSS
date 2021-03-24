@@ -45,7 +45,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs>>();
             sp.Setup(s => s.Call(_inputs)).Returns(new Models.Database.DBResult());
 
-            var result = _dbCTX.SP_APILog_Insert(_inputs, sp.Object);
+            var result = _dbCTX.SP_APILog_Insert(_inputs);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
@@ -56,7 +56,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         {
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs>>();
 
-            _dbCTX.SP_APILog_Insert(_inputs, sp.Object);
+            _dbCTX.SP_APILog_Insert(_inputs);
 
             sp.Verify(s => s.Call(_inputs));
         }
