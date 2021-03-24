@@ -99,14 +99,13 @@ namespace FTSS.Logic.UnitTests.Security
         {
             var rst = Logic.Security.Common.IsUserAccessToAPI(_ctx.Object, _data);
 
-            _ctx.Verify(c => c.SP_User_AccessToAPI(_data, 
-                It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()));
+            _ctx.Verify(c => c.SP_User_AccessToAPI(_data));
         }
 
         [Test]
         public void IsUserAccessToAPI_WhenUserAccess_ReturnsTrue()
         {
-            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult() {
                     ErrorCode = 200,
                     Data = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs()
@@ -122,7 +121,7 @@ namespace FTSS.Logic.UnitTests.Security
         [Test]
         public void IsUserAccessToAPI_WhenUserNotAccess_ReturnsFalse()
         {
-            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
                     ErrorCode = 200,
@@ -139,7 +138,7 @@ namespace FTSS.Logic.UnitTests.Security
         [Test]
         public void IsUserAccessToAPI_WhenDatabaseHasErrorCode_ReturnsFalse()
         {
-            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
                     ErrorCode = 300,
@@ -156,7 +155,7 @@ namespace FTSS.Logic.UnitTests.Security
         [Test]
         public void IsUserAccessToAPI_WhenDatabaseHasErrorMessage_ReturnsFalse()
         {
-            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
                     ErrorCode = 200,
@@ -174,7 +173,7 @@ namespace FTSS.Logic.UnitTests.Security
         [Test]
         public void IsUserAccessToAPI_WhenDatabaseResultIsNull_ReturnsFalse()
         {
-            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
                     ErrorCode = 200,
@@ -188,7 +187,7 @@ namespace FTSS.Logic.UnitTests.Security
         [Test]
         public void IsUserAccessToAPI_WhenDatabaseThrowsException_ThrowsException()
         {
-            _ctx.Setup(c => c.SP_User_AccessToAPI(_data, It.IsAny<ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>()))
+            _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Throws(new System.Exception("Unknown error"));
             Assert.That(() => 
                 Logic.Security.Common.IsUserAccessToAPI(_ctx.Object, _data), 

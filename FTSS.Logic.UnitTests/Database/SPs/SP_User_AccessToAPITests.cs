@@ -57,7 +57,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>();
             sp.Setup(s => s.Call(_accessToAPIInputs)).Returns(new Models.Database.DBResult());
 
-            var result = _dbCTX.SP_User_AccessToAPI(_accessToAPIInputs, sp.Object);
+            var result = _dbCTX.SP_User_AccessToAPI(_accessToAPIInputs);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
@@ -68,7 +68,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         {
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs>>();
 
-            _dbCTX.SP_User_AccessToAPI(_accessToAPIInputs, sp.Object);
+            _dbCTX.SP_User_AccessToAPI(_accessToAPIInputs);
 
             sp.Verify(s => s.Call(_accessToAPIInputs));
         }

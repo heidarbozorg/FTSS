@@ -93,10 +93,12 @@ namespace FTSS.API.Controllers
         {
             try
             {
+                filterParams.Token = User.GetToken();
+
                 if (!filterParams.IsValid())
                     return StatusCode(400, filterParams.ValidationResults);     //Bad request
 
-                filterParams.Token = User.GetToken();
+                
                 var dbResult = _ctx.SP_Users_GetAll(filterParams);
                 return FromDatabase(dbResult);
             }

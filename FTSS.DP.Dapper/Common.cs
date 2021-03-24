@@ -69,6 +69,18 @@ namespace FTSS.DP.DapperORM
         }
 
 
+        private static T GetOutputValue<T>(DynamicParameters outputParams, string key)
+        {
+            try
+            {
+                return outputParams.Get<T>(key);
+            }
+            catch (Exception)
+            {
+                return default(T);
+            }
+        }
+
 
         /// <summary>
         /// Convert database query result to DBResult type
@@ -83,8 +95,10 @@ namespace FTSS.DP.DapperORM
 
             var rst = new Models.Database.DBResult()
             {
-                ErrorCode = outputParams.Get<int>("ErrorCode"),
-                ErrorMessage = outputParams.Get<string>("ErrorMessage"),
+                //ErrorCode = outputParams.Get<int>("ErrorCode"),
+                ErrorCode = GetOutputValue<int>(outputParams, "ErrorCode"),
+                //ErrorMessage = outputParams.Get<string>("ErrorMessage"),
+                ErrorMessage = GetOutputValue<string>(outputParams, "ErrorMessage"),
 
                 Data = data
             };

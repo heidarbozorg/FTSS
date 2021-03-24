@@ -20,6 +20,7 @@ namespace FTSS.Logic.Database
 
         private readonly DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs> _SP_Login;
         private readonly DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs> _SP_APILog_Insert;
+        private readonly DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs> _SP_User_AccessToAPI;
         
 
         /// <summary>
@@ -36,6 +37,7 @@ namespace FTSS.Logic.Database
                 executer = new DP.DapperORM.SQLExecuter(GetConnectionString());
             _SP_Login = new DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs>("SP_Login", executer);
             _SP_APILog_Insert = new DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs>("SP_APILog_Insert", executer);
+            _SP_User_AccessToAPI = new DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs>("SP_User_AccessToAPI", executer);
         }
 
 
@@ -58,18 +60,12 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_User_AccessToAPI(Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_AccessToAPI.Inputs> sp = null)
+        public DBResult SP_User_AccessToAPI(SP_User_AccessToAPI.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
             if (string.IsNullOrEmpty(inputs.Token) || string.IsNullOrEmpty(inputs.APIAddress))
                 throw new ArgumentNullException("Token and APIAddress could not be empty.");
 
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_AccessToAPI(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_AccessToAPI.Single(inputs);
             return rst;
         }
 

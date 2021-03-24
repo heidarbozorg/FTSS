@@ -171,7 +171,7 @@ namespace FTSS.API.Filters
                 UserToken = GetUserToken(ctx),
                 Params = GetAPIParams(_executingContext),
                 Results = GetAPIResult(context),
-                ErrorMessage = GetAPIErrorMessage(context),
+                ErrorMessage_ = GetAPIErrorMessage(context),
                 StatusCode = GetAPIStatusCode(context)
             };
 

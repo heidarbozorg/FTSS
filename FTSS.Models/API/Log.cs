@@ -32,7 +32,7 @@ namespace FTSS.Models.API
         /// <summary>
         /// API error message (if exists)
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage_ { get; set; }
 
         /// <summary>
         /// RESTFul http code result
