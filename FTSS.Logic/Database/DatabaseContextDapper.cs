@@ -1,8 +1,6 @@
 ﻿using FTSS.Models.Database;
-using Microsoft.Data.SqlClient;
+using FTSS.Models.Database.StoredProcedures;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FTSS.Logic.Database
 {
@@ -20,36 +18,25 @@ namespace FTSS.Logic.Database
         }
         #endregion properties
 
+        private readonly DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs> _SP_Login;
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="ConnectionString"></param>
-        public DatabaseContextDapper(string ConnectionString)
+        public DatabaseContextDapper(string ConnectionString, DP.DapperORM.ISQLExecuter executer = null)
         {
             if (string.IsNullOrWhiteSpace(ConnectionString))
                 throw new ArgumentNullException("ConnectionString could not be empty for creating DapperCRM.");
 
             _connectionString = ConnectionString;
+            if (executer == null)
+                executer = new DP.DapperORM.SQLExecuter(GetConnectionString());
+            _SP_Login = new DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs>("SP_Login", executer);
         }
 
 
         #region SPs
-        public DBResult SP_Log_Insert(Models.Database.StoredProcedures.SP_Log_Insert.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs> sp = null)
-        {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (string.IsNullOrEmpty(inputs.MSG))
-                throw new ArgumentNullException("Text message could not be empty.");
-
-            if (sp == null)
-                sp = new DP.DapperORM.StoredProcedure.SP_Log_Insert(GetConnectionString());
-
-            var rst = sp.Call(inputs);
-            return rst;
-        }
-
         public DBResult SP_APILog_Insert(Models.Database.StoredProcedures.SP_APILog_Insert.Inputs inputs,
             ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs> sp = null)
         {
@@ -65,18 +52,12 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_Login(Models.Database.StoredProcedures.SP_Login.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_Login.Inputs> sp = null)
-        {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
+        public DBResult SP_Login(SP_Login.Inputs inputs)
+        {  
             if (string.IsNullOrEmpty(inputs.Email) || string.IsNullOrEmpty(inputs.Password))
                 throw new ArgumentNullException("Email and Password could not be empty.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Login(GetConnectionString());
-            var rst = sp.Call(inputs);
+            
+            var rst = _SP_Login.Single(inputs);
             return rst;
         }
 

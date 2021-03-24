@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using Moq;
-using FTSS.Models.Database;
-using System;
 
 namespace FTSS.Logic.UnitTests.Log
 {
@@ -40,36 +38,6 @@ namespace FTSS.Logic.UnitTests.Log
         {
             Assert.That(() => _logger.Add(msg),
                 Throws.ArgumentNullException);
-        }
-
-        [Test]
-        public void Add_WhenPassingMessage_RunsSP_Log_InsertJustOnce()
-        {
-            _logger.Add("Simple message");
-            
-            _ctx.Verify(c => 
-                c.SP_Log_Insert
-                (
-                    It.IsAny<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>(), 
-                    It.IsAny<ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>>()
-                ), Times.Once()
-            );
-        }
-
-        [Test]
-        public void Add_WhenPassingException_RunsSP_Log_InsertJustOnce()
-        {
-            var e = new Exception("Simple exception");
-
-            _logger.Add(e);
-
-            _ctx.Verify(c =>
-                c.SP_Log_Insert
-                (
-                    It.IsAny<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>(),
-                    It.IsAny<ISP<Models.Database.StoredProcedures.SP_Log_Insert.Inputs>>()
-                ), Times.Once()
-            );
         }
     }
 }

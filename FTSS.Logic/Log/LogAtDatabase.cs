@@ -47,7 +47,7 @@ namespace FTSS.Logic.Log
             {
                 MSG = text
             };
-            _ctx.SP_Log_Insert(data);
+            //_ctx.SP_Log_Insert(data);
         }
 
         public void Debug(string message)

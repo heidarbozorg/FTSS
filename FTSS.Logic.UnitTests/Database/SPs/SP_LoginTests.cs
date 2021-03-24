@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using FTSS.Models.Database.StoredProcedures;
 
 namespace FTSS.Logic.UnitTests.Database.SPs
 {
@@ -8,14 +9,16 @@ namespace FTSS.Logic.UnitTests.Database.SPs
     {
         readonly string _connectionString = "Not empty string";
         Logic.Database.IDatabaseContext _dbCTX;
+        Mock<DP.DapperORM.ISQLExecuter> _executer;
         Models.Database.StoredProcedures.SP_Login.Inputs _loginInputs;
 
 
         [SetUp]
         public void Setup()
         {
-            _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString);
-            _loginInputs = new Models.Database.StoredProcedures.SP_Login.Inputs()
+            _executer = new Mock<DP.DapperORM.ISQLExecuter>();
+            _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString, _executer.Object);
+            _loginInputs = new SP_Login.Inputs()
             {
                 Email = "username",
                 Password = "password"
@@ -53,7 +56,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
             var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
             sp.Setup(s => s.Call(_loginInputs)).Returns(new Models.Database.DBResult());
 
-            var result = _dbCTX.SP_Login(_loginInputs, sp.Object);
+            var result = _dbCTX.SP_Login(_loginInputs);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
@@ -62,11 +65,8 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         [Test]
         public void SP_Login_WhenPassingValidData_ItRunsCallMethod()
         {
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
-
-            _dbCTX.SP_Login(_loginInputs, sp.Object);
-
-            sp.Verify(s => s.Call(_loginInputs));
+            _dbCTX.SP_Login(_loginInputs);
+            _executer.Verify(s => s.Query<SP_Login.Outputs>(It.IsAny<string>(), It.IsAny<object>(), System.Data.CommandType.StoredProcedure));
         }
     }
 }
