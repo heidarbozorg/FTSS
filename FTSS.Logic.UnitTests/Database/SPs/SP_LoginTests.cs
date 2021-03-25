@@ -10,7 +10,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         readonly string _connectionString = "Not empty string";
         Logic.Database.IDatabaseContext _dbCTX;
         Mock<DP.DapperORM.ISQLExecuter> _executer;
-        Models.Database.StoredProcedures.SP_Login.Inputs _loginInputs;
+        SP_Login.Inputs _loginInputs;
 
 
         [SetUp]
@@ -32,30 +32,9 @@ namespace FTSS.Logic.UnitTests.Database.SPs
                 Throws.ArgumentNullException);
         }
 
-        [TestCase("", "Pass")]
-        [TestCase(null, "Pass")]
-        [TestCase("Email", "")]
-        [TestCase("Email", null)]
-        [TestCase("", null)]
-        [TestCase("", "")]
-        [TestCase(null, "")]
-        [TestCase(null, null)]
-        [Test]
-        public void SP_Login_WhenPassingEmptyEmailOrPassword_ThrowsArgumentNullException(string email, string password)
-        {
-            _loginInputs.Email = email;
-            _loginInputs.Password = password;
-
-            Assert.That(() => _dbCTX.SP_Login(_loginInputs),
-                Throws.ArgumentNullException);
-        }
-
         [Test]
         public void SP_Login_WhenPassingValidData_ItReturnDBResult()
         {
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_Login.Inputs>>();
-            sp.Setup(s => s.Call(_loginInputs)).Returns(new Models.Database.DBResult());
-
             var result = _dbCTX.SP_Login(_loginInputs);
 
             Assert.That(result, Is.Not.Null);
@@ -66,7 +45,8 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         public void SP_Login_WhenPassingValidData_ItRunsCallMethod()
         {
             _dbCTX.SP_Login(_loginInputs);
-            _executer.Verify(s => s.Query<SP_Login.Outputs>(It.IsAny<string>(), It.IsAny<object>(), System.Data.CommandType.StoredProcedure));
+            _executer.Verify(s => 
+                s.Query<SP_Login.Outputs>("SP_Login", It.IsAny<object>(), System.Data.CommandType.StoredProcedure));
         }
     }
 }

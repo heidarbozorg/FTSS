@@ -9,6 +9,7 @@ namespace FTSS.DP.DapperORM
     {
         private readonly string _spName;
         private readonly ISQLExecuter _executer;
+        private DynamicParameters dataParams;
 
         public BaseSP(string SPName, ISQLExecuter executer)
         {
@@ -16,19 +17,31 @@ namespace FTSS.DP.DapperORM
             _executer = executer;
         }
 
-        public Models.Database.DBResult Single(TInput input)
+        private IEnumerable<TOutput> GetAll(TInput inputs)
         {
-            if (input == null)
+            if (inputs == null)
                 throw new ArgumentNullException("Invalid inputs data.");
 
-            var t = input.GetType();
+            var t = inputs.GetType();
             var fields = t.GetProperties();
-            var data = Common.GetErrorCodeAndErrorMessageParams();
+            dataParams = Common.GetErrorCodeAndErrorMessageParams();
             foreach (var f in fields)
-                data.Add(f.Name, f.GetValue(input));
+                dataParams.Add(f.Name, f.GetValue(inputs));
 
-            var result = _executer.Query<TOutput>(_spName, data, System.Data.CommandType.StoredProcedure).FirstOrDefault();
-            return Common.GetResult(data, result);
+            var result = _executer.Query<TOutput>(_spName, dataParams, System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        public Models.Database.DBResult Single(TInput input)
+        {
+            var result = GetAll(input).FirstOrDefault();
+            return Common.GetResult(dataParams, result);
+        }
+
+        public Models.Database.DBResult Query(TInput input)
+        {
+            var result = GetAll(input);
+            return Common.GetResult(dataParams, result);
         }
     }
 }

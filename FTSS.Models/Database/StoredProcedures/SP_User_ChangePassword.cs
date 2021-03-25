@@ -1,51 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace FTSS.Models.Database.StoredProcedures.SP_User_ChangePassword
+namespace FTSS.Models.Database.StoredProcedures
 {
-    public class Inputs : BaseDataModelWithToken, IValidatableObject
+    public class SP_User_ChangePassword
     {
-        [Required]
-        public string OldPassword { get; set; }
-
-        [Required]
-        public string NewPassword { get; set; }
-
-        /// <summary>
-        /// Validation results
-        /// </summary>
-        public ICollection<ValidationResult> ValidationResults;
-
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public class Inputs : BaseDataModelWithToken, IValidatableObject
         {
-            var results = new List<ValidationResult>();
-            if (string.IsNullOrEmpty(this.Token))
-                results.Add(new ValidationResult("Token could not be empty.", new string[] { "Token" }));
+            [Required]
+            public string OldPassword { get; set; }
 
-            if (string.IsNullOrEmpty(this.OldPassword))
-                results.Add(new ValidationResult("OldPassword could not be empty.", new string[] { "OldPassword" }));
+            [Required]
+            public string NewPassword { get; set; }
 
-            if (string.IsNullOrEmpty(this.NewPassword))
-                results.Add(new ValidationResult("NewPassword could not be empty.", new string[] { "NewPassword" }));
+            /// <summary>
+            /// Validation results
+            /// </summary>
+            public ICollection<ValidationResult> ValidationResults;
 
-            return results;
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                var results = new List<ValidationResult>();
+                if (string.IsNullOrEmpty(this.Token))
+                    results.Add(new ValidationResult("Token could not be empty.", new string[] { "Token" }));
+
+                if (string.IsNullOrEmpty(this.OldPassword))
+                    results.Add(new ValidationResult("OldPassword could not be empty.", new string[] { "OldPassword" }));
+
+                if (string.IsNullOrEmpty(this.NewPassword))
+                    results.Add(new ValidationResult("NewPassword could not be empty.", new string[] { "NewPassword" }));
+
+                return results;
+            }
+
+            /// <summary>
+            /// Check validations
+            /// </summary>
+            /// <returns></returns>
+            public bool IsValid()
+            {
+                ValidationResults = new List<ValidationResult>();
+                var rst = Validator.TryValidateObject(this, new ValidationContext(this, null, null), ValidationResults, false);
+                return rst;
+            }
         }
 
-        /// <summary>
-        /// Check validations
-        /// </summary>
-        /// <returns></returns>
-        public bool IsValid()
-        {
-            ValidationResults = new List<ValidationResult>();
-            var rst = Validator.TryValidateObject(this, new ValidationContext(this, null, null), ValidationResults, false);
-            return rst;
-        }
+        public class Outputs : SingleId
+        { }
     }
-
-    public class Outputs : SingleId
-    { }
 }

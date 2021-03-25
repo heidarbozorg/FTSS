@@ -148,24 +148,6 @@ namespace FTSS.DP.DapperORM.UnitTests
         }
 
         [Test]
-        public void GetResult_WhenPassingNullErrorCode_ThrowsKeyNotFoundException()
-        {
-            _outputParams.Add("@ErrorMessage", It.IsAny<string>());
-            Assert.That(() =>
-                Common.GetResult(_outputParams, _data),
-                Throws.InstanceOf<System.Collections.Generic.KeyNotFoundException>());
-        }
-
-        [Test]
-        public void GetResult_WhenPassingNullErrorMessage_ThrowsKeyNotFoundException()
-        {
-            _outputParams.Add("@ErrorCode", It.IsAny<int>());
-            Assert.That(() =>
-                Common.GetResult(_outputParams, _data),
-                Throws.InstanceOf<System.Collections.Generic.KeyNotFoundException>());
-        }
-
-        [Test]
         public void GetResult_WhenPassingOutputParams_ReturnsDBResult()
         {
             _outputParams.Add("@ErrorMessage", It.IsAny<string>());

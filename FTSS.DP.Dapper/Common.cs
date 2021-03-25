@@ -96,8 +96,9 @@ namespace FTSS.DP.DapperORM
             var rst = new Models.Database.DBResult()
             {
                 //ErrorCode = outputParams.Get<int>("ErrorCode"),
-                ErrorCode = GetOutputValue<int>(outputParams, "ErrorCode"),
                 //ErrorMessage = outputParams.Get<string>("ErrorMessage"),
+                
+                ErrorCode = GetOutputValue<int>(outputParams, "ErrorCode"),
                 ErrorMessage = GetOutputValue<string>(outputParams, "ErrorMessage"),
 
                 Data = data

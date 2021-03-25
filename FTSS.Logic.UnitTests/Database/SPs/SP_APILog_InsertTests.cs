@@ -1,5 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
+using FTSS.Models.Database.StoredProcedures;
+
 
 namespace FTSS.Logic.UnitTests.Database.SPs
 {
@@ -10,13 +12,15 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         readonly string _apiAddress = "http://Domain.com/api";
 
         Logic.Database.IDatabaseContext _dbCTX;
-        Models.Database.StoredProcedures.SP_APILog_Insert.Inputs _inputs;
+        SP_APILog_Insert.Inputs _inputs;
+        Mock<DP.DapperORM.ISQLExecuter> executer;
 
         [SetUp]
         public void Setup()
         {
-            _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString);
-            _inputs = new Models.Database.StoredProcedures.SP_APILog_Insert.Inputs()
+            executer = new Mock<DP.DapperORM.ISQLExecuter>();
+            _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString, executer.Object);
+            _inputs = new SP_APILog_Insert.Inputs()
             {
                 APIAddress = _apiAddress
             };
@@ -29,22 +33,9 @@ namespace FTSS.Logic.UnitTests.Database.SPs
                 Throws.ArgumentNullException);
         }
 
-        [TestCase("")]
-        [TestCase(null)]
-        [Test]
-        public void SP_APILog_Insert_WhenPassingEmptyMSG_ThrowsArgumentNullException(string apiAddress)
-        {
-            _inputs.APIAddress = apiAddress;
-            Assert.That(() => _dbCTX.SP_APILog_Insert(_inputs),
-                Throws.ArgumentNullException);
-        }
-
         [Test]
         public void SP_APILog_Insert_WhenPassingValidData_ItReturnDBResult()
-        {
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs>>();
-            sp.Setup(s => s.Call(_inputs)).Returns(new Models.Database.DBResult());
-
+        {            
             var result = _dbCTX.SP_APILog_Insert(_inputs);
 
             Assert.That(result, Is.Not.Null);
@@ -54,11 +45,10 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         [Test]
         public void SP_APILog_Insert_WhenPassingValidData_ItRunsCallMethod()
         {
-            var sp = new Mock<Models.Database.ISP<Models.Database.StoredProcedures.SP_APILog_Insert.Inputs>>();
-
             _dbCTX.SP_APILog_Insert(_inputs);
 
-            sp.Verify(s => s.Call(_inputs));
+            executer.Verify(s =>
+                s.Query<SP_APILog_Insert.Outputs>("SP_APILog_Insert", It.IsAny<object>(), System.Data.CommandType.StoredProcedure));
         }
     }
 }

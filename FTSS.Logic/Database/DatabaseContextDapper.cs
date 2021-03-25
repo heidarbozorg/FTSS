@@ -21,7 +21,14 @@ namespace FTSS.Logic.Database
         private readonly DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs> _SP_Login;
         private readonly DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs> _SP_APILog_Insert;
         private readonly DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs> _SP_User_AccessToAPI;
-        
+        private readonly DP.DapperORM.BaseSP<SP_Users_GetAll.Inputs, SP_Users_GetAll.Outputs> _SP_Users_GetAll;
+        private readonly DP.DapperORM.BaseSP<SP_User_ChangePassword.Inputs, SP_User_ChangePassword.Outputs> _SP_User_ChangePassword;
+        private readonly DP.DapperORM.BaseSP<SP_User_UpdateProfile.Inputs, SP_User_UpdateProfile.Outputs> _SP_User_UpdateProfile;
+        private readonly DP.DapperORM.BaseSP<SP_User_SetPassword.Inputs, SP_User_SetPassword.Outputs> _SP_User_SetPassword;
+        private readonly DP.DapperORM.BaseSP<SP_User_Delete.Inputs, SP_User_Delete.Outputs> _SP_User_Delete;
+        private readonly DP.DapperORM.BaseSP<SP_User_Update.Inputs, SP_User_Update.Outputs> _SP_User_Update;
+        private readonly DP.DapperORM.BaseSP<SP_User_Insert.Inputs, SP_User_Insert.Outputs> _SP_User_Insert;
+
 
         /// <summary>
         /// Constructor
@@ -38,139 +45,74 @@ namespace FTSS.Logic.Database
             _SP_Login = new DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs>("SP_Login", executer);
             _SP_APILog_Insert = new DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs>("SP_APILog_Insert", executer);
             _SP_User_AccessToAPI = new DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs>("SP_User_AccessToAPI", executer);
+            _SP_Users_GetAll = new DP.DapperORM.BaseSP<SP_Users_GetAll.Inputs, SP_Users_GetAll.Outputs>("SP_Users_GetAll", executer);
+            _SP_User_ChangePassword = new DP.DapperORM.BaseSP<SP_User_ChangePassword.Inputs, SP_User_ChangePassword.Outputs>("SP_User_ChangePassword", executer);
+            _SP_User_UpdateProfile = new DP.DapperORM.BaseSP<SP_User_UpdateProfile.Inputs, SP_User_UpdateProfile.Outputs>("SP_User_UpdateProfile", executer);
+            _SP_User_SetPassword = new DP.DapperORM.BaseSP<SP_User_SetPassword.Inputs, SP_User_SetPassword.Outputs>("SP_User_SetPassword", executer);
+            _SP_User_Delete = new DP.DapperORM.BaseSP<SP_User_Delete.Inputs, SP_User_Delete.Outputs>("SP_User_Delete", executer);
+            _SP_User_Update = new DP.DapperORM.BaseSP<SP_User_Update.Inputs, SP_User_Update.Outputs>("SP_User_Update", executer);
+            _SP_User_Insert = new DP.DapperORM.BaseSP<SP_User_Insert.Inputs, SP_User_Insert.Outputs>("SP_User_Insert", executer);
         }
 
 
         #region SPs
         public DBResult SP_APILog_Insert(SP_APILog_Insert.Inputs inputs)
         {
-            if (string.IsNullOrEmpty(inputs.APIAddress))
-                throw new ArgumentNullException("APIAddress could not be empty.");
-
             var rst = _SP_APILog_Insert.Single(inputs);
             return rst;
         }
 
         public DBResult SP_Login(SP_Login.Inputs inputs)
         {  
-            if (string.IsNullOrEmpty(inputs.Email) || string.IsNullOrEmpty(inputs.Password))
-                throw new ArgumentNullException("Email and Password could not be empty.");
-            
             var rst = _SP_Login.Single(inputs);
             return rst;
         }
 
         public DBResult SP_User_AccessToAPI(SP_User_AccessToAPI.Inputs inputs)
         {
-            if (string.IsNullOrEmpty(inputs.Token) || string.IsNullOrEmpty(inputs.APIAddress))
-                throw new ArgumentNullException("Token and APIAddress could not be empty.");
-
             var rst = _SP_User_AccessToAPI.Single(inputs);
             return rst;
         }
 
-        public DBResult SP_Users_GetAll(Models.Database.StoredProcedures.SP_Users_GetAll.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_Users_GetAll.Inputs> sp = null)
+        public DBResult SP_Users_GetAll(SP_Users_GetAll.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_Users_GetAll(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_Users_GetAll.Query(inputs);
             return rst;
         }
 
-        public DBResult SP_User_ChangePassword(Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs> sp = null)
+        public DBResult SP_User_ChangePassword(SP_User_ChangePassword.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid input data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_ChangePassword(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_ChangePassword.Single(inputs);
             return rst;
         }
 
-        public DBResult SP_User_UpdateProfile(Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs> sp = null)
+        public DBResult SP_User_UpdateProfile(SP_User_UpdateProfile.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid input data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_UpdateProfile(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_UpdateProfile.Single(inputs);
             return rst;
         }
 
-        public DBResult SP_User_SetPassword(Models.Database.StoredProcedures.SP_User_SetPassword.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_SetPassword.Inputs> sp = null)
+        public DBResult SP_User_SetPassword(SP_User_SetPassword.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid input data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_SetPassword(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_SetPassword.Single(inputs);
             return rst;
         }
 
-        public DBResult SP_User_Delete(Models.Database.StoredProcedures.SP_User_Delete.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_Delete.Inputs> sp = null)
+        public DBResult SP_User_Delete(SP_User_Delete.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid input data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Delete(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_Delete.Single(inputs);
             return rst;
         }
 
-        public DBResult SP_User_Update(Models.Database.StoredProcedures.SP_User_Update.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_Update.Inputs> sp = null)
+        public DBResult SP_User_Update(SP_User_Update.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid input data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Update(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_Update.Single(inputs);
             return rst;
         }
 
-        public DBResult SP_User_Insert(Models.Database.StoredProcedures.SP_User_Insert.Inputs inputs,
-            ISP<Models.Database.StoredProcedures.SP_User_Insert.Inputs> sp = null)
+        public DBResult SP_User_Insert(SP_User_Insert.Inputs inputs)
         {
-            if (inputs == null)
-                throw new ArgumentNullException("Invalid inputs data.");
-
-            if (!inputs.IsValid())
-                throw new ArgumentException("Invalid input data.");
-
-            if (sp == null)
-                sp = new FTSS.DP.DapperORM.StoredProcedure.SP_User_Insert(GetConnectionString());
-            var rst = sp.Call(inputs);
+            var rst = _SP_User_Insert.Single(inputs);
             return rst;
         }
         #endregion SPs

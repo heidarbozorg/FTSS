@@ -2,57 +2,60 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace FTSS.Models.Database.StoredProcedures.SP_User_Update
+namespace FTSS.Models.Database.StoredProcedures
 {
-    public class Inputs : Models.Database.BaseDataModelWithToken, IValidatableObject
+    public class SP_User_Update
     {
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int UserId { get; set; }
-
-        [Required]
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Validation results
-        /// </summary>
-        public ICollection<ValidationResult> ValidationResults;
-
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public class Inputs : Models.Database.BaseDataModelWithToken, IValidatableObject
         {
-            var results = new List<ValidationResult>();
-            if (string.IsNullOrEmpty(this.Token))
-                results.Add(new ValidationResult("Token could not be empty.", new string[] { "Token" }));
+            [Required]
+            [Range(1, int.MaxValue)]
+            public int UserId { get; set; }
 
-            if (this.UserId <= 0)
-                results.Add(new ValidationResult("Invalid UserId.", new string[] { "UserId" }));
+            [Required]
+            public string Email { get; set; }
+            public string FirstName { get; set; }
 
-            if (string.IsNullOrEmpty(this.Email))
-                results.Add(new ValidationResult("Email could not be empty.", new string[] { "Email" }));
+            [Required]
+            public string LastName { get; set; }
 
-            if (string.IsNullOrEmpty(this.LastName))
-                results.Add(new ValidationResult("LastName could not be empty.", new string[] { "LastName" }));
+            /// <summary>
+            /// Validation results
+            /// </summary>
+            public ICollection<ValidationResult> ValidationResults;
 
-            return results;
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                var results = new List<ValidationResult>();
+                if (string.IsNullOrEmpty(this.Token))
+                    results.Add(new ValidationResult("Token could not be empty.", new string[] { "Token" }));
+
+                if (this.UserId <= 0)
+                    results.Add(new ValidationResult("Invalid UserId.", new string[] { "UserId" }));
+
+                if (string.IsNullOrEmpty(this.Email))
+                    results.Add(new ValidationResult("Email could not be empty.", new string[] { "Email" }));
+
+                if (string.IsNullOrEmpty(this.LastName))
+                    results.Add(new ValidationResult("LastName could not be empty.", new string[] { "LastName" }));
+
+                return results;
+            }
+
+            /// <summary>
+            /// Check validations
+            /// </summary>
+            /// <returns></returns>
+            public bool IsValid()
+            {
+                ValidationResults = new List<ValidationResult>();
+                var rst = Validator.TryValidateObject(this, new ValidationContext(this, null, null), ValidationResults, false);
+                return rst;
+            }
         }
 
-        /// <summary>
-        /// Check validations
-        /// </summary>
-        /// <returns></returns>
-        public bool IsValid()
-        {
-            ValidationResults = new List<ValidationResult>();
-            var rst = Validator.TryValidateObject(this, new ValidationContext(this, null, null), ValidationResults, false);
-            return rst;
-        }
+        public class Outputs : SingleId
+        { }
     }
-
-    public class Outputs : SingleId
-    { }
 }
