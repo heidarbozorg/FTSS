@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace FTSS.Models.Database.StoredProcedures
 {
@@ -8,7 +7,11 @@ namespace FTSS.Models.Database.StoredProcedures
     {
         public class Inputs
         {
+            [Required(ErrorMessage = "Email is a required field.")]
+            [MinLength(3, ErrorMessage = "Email should has at least 3 characters")]
             public string Email { get; set; }
+
+            [Required(ErrorMessage = "Password is a required field.")]
             public string Password { get; set; }
         }
 

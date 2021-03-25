@@ -13,6 +13,7 @@ namespace FTSS.API.Controllers
 {
     [Route("/api/[controller]/[action]")]
     [APILogger]
+    [ApiController]
     public class UsersController : BaseController
     {
         /// <summary>
@@ -95,10 +96,6 @@ namespace FTSS.API.Controllers
             {
                 filterParams.Token = User.GetToken();
 
-                if (!filterParams.IsValid())
-                    return StatusCode(400, filterParams.ValidationResults);     //Bad request
-
-                
                 var dbResult = _ctx.SP_Users_GetAll(filterParams);
                 return FromDatabase(dbResult);
             }
