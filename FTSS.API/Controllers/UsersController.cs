@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FTSS.API.Extensions;
+﻿using FTSS.API.Extensions;
 using FTSS.API.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+
 
 namespace FTSS.API.Controllers
 {
@@ -33,7 +28,7 @@ namespace FTSS.API.Controllers
         /// </param>
         /// <returns></returns>
         [HttpGet]        
-        public IActionResult GetAll([FromBody] Models.Database.StoredProcedures.SP_Users_GetAll.Inputs filterParams)
+        public IActionResult GetAll([FromQuery] Models.Database.StoredProcedures.SP_Users_GetAll.Inputs filterParams)
         {
             filterParams.Token = User.GetToken();
 

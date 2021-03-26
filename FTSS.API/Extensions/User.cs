@@ -24,7 +24,7 @@ namespace FTSS.API.Extensions
         /// <returns></returns>
         public static string GetToken(this ClaimsPrincipal user)
         {
-            return Get(user, "Token");
+            return Get(user, "DbToken");
         }        
     }
 }

@@ -66,7 +66,7 @@ namespace FTSS.Logic.Security
             var rst = dbCTX.SP_User_AccessToAPI(data);
 
             //Check result
-            if (rst == null || rst.ErrorCode != 200 || !string.IsNullOrEmpty(rst.ErrorMessage) || rst.Data == null)
+            if (rst == null || rst.StatusCode != 200 || !string.IsNullOrEmpty(rst.ErrorMessage) || rst.Data == null)
                 return false;
 
             if (!(rst.Data is Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs))

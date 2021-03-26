@@ -98,7 +98,7 @@ namespace FTSS.DP.DapperORM
                 //ErrorCode = outputParams.Get<int>("ErrorCode"),
                 //ErrorMessage = outputParams.Get<string>("ErrorMessage"),
                 
-                ErrorCode = GetOutputValue<int>(outputParams, "ErrorCode"),
+                StatusCode = GetOutputValue<int>(outputParams, "ErrorCode"),
                 ErrorMessage = GetOutputValue<string>(outputParams, "ErrorMessage"),
 
                 Data = data

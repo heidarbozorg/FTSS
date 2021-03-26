@@ -26,10 +26,10 @@ namespace FTSS.API
             if (dbResult == null)
                 return StatusCode(500, "Unhandled internal server error");
 
-            if (dbResult.ErrorCode >= 200 && dbResult.ErrorCode < 300)
+            if (dbResult.StatusCode >= 200 && dbResult.StatusCode < 300)
                 return Ok(dbResult);
 
-            return StatusCode(dbResult.ErrorCode, dbResult.ErrorMessage ?? "Unhandled error");
+            return StatusCode(dbResult.StatusCode, dbResult.ErrorMessage ?? "Unhandled error");
         }
     }
 }

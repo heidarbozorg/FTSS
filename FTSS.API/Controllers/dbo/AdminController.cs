@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace FTSS.API.Controllers.dbo
@@ -40,7 +35,9 @@ namespace FTSS.API.Controllers.dbo
         private readonly AutoMapper.IMapper _mapper;
 
 
-        public AdminController(Logic.Database.IDatabaseContext dbCTX, IConfiguration configuration,
+        public AdminController(
+            Logic.Database.IDatabaseContext dbCTX, 
+            IConfiguration configuration,
             AutoMapper.IMapper mapper)
             : base(dbCTX)
         {
@@ -54,16 +51,9 @@ namespace FTSS.API.Controllers.dbo
         /// <param name="inputs"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Admin_Login.Inputs inputs)
+        public IActionResult Login([FromBody] FTSS.Logic.Security.Admin inputs)
         {
-            var rst = _ctx.SP_Admin_Login(inputs);
-            //Generate JWT
-            if (rst.ErrorCode == 200)
-            {
-                var jwt = Logic.Security.UserJWT.Get(rst, JWTKey, JWTIssuer, _mapper);
-                rst = new Models.Database.DBResult(200, "", jwt);
-            }
-
+            var rst = inputs.Login(_ctx, _mapper, JWTKey, JWTIssuer);
             return FromDatabase(rst);
         }
     }

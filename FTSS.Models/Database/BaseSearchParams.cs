@@ -12,5 +12,7 @@ namespace FTSS.Models.Database
         [Required(ErrorMessage = "{0} is a required field.")]
         [Range(minimum: 1, maximum: 100)]
         public byte PageSize { get; set; }
+
+        public int ActualSize { get; set; }
     }
 }

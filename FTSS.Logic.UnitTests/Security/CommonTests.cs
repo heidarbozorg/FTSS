@@ -107,7 +107,7 @@ namespace FTSS.Logic.UnitTests.Security
         {
             _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult() {
-                    ErrorCode = 200,
+                    StatusCode = 200,
                     Data = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs()
                     {
                         Result = true
@@ -124,7 +124,7 @@ namespace FTSS.Logic.UnitTests.Security
             _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
-                    ErrorCode = 200,
+                    StatusCode = 200,
                     Data = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs()
                     {
                         Result = false
@@ -141,7 +141,7 @@ namespace FTSS.Logic.UnitTests.Security
             _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
-                    ErrorCode = 300,
+                    StatusCode = 300,
                     Data = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs()
                     {
                         Result = true
@@ -158,7 +158,7 @@ namespace FTSS.Logic.UnitTests.Security
             _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
-                    ErrorCode = 200,
+                    StatusCode = 200,
                     ErrorMessage = "A simple error",
                     Data = new Models.Database.StoredProcedures.SP_User_AccessToAPI.Outputs()
                     {
@@ -176,7 +176,7 @@ namespace FTSS.Logic.UnitTests.Security
             _ctx.Setup(c => c.SP_User_AccessToAPI(_data))
                 .Returns(new DBResult()
                 {
-                    ErrorCode = 200,
+                    StatusCode = 200,
                     Data = null
                 });
             var rst = Logic.Security.Common.IsUserAccessToAPI(_ctx.Object, _data);
