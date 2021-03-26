@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace FTSS.DP.DapperORM
 {
-    public class SQLExecuter : ISQLExecuter
+    public class SqlExecuter : ISqlExecuter
     {
         private readonly string _connectionString;
 
-        public SQLExecuter(string connectionString)
+        public SqlExecuter(string connectionString)
         {
             _connectionString = connectionString;
         }

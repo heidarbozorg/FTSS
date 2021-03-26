@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FTSS.DP.DapperORM
 {
-    public interface ISQLExecuter
+    public interface ISqlExecuter
     {
         /// <summary>
         /// Execute database query

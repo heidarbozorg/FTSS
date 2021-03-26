@@ -13,12 +13,12 @@ namespace FTSS.Logic.UnitTests.Database.SPs
 
         Logic.Database.IDatabaseContext _dbCTX;
         SP_APILog_Insert.Inputs _inputs;
-        Mock<DP.DapperORM.ISQLExecuter> executer;
+        Mock<DP.DapperORM.ISqlExecuter> executer;
 
         [SetUp]
         public void Setup()
         {
-            executer = new Mock<DP.DapperORM.ISQLExecuter>();
+            executer = new Mock<DP.DapperORM.ISqlExecuter>();
             _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString, executer.Object);
             _inputs = new SP_APILog_Insert.Inputs()
             {

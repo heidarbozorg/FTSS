@@ -34,14 +34,14 @@ namespace FTSS.Logic.Database
         /// Constructor
         /// </summary>
         /// <param name="ConnectionString"></param>
-        public DatabaseContextDapper(string ConnectionString, DP.DapperORM.ISQLExecuter executer = null)
+        public DatabaseContextDapper(string ConnectionString, DP.DapperORM.ISqlExecuter executer = null)
         {
             if (string.IsNullOrWhiteSpace(ConnectionString))
                 throw new ArgumentNullException("ConnectionString could not be empty for creating DapperCRM.");
 
             _connectionString = ConnectionString;
             if (executer == null)
-                executer = new DP.DapperORM.SQLExecuter(GetConnectionString());
+                executer = new DP.DapperORM.SqlExecuter(GetConnectionString());
             _SP_Login = new DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs>("SP_Login", executer);
             _SP_APILog_Insert = new DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs>("SP_APILog_Insert", executer);
             _SP_User_AccessToAPI = new DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs>("SP_User_AccessToAPI", executer);

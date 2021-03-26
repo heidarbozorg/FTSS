@@ -8,10 +8,10 @@ namespace FTSS.DP.DapperORM
     public class BaseSP<TInput, TOutput>
     {
         private readonly string _spName;
-        private readonly ISQLExecuter _executer;
+        private readonly ISqlExecuter _executer;
         private DynamicParameters dataParams;
 
-        public BaseSP(string SPName, ISQLExecuter executer)
+        public BaseSP(string SPName, ISqlExecuter executer)
         {
             _spName = SPName;
             _executer = executer;

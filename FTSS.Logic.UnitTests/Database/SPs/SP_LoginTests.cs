@@ -9,14 +9,14 @@ namespace FTSS.Logic.UnitTests.Database.SPs
     {
         readonly string _connectionString = "Not empty string";
         Logic.Database.IDatabaseContext _dbCTX;
-        Mock<DP.DapperORM.ISQLExecuter> _executer;
+        Mock<DP.DapperORM.ISqlExecuter> _executer;
         SP_Login.Inputs _loginInputs;
 
 
         [SetUp]
         public void Setup()
         {
-            _executer = new Mock<DP.DapperORM.ISQLExecuter>();
+            _executer = new Mock<DP.DapperORM.ISqlExecuter>();
             _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString, _executer.Object);
             _loginInputs = new SP_Login.Inputs()
             {
