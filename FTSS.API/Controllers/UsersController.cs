@@ -41,15 +41,13 @@ namespace FTSS.API.Controllers
         /// Access to appsettings.json
         /// </summary>
         public readonly IConfiguration _configuration;
-        private readonly ILogger _defaultLogger;
         private readonly AutoMapper.IMapper _mapper;
 
-        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration,
-            ILogger<UsersController> defaultLogger, AutoMapper.IMapper mapper)
-            : base(dbCTX, logger)
+        public UsersController(Logic.Database.IDatabaseContext dbCTX, IConfiguration configuration,
+            AutoMapper.IMapper mapper)
+            : base(dbCTX)
         {
             _configuration = configuration;
-            _defaultLogger = defaultLogger;
             _mapper = mapper;
         }
 
@@ -58,7 +56,7 @@ namespace FTSS.API.Controllers
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login.Inputs inputs)
         {
             var rst = _ctx.SP_Login(inputs);

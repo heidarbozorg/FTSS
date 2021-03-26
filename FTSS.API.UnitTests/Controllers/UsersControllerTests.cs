@@ -14,7 +14,7 @@ namespace FTSS.API.UnitTests.Controllers
         [SetUp]
         public void Setup()
         {
-            userController = new API.Controllers.UsersController(dbCTX: null, logger: null, null, null, null);
+            userController = new API.Controllers.UsersController(null, null, null);
         }
 
         [Test]

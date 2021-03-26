@@ -10,12 +10,10 @@ namespace FTSS.API
     public class BaseController : Controller
     {
         public readonly Logic.Database.IDatabaseContext _ctx;
-        public readonly Logic.Log.ILog _errorLogger;
 
-        public BaseController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger)
+        public BaseController(Logic.Database.IDatabaseContext dbCTX)
         {
             _ctx = dbCTX;
-            _errorLogger = logger;
         }
 
         /// <summary>
