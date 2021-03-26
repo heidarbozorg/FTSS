@@ -44,12 +44,12 @@ namespace FTSS.API.Controllers
         private readonly ILogger _defaultLogger;
         private readonly AutoMapper.IMapper _mapper;
 
-        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration, 
-            ILogger<UsersController> defaultLogger, AutoMapper.IMapper mapper) 
+        public UsersController(Logic.Database.IDatabaseContext dbCTX, Logic.Log.ILog logger, IConfiguration configuration,
+            ILogger<UsersController> defaultLogger, AutoMapper.IMapper mapper)
             : base(dbCTX, logger)
         {
             _configuration = configuration;
-            _defaultLogger = defaultLogger;            
+            _defaultLogger = defaultLogger;
             _mapper = mapper;
         }
 
@@ -61,23 +61,15 @@ namespace FTSS.API.Controllers
         [HttpGet]
         public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login.Inputs inputs)
         {
-            try
+            var rst = _ctx.SP_Login(inputs);
+            //Generate JWT
+            if (rst.ErrorCode == 200)
             {
-                var rst = _ctx.SP_Login(inputs);
-                //Generate JWT
-                if (rst.ErrorCode == 200)
-                {
-                    var jwt = Logic.Security.UserJWT.Get(rst, JWTKey, JWTIssuer, _mapper);
-                    rst = new Models.Database.DBResult(200, "", jwt);
-                }
+                var jwt = Logic.Security.UserJWT.Get(rst, JWTKey, JWTIssuer, _mapper);
+                rst = new Models.Database.DBResult(200, "", jwt);
+            }
 
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.Login(filterParams)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in Login");
-            }
+            return FromDatabase(rst);
         }
 
         /// <summary>
@@ -92,18 +84,10 @@ namespace FTSS.API.Controllers
         [Filters.Auth]
         public IActionResult GetAll([FromBody] Models.Database.StoredProcedures.SP_Users_GetAll.Inputs filterParams)
         {
-            try
-            {
-                filterParams.Token = User.GetToken();
+            filterParams.Token = User.GetToken();
 
-                var dbResult = _ctx.SP_Users_GetAll(filterParams);
-                return FromDatabase(dbResult);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.GetAll(filterParams)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in GetAll");
-            }
+            var dbResult = _ctx.SP_Users_GetAll(filterParams);
+            return FromDatabase(dbResult);
         }
 
         /// <summary>
@@ -118,17 +102,9 @@ namespace FTSS.API.Controllers
         [Authorize]
         public IActionResult Insert([FromBody] Models.Database.StoredProcedures.SP_User_Insert.Inputs data)
         {
-            try
-            {
-                data.Token = User.GetToken();
-                var rst = _ctx.SP_User_Insert(data);
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.Insert(data)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in Insert");
-            }
+            data.Token = User.GetToken();
+            var rst = _ctx.SP_User_Insert(data);
+            return FromDatabase(rst);
         }
 
         /// <summary>
@@ -141,17 +117,9 @@ namespace FTSS.API.Controllers
         [Authorize]
         public IActionResult Update([FromBody] Models.Database.StoredProcedures.SP_User_Update.Inputs data)
         {
-            try
-            {
-                data.Token = User.GetToken();
-                var rst = _ctx.SP_User_Update(data);
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.Update(data)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in Update");
-            }
+            data.Token = User.GetToken();
+            var rst = _ctx.SP_User_Update(data);
+            return FromDatabase(rst);
         }
 
         /// <summary>
@@ -164,17 +132,9 @@ namespace FTSS.API.Controllers
         [Authorize]
         public IActionResult Delete([FromBody] Models.Database.StoredProcedures.SP_User_Delete.Inputs data)
         {
-            try
-            {
-                data.Token = User.GetToken();
-                var rst = _ctx.SP_User_Delete(data);
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.Delete(data)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in Update");
-            }
+            data.Token = User.GetToken();
+            var rst = _ctx.SP_User_Delete(data);
+            return FromDatabase(rst);
         }
 
         /// <summary>
@@ -187,17 +147,9 @@ namespace FTSS.API.Controllers
         [Authorize]
         public IActionResult SetPassword([FromBody] Models.Database.StoredProcedures.SP_User_SetPassword.Inputs data)
         {
-            try
-            {
-                data.Token = User.GetToken();
-                var rst = _ctx.SP_User_SetPassword(data);
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.SetPassword(data)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in SetPassword");
-            }
+            data.Token = User.GetToken();
+            var rst = _ctx.SP_User_SetPassword(data);
+            return FromDatabase(rst);
         }
 
         /// <summary>
@@ -210,17 +162,9 @@ namespace FTSS.API.Controllers
         [Authorize]
         public IActionResult ChangePassword([FromBody] Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs data)
         {
-            try
-            {
-                data.Token = User.GetToken();
-                var rst = _ctx.SP_User_ChangePassword(data);
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.SP_User_ChangePassword(data)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in SP_User_ChangePassword");
-            }
+            data.Token = User.GetToken();
+            var rst = _ctx.SP_User_ChangePassword(data);
+            return FromDatabase(rst);
         }
 
         /// <summary>
@@ -233,17 +177,9 @@ namespace FTSS.API.Controllers
         [Authorize]
         public IActionResult UpdateProfile([FromBody] Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
         {
-            try
-            {
-                data.Token = User.GetToken();
-                var rst = _ctx.SP_User_UpdateProfile(data);
-                return FromDatabase(rst);
-            }
-            catch (Exception e)
-            {
-                _errorLogger.Add(e, "Error in UsersController.UpdateProfile(data)");
-                return Problem(e.Message, e.StackTrace, 500, "Error in UpdateProfile");
-            }
+            data.Token = User.GetToken();
+            var rst = _ctx.SP_User_UpdateProfile(data);
+            return FromDatabase(rst);
         }
     }
 }
