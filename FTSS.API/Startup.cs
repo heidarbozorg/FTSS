@@ -37,7 +37,7 @@ namespace FTSS.API
         public void ConfigureServices(IServiceCollection services)
         {
             //Add logger service
-            services.AddSingleton<Logic.Log.ILog, Logic.Log.LogNLog>();
+            services.AddSingleton<Logic.Log.ILog, Logic.Log.Log>();
 
             //Add Mapper
             var mapper = services.AddMapper();
@@ -53,10 +53,6 @@ namespace FTSS.API
             //Set swagger settings
             services.setSwaggerSettings();
 
-
-            //Add logger to service pool
-            services.AddLogger(ctx);
-            
             //Add API logger to service pool
             services.AddAPILogger(ctx, mapper);
 
@@ -72,8 +68,8 @@ namespace FTSS.API
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.ConfigureExceptionHandler(logger);
-            //app.UseExceptionHandler(o => o.(logger));
+            //Use my custom global error handling as a middleware
+            app.UseMiddleware<Middlewares.ExceptionMiddleware>();
 
             //Swagger settings
             app.UseOpenApi();

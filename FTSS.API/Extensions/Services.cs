@@ -49,20 +49,6 @@ namespace FTSS.API.Extensions
 
 
         /// <summary>
-        /// Add Logger service to services pool
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="defaultORM">The default ORM</param>
-        public static void AddLogger(this IServiceCollection services, Logic.Database.IDatabaseContext defaultORM)
-        {
-            //Create database logger
-            var dbLogger = new Logic.Log.LogAtDatabase(defaultORM);
-
-            //Add logger as a service to the service pool
-            services.AddSingleton<Logic.Log.ILog>(dbLogger);
-        }
-
-        /// <summary>
         /// Add API logger service to service pool
         /// </summary>
         /// <param name="services"></param>
