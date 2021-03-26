@@ -50,6 +50,10 @@ namespace FTSS.API
             //Add ORM to service pool
             var ctx = services.AddORM(cns);
 
+            //Set swagger settings
+            services.setSwaggerSettings();
+
+
             //Add logger to service pool
             services.AddLogger(ctx);
             
@@ -70,6 +74,11 @@ namespace FTSS.API
 
             //app.ConfigureExceptionHandler(logger);
             //app.UseExceptionHandler(o => o.(logger));
+
+            //Swagger settings
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
 
             app.UseRouting();
 
