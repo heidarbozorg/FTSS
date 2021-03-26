@@ -11,7 +11,7 @@ namespace FTSS.API.Filters
     /// <summary>
     /// Authorization user request by checking JWT token from header
     /// </summary>
-    public class Auth : Attribute, IAuthorizationFilter
+    public class AuthAttribute : Attribute, IAuthorizationFilter
     {
         private string _apiAddress;
 
@@ -71,7 +71,6 @@ namespace FTSS.API.Filters
             {
                 //If user should not access this API
                 context.Result = new UnauthorizedObjectResult("Access denied");
-                return;
             }
         }
     }

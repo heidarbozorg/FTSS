@@ -10,7 +10,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         readonly string _connectionString = "Not empty string";
         Logic.Database.IDatabaseContext _dbCTX;
         Mock<DP.DapperORM.ISqlExecuter> _executer;
-        SP_Login.Inputs _loginInputs;
+        SP_Admin_Login.Inputs _loginInputs;
 
 
         [SetUp]
@@ -18,7 +18,7 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         {
             _executer = new Mock<DP.DapperORM.ISqlExecuter>();
             _dbCTX = new Logic.Database.DatabaseContextDapper(_connectionString, _executer.Object);
-            _loginInputs = new SP_Login.Inputs()
+            _loginInputs = new SP_Admin_Login.Inputs()
             {
                 Email = "username",
                 Password = "password"
@@ -28,14 +28,14 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         [Test]
         public void SP_Login_WhenPassingNullInputs_ThrowsArgumentNullException()
         {
-            Assert.That(() => _dbCTX.SP_Login(null),
+            Assert.That(() => _dbCTX.SP_Admin_Login(null),
                 Throws.ArgumentNullException);
         }
 
         [Test]
         public void SP_Login_WhenPassingValidData_ItReturnDBResult()
         {
-            var result = _dbCTX.SP_Login(_loginInputs);
+            var result = _dbCTX.SP_Admin_Login(_loginInputs);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf(typeof(Models.Database.DBResult)));
@@ -44,9 +44,9 @@ namespace FTSS.Logic.UnitTests.Database.SPs
         [Test]
         public void SP_Login_WhenPassingValidData_ItRunsCallMethod()
         {
-            _dbCTX.SP_Login(_loginInputs);
+            _dbCTX.SP_Admin_Login(_loginInputs);
             _executer.Verify(s => 
-                s.Query<SP_Login.Outputs>("SP_Login", It.IsAny<object>(), System.Data.CommandType.StoredProcedure));
+                s.Query<SP_Admin_Login.Outputs>("SP_Login", It.IsAny<object>(), System.Data.CommandType.StoredProcedure));
         }
     }
 }

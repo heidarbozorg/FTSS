@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FTSS.Models.Database.StoredProcedures
 {
-    public class SP_Login
+    public class SP_Admin_Login
     {
         public class Inputs
         {

@@ -18,7 +18,7 @@ namespace FTSS.Logic.Database
         }
         #endregion properties
 
-        private readonly DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs> _SP_Login;
+        private readonly DP.DapperORM.BaseSP<SP_Admin_Login.Inputs, SP_Admin_Login.Outputs> _SP_Admin_Login;
         private readonly DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs> _SP_APILog_Insert;
         private readonly DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs> _SP_User_AccessToAPI;
         private readonly DP.DapperORM.BaseSP<SP_Users_GetAll.Inputs, SP_Users_GetAll.Outputs> _SP_Users_GetAll;
@@ -42,7 +42,7 @@ namespace FTSS.Logic.Database
             _connectionString = ConnectionString;
             if (executer == null)
                 executer = new DP.DapperORM.SqlExecuter(GetConnectionString());
-            _SP_Login = new DP.DapperORM.BaseSP<SP_Login.Inputs, SP_Login.Outputs>("SP_Login", executer);
+            _SP_Admin_Login = new DP.DapperORM.BaseSP<SP_Admin_Login.Inputs, SP_Admin_Login.Outputs>("SP_Admin_Login", executer);
             _SP_APILog_Insert = new DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs>("SP_APILog_Insert", executer);
             _SP_User_AccessToAPI = new DP.DapperORM.BaseSP<SP_User_AccessToAPI.Inputs, SP_User_AccessToAPI.Outputs>("SP_User_AccessToAPI", executer);
             _SP_Users_GetAll = new DP.DapperORM.BaseSP<SP_Users_GetAll.Inputs, SP_Users_GetAll.Outputs>("SP_Users_GetAll", executer);
@@ -62,9 +62,9 @@ namespace FTSS.Logic.Database
             return rst;
         }
 
-        public DBResult SP_Login(SP_Login.Inputs inputs)
+        public DBResult SP_Admin_Login(SP_Admin_Login.Inputs inputs)
         {  
-            var rst = _SP_Login.Single(inputs);
+            var rst = _SP_Admin_Login.Single(inputs);
             return rst;
         }
 

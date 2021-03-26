@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 namespace FTSS.Logic.Security
 {
-    public class UserJWT : Models.Database.StoredProcedures.SP_Login.Outputs, IToken
+    public class UserJWT : Models.Database.StoredProcedures.SP_Admin_Login.Outputs, IToken
     {
         #region Properties
         /// <summary>
@@ -75,10 +75,10 @@ namespace FTSS.Logic.Security
             if (mapper == null)
                 throw new ArgumentNullException("Mapper could not be null.");
 
-            if (!(data.Data is Models.Database.StoredProcedures.SP_Login.Outputs))
+            if (!(data.Data is Models.Database.StoredProcedures.SP_Admin_Login.Outputs))
                 throw new ArgumentException("Data is not valid.");
 
-            var loginResult = data.Data as Models.Database.StoredProcedures.SP_Login.Outputs;
+            var loginResult = data.Data as Models.Database.StoredProcedures.SP_Admin_Login.Outputs;
 
             var userJWT = mapper.Map<UserJWT>(loginResult);
             userJWT.Token = loginResult.Token;

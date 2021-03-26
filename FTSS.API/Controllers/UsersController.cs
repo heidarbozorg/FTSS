@@ -13,62 +13,17 @@ namespace FTSS.API.Controllers
 {
     [Route("/api/[controller]/[action]")]
     [APILogger]
+    [Authorize]
+    [Filters.AuthAttribute]
     [ApiController]
     public class UsersController : BaseController
     {
-        /// <summary>
-        /// Read JWT key from appsettings.json
-        /// </summary>
-        public string JWTKey
-        {
-            get
-            {
-                var rst = this._configuration.GetValue<string>("JWT:Key");
-                return (rst);
-            }
-        }
 
-        public string JWTIssuer
-        {
-            get
-            {
-                var rst = this._configuration.GetValue<string>("JWT:Issuer");
-                return (rst);
-            }
-        }
-
-        /// <summary>
-        /// Access to appsettings.json
-        /// </summary>
-        public readonly IConfiguration _configuration;
-        private readonly AutoMapper.IMapper _mapper;
-
-        public UsersController(Logic.Database.IDatabaseContext dbCTX, IConfiguration configuration,
-            AutoMapper.IMapper mapper)
+        public UsersController(Logic.Database.IDatabaseContext dbCTX)
             : base(dbCTX)
         {
-            _configuration = configuration;
-            _mapper = mapper;
         }
 
-        /// <summary>
-        /// Login and get database token
-        /// </summary>
-        /// <param name="inputs"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult Login([FromBody] Models.Database.StoredProcedures.SP_Login.Inputs inputs)
-        {
-            var rst = _ctx.SP_Login(inputs);
-            //Generate JWT
-            if (rst.ErrorCode == 200)
-            {
-                var jwt = Logic.Security.UserJWT.Get(rst, JWTKey, JWTIssuer, _mapper);
-                rst = new Models.Database.DBResult(200, "", jwt);
-            }
-
-            return FromDatabase(rst);
-        }
 
         /// <summary>
         /// Search between all users by filter parameters
@@ -77,9 +32,7 @@ namespace FTSS.API.Controllers
         /// Filter parameters
         /// </param>
         /// <returns></returns>
-        [HttpGet]
-        [Authorize]
-        [Filters.Auth]
+        [HttpGet]        
         public IActionResult GetAll([FromBody] Models.Database.StoredProcedures.SP_Users_GetAll.Inputs filterParams)
         {
             filterParams.Token = User.GetToken();
@@ -96,8 +49,6 @@ namespace FTSS.API.Controllers
         /// </param>
         /// <returns></returns>
         [HttpPost]
-        [Filters.Auth]
-        [Authorize]
         public IActionResult Insert([FromBody] Models.Database.StoredProcedures.SP_User_Insert.Inputs data)
         {
             data.Token = User.GetToken();
@@ -111,8 +62,6 @@ namespace FTSS.API.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPut]
-        [Filters.Auth]
-        [Authorize]
         public IActionResult Update([FromBody] Models.Database.StoredProcedures.SP_User_Update.Inputs data)
         {
             data.Token = User.GetToken();
@@ -126,8 +75,6 @@ namespace FTSS.API.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Filters.Auth]
-        [Authorize]
         public IActionResult Delete([FromBody] Models.Database.StoredProcedures.SP_User_Delete.Inputs data)
         {
             data.Token = User.GetToken();
@@ -141,8 +88,6 @@ namespace FTSS.API.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPut]
-        [Filters.Auth]
-        [Authorize]
         public IActionResult SetPassword([FromBody] Models.Database.StoredProcedures.SP_User_SetPassword.Inputs data)
         {
             data.Token = User.GetToken();
@@ -156,8 +101,6 @@ namespace FTSS.API.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPut]
-        [Filters.Auth]
-        [Authorize]
         public IActionResult ChangePassword([FromBody] Models.Database.StoredProcedures.SP_User_ChangePassword.Inputs data)
         {
             data.Token = User.GetToken();
@@ -171,8 +114,6 @@ namespace FTSS.API.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPut]
-        [Filters.Auth]
-        [Authorize]
         public IActionResult UpdateProfile([FromBody] Models.Database.StoredProcedures.SP_User_UpdateProfile.Inputs data)
         {
             data.Token = User.GetToken();

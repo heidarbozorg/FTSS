@@ -14,13 +14,13 @@ namespace FTSS.API.UnitTests.Controllers
         [SetUp]
         public void Setup()
         {
-            userController = new API.Controllers.UsersController(null, null, null);
+            userController = new API.Controllers.UsersController(null);
         }
 
         [Test]
         public void Login_WhenCtxAndLoggerIsNull_ShouldThrowsException()
         {
-            Assert.That(() => { userController.Login(null); }, Throws.Exception);
+            Assert.That(() => { userController.GetAll(null); }, Throws.Exception);
         }
     }
 }

@@ -14,14 +14,14 @@ namespace FTSS.Logic.UnitTests.Security
         private System.DateTime _expireDate = System.DateTime.Now.AddDays(1);
 
         private Models.Database.DBResult _data;
-        private Models.Database.StoredProcedures.SP_Login.Outputs _loginResult;
+        private Models.Database.StoredProcedures.SP_Admin_Login.Outputs _loginResult;
         private Logic.Security.UserJWT _userJWT;
         Mock<AutoMapper.IMapper> _mapper;
 
         [SetUp]
         public void Setup()
         {
-            _loginResult = new Models.Database.StoredProcedures.SP_Login.Outputs()
+            _loginResult = new Models.Database.StoredProcedures.SP_Admin_Login.Outputs()
             {
                 UserId = 1,
                 Token = _dbToken,
