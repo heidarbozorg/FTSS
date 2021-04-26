@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Database\Functions\**" />
+    <Compile Remove="Database\Views\**" />
+    <EmbeddedResource Remove="Database\Functions\**" />
+    <EmbeddedResource Remove="Database\Views\**" />
+    <None Remove="Database\Functions\**" />
+    <None Remove="Database\Views\**" />
+  </ItemGroup>
+
+</Project>
