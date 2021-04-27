@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace FTSS.API.Controllers.dbo
@@ -56,5 +57,13 @@ namespace FTSS.API.Controllers.dbo
             var rst = inputs.Login(_ctx, _mapper, JWTKey, JWTIssuer);
             return FromDatabase(rst);
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetAccessMenu()
+        {
+            return null;
+        }
+
     }
 }
