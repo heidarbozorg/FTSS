@@ -43,7 +43,7 @@ namespace FTSS.API.Filters
             var data = new Models.Database.StoredProcedures.Fapubs.dbo.SP_CheckToken.Inputs()
             {
                 UserToken = context.HttpContext.User.GetToken(),
-                WAPIToken = _apiAddress
+                WAPIToken = context.HttpContext.User.GetWAPIToken()
             };
 
             //Get default ORM

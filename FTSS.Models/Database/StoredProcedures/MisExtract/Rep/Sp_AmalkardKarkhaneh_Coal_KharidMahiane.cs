@@ -15,7 +15,7 @@ namespace FTSS.Models.Database.StoredProcedures.MisExtract.Rep
 		public class Outputs
 		{
 			public int? RowNo { get; set; }
-			public char? Date_ { get; set; }
+			public string Date_ { get; set; }
 			public float? Tonaj { get; set; }
 			public float? Khakestar { get; set; }
 			public float? RotabatZaheri { get; set; }

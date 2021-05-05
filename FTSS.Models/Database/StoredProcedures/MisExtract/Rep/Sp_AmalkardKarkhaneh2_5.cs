@@ -4,20 +4,20 @@ using System.Text;
 
 namespace FTSS.Models.Database.StoredProcedures.MisExtract.Rep
 {
-	public class Sp_AmalkardKarkhaneh_Coal_Mojudi
+	public class Sp_AmalkardKarkhaneh2_5
 	{
 		public class Inputs : BaseDataModelWithToken.WAPIUserToken
 		{
-			public string Version_code { get; set; }
-			public string FromDate { get; set; }
 			public string ToDate { get; set; }
+			public string version_code { get; set; }
 		}
 		public class Outputs
 		{
-			public int? RowNo { get; set; }
-			public string Date_ { get; set; }
-			public float? Tonaj { get; set; }
-			public float? PreTonaj { get; set; }
+			public string GroupName { get; set; }
+			public int? Rooz { get; set; }
+			public int? Mah { get; set; }
+			public int? Sal { get; set; }
 		}
+	
 	}
 }

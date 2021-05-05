@@ -18,7 +18,7 @@ namespace FTSS.DP.DapperORM
             var p = GetEmptyParams();
             int errorCode = 0;
             string errorMessage = "";
-            p.Add("@OutStr", errorCode, System.Data.DbType.String, System.Data.ParameterDirection.Output);
+            p.Add("@OutStr", errorCode, System.Data.DbType.String, System.Data.ParameterDirection.Output,500);
             p.Add("@ErrorCode", errorMessage, System.Data.DbType.Int32, System.Data.ParameterDirection.Output);
 
             return p;
@@ -87,8 +87,8 @@ namespace FTSS.DP.DapperORM
                 //ErrorCode = outputParams.Get<int>("ErrorCode"),
                 //ErrorMessage = outputParams.Get<string>("ErrorMessage"),
                 
-                StatusCode = GetOutputValue<int>(outputParams, "OutStr"),
-                ErrorMessage = GetOutputValue<string>(outputParams, "ErrorCode"),
+                ErrorMessage = GetOutputValue<string>(outputParams, "OutStr"),
+                StatusCode = GetOutputValue<int>(outputParams, "ErrorCode"),
 
                 Data = data
             };

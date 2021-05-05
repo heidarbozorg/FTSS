@@ -26,6 +26,10 @@ namespace FTSS.API.Extensions
         {
             return Get(user, "Token");
         }
-  
+        public static string GetWAPIToken(this ClaimsPrincipal user)
+        {
+            return Get(user, "WAPIToken");
+        }
+
     }
 }

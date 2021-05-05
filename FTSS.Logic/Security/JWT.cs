@@ -93,16 +93,15 @@ namespace FTSS.Logic.Security
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            JwtSecurityToken token = new JwtSecurityToken
-            (
+			JwtSecurityToken token = new JwtSecurityToken
+			(
                 issuer,     //Issure  
                 issuer,     //Audience
-                claims,
-                expires: expireDate,
-                signingCredentials: credentials
-            );
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+				claims,
+				expires: expireDate,
+				signingCredentials: credentials
+			);
+			var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
     }

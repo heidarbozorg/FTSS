@@ -11,5 +11,6 @@ namespace FTSS.Logic.Database
 	{
 		DBResult SP__User_Login(SP_User_Login.Inputs inputs);
 		DBResult SP_Check_Token(SP_CheckToken.Inputs inputs);
+		DBResult Sp_WAPIToken_Insert(Sp_WAPIToken_Insert.Inputs inputs);
 	}
 }

@@ -1,16 +1,19 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FTSS.API.Controllers.Prsn
+namespace FTSS.API.Controllers.dbo
 {
-	[Route("api/prsn/[controller]/[action]")]
+	[Route("api/dbo/[controller]/[action]")]
+	[Authorize]
+	[Filters.AuthAttribute]
 	[ApiController]
-	public class UserController : BaseController
+	public class versionController : BaseController
 	{
 		/// <summary>
 		/// Read JWT key from appsettings.json
@@ -40,8 +43,8 @@ namespace FTSS.API.Controllers.Prsn
 		private readonly AutoMapper.IMapper _mapper;
 		IHttpContextAccessor _IHttpContextAccessor;
 
-		public UserController(
-			Logic.Database.IDatabaseContextDapper_Fapubs dbCTX,
+		public versionController(
+			Logic.Database.IDatabaseContext_MisExtract dbCTX,
 			IConfiguration configuration,
 			AutoMapper.IMapper mapper, IHttpContextAccessor IHttpContextAccessor)
 			: base(dbCTX)
@@ -51,16 +54,15 @@ namespace FTSS.API.Controllers.Prsn
 			_IHttpContextAccessor = IHttpContextAccessor;
 		}
 		/// <summary>
-		/// جهت ورود کاربران
+		/// ....
 		/// </summary>
 		/// <param name="inputs"></param>
 		/// <returns></returns>
 		[HttpPut]
-		public IActionResult Login([FromBody] FTSS.Logic.Fapubs.Prsn.SP_User_Login inputs)
+		public IActionResult GetAll([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.dbo.SP_version_List.Inputs inputs)
 		{
-			var rst = inputs.Login(_ctx_Fapubs, _mapper, _IHttpContextAccessor, JWTKey, JWTIssuer);
+			var rst = _ctx_MisExtract.SP_version_List(inputs, JWTKey, JWTIssuer, _IHttpContextAccessor);
 			return FromDatabase(rst);
 		}
-	
 	}
 }

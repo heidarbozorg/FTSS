@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FTSS.Logic.Log;
+using Microsoft.AspNetCore.Http;
 
 namespace FTSS.API
 {
@@ -65,7 +66,7 @@ namespace FTSS.API
 
             //Add API logger to service pool
             services.AddAPILogger_MisExtract(ctx_Zirab_MisExtract, mapper);
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers();
         }
 

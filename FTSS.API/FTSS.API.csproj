@@ -19,9 +19,5 @@
     <ProjectReference Include="..\FTSS.Models\FTSS.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\dbo\" />
-  </ItemGroup>
-
 
 </Project>

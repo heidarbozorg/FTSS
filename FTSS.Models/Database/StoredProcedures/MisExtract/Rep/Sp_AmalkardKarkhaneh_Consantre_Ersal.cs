@@ -10,13 +10,13 @@ namespace FTSS.Models.Database.StoredProcedures.MisExtract.Rep
 		{
 			public string Version_code { get; set; }
 			public string MaghsadId { get; set; }
-			public char? FromDate { get; set; }
-			public char? ToDate { get; set; }
+			public string FromDate { get; set; }
+			public string ToDate { get; set; }
 		}
 		public class Outputs
 		{
 			public int? RowNo { get; set; }
-			public char? Date_ { get; set; }
+			public string Date_ { get; set; }
 			public float? Tonaj { get; set; }
 			public float? Khakestar { get; set; }
 			public float? RotabatZaheri { get; set; }
