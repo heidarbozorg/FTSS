@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -56,7 +56,8 @@ namespace FTSS.API
             services.AddJWT(Configuration);
 
             services.AddSingleton<IConfiguration>(Configuration);
-
+            //تنظیمات مجوز اجرا از روی دامنه های مختلف
+            services.ConfigureCors();
             //Add ORM to service pool
             var ctx_Zirab_MisExtract = services.AddORM_MisExtract(cns_Zirab_MisExtract);
             var ctx_Zirab_Fapubs = services.AddORM_Fapubs(cns_Zirab_Fapubs);
@@ -86,7 +87,8 @@ namespace FTSS.API
             app.UseOpenApi();
             app.UseSwaggerUi3();
 
-
+            //به برنامه میگوییم که از چه قوانینی پیروی کند
+            app.UseCors(Services.corsPolicyName);
             app.UseRouting();
 
             app.UseAuthentication();

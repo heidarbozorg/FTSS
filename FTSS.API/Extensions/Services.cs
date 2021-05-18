@@ -10,6 +10,32 @@ namespace FTSS.API.Extensions
 {
     public static class Services
     {
+        public const string corsPolicyName = "_AllowOrigin";
+        /// <summary>
+        /// صدور مجوز اجرای ای پی آی ها از روی دامنه های مختلف
+        /// </summary>
+        /// <param name="services"></param>
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            //به دلیل اینکه برنامه کلاینت ما با آنگولار نوشته میشود
+            //و برنامه آنگولار از نظر شبکه روی دامنه دیگری قرار دارد
+            //باید به این برنامه اجازه اجرا از طریق دامین های بیرونی را بدهیم
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                        corsPolicyName,
+                        builder =>
+                            builder
+                            //صدور مجوز اجرا از هر دامنه ای
+                            .AllowAnyOrigin()
+                            //صدور مجوز اجرا تمامی انواع متدها
+                            .AllowAnyMethod()
+                            //صدور مجوز اجرا با هر مقدار هدری
+                            .AllowAnyHeader()
+                            );
+            });
+
+        }
         /// <summary>
         /// Add default mapper to the service pool
         /// </summary>
