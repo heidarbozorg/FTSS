@@ -36,6 +36,11 @@ namespace FTSS.Logic.CommonOperations
 
             var rst = JsonConvert.SerializeObject(data);
             return rst;
+        }        
+        public static string get(string Name)
+        {
+            return Name;
+            
         }
     }
 }
