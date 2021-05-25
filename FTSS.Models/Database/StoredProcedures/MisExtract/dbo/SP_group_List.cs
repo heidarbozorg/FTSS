@@ -9,6 +9,8 @@ namespace FTSS.Models.Database.StoredProcedures.MisExtract.dbo
 		public class Inputs : BaseDataModelWithToken.WAPIUserToken
 		{
 			public int? group_id { get; set; }
+			public string pId { get; set; }
+			public int? paramId { get; set; }
 		}
 		public class Outputs
 		{
