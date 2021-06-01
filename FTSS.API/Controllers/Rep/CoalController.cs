@@ -75,5 +75,11 @@ namespace FTSS.API.Controllers.Rep
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_Mojudi(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
+		[HttpPut]
+		public IActionResult GetAllMojudiMahiane([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Inputs inputs)
+		{
+			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_MojudiMahiane(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
+			return FromDatabase(rst);
+		}
 	}
 }

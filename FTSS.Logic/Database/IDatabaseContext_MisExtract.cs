@@ -15,6 +15,7 @@ namespace FTSS.Logic.Database
         DBResult Sp_AmalkardKarkhaneh_Coal_Kharid(Sp_AmalkardKarkhaneh_Coal_Kharid.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);
         DBResult Sp_AmalkardKarkhaneh_Coal_KharidMahiane(Sp_AmalkardKarkhaneh_Coal_KharidMahiane.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);
         DBResult Sp_AmalkardKarkhaneh_Coal_Mojudi(Sp_AmalkardKarkhaneh_Coal_Mojudi.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);
+        DBResult Sp_AmalkardKarkhaneh_Coal_MojudiMahiane(Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);
         DBResult Sp_AmalkardKarkhaneh_Consantre_Ersal(Sp_AmalkardKarkhaneh_Consantre_Ersal.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);
         DBResult Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane(Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);
         DBResult Sp_AmalkardKarkhaneh_Consantre_Mojudi(Sp_AmalkardKarkhaneh_Consantre_Mojudi.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor);

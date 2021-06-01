@@ -27,6 +27,7 @@ namespace FTSS.Logic.Database
 		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_Kharid.Inputs, Sp_AmalkardKarkhaneh_Coal_Kharid.Outputs> _Sp_AmalkardKarkhaneh_Coal_Kharid;
 		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_KharidMahiane.Inputs, Sp_AmalkardKarkhaneh_Coal_KharidMahiane.Outputs> _Sp_AmalkardKarkhaneh_Coal_KharidMahiane;
 		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_Mojudi.Inputs, Sp_AmalkardKarkhaneh_Coal_Mojudi.Outputs> _Sp_AmalkardKarkhaneh_Coal_Mojudi;
+		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Inputs, Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Outputs> _Sp_AmalkardKarkhaneh_Coal_MojudiMahiane;
 		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Consantre_Ersal.Inputs, Sp_AmalkardKarkhaneh_Consantre_Ersal.Outputs> _Sp_AmalkardKarkhaneh_Consantre_Ersal;
 		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane.Inputs, Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane.Outputs> _Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane;
 		private readonly DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Consantre_Mojudi.Inputs, Sp_AmalkardKarkhaneh_Consantre_Mojudi.Outputs> _Sp_AmalkardKarkhaneh_Consantre_Mojudi;
@@ -60,6 +61,7 @@ namespace FTSS.Logic.Database
 			_SP_APILog_Insert = new DP.DapperORM.BaseSP<SP_APILog_Insert.Inputs, SP_APILog_Insert.Outputs>("SP_APILog_Insert", executer);
 			_Sp_AmalkardKarkhaneh_Coal_Kharid = new DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_Kharid.Inputs, Sp_AmalkardKarkhaneh_Coal_Kharid.Outputs>("Rep.Sp_AmalkardKarkhaneh_Coal_Kharid", executer);
 			_Sp_AmalkardKarkhaneh_Coal_KharidMahiane = new DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_KharidMahiane.Inputs, Sp_AmalkardKarkhaneh_Coal_KharidMahiane.Outputs>("Rep.Sp_AmalkardKarkhaneh_Coal_KharidMahiane", executer);
+			_Sp_AmalkardKarkhaneh_Coal_MojudiMahiane = new DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Inputs, Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Outputs>("Rep.Sp_AmalkardKarkhaneh_Coal_MojudiMahiane", executer);
 			_Sp_AmalkardKarkhaneh_Coal_Mojudi = new DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Coal_Mojudi.Inputs, Sp_AmalkardKarkhaneh_Coal_Mojudi.Outputs>("Rep.Sp_AmalkardKarkhaneh_Coal_Mojudi", executer);
 			_Sp_AmalkardKarkhaneh_Consantre_Ersal = new DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Consantre_Ersal.Inputs, Sp_AmalkardKarkhaneh_Consantre_Ersal.Outputs>("Rep.Sp_AmalkardKarkhaneh_Consantre_Ersal", executer);
 			_Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane = new DP.DapperORM.BaseSP<Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane.Inputs, Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane.Outputs>("Rep.Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane", executer);
@@ -106,6 +108,13 @@ namespace FTSS.Logic.Database
 			inputs.UserToken = User.GetUserModel(key, issuer, _IHttpContextAccessor).Token;
 			inputs.WAPIToken = User.GetUserModel(key, issuer, _IHttpContextAccessor).WAPIToken;
 			var rst = _Sp_AmalkardKarkhaneh_Coal_Mojudi.Query(inputs);
+			return rst;
+		}
+		public DBResult Sp_AmalkardKarkhaneh_Coal_MojudiMahiane(Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor)
+		{
+			inputs.UserToken = User.GetUserModel(key, issuer, _IHttpContextAccessor).Token;
+			inputs.WAPIToken = User.GetUserModel(key, issuer, _IHttpContextAccessor).WAPIToken;
+			var rst = _Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Query(inputs);
 			return rst;
 		}
 		public DBResult Sp_AmalkardKarkhaneh_Consantre_Ersal(Sp_AmalkardKarkhaneh_Consantre_Ersal.Inputs inputs, string key, string issuer, IHttpContextAccessor _IHttpContextAccessor)
