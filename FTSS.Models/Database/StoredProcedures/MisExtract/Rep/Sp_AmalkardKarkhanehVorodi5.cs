@@ -9,6 +9,8 @@ namespace FTSS.Models.Database.StoredProcedures.MisExtract.Rep
 		public class Inputs : BaseDataModelWithToken.WAPIUserToken
 		{
 			public string Version_code { get; set; }
+			public string FromDate { get; set; }
+			public string ToDate { get; set; }
 		}
 		public class Outputs
 		{

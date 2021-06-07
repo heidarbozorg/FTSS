@@ -69,11 +69,13 @@ namespace FTSS.API.Controllers.Rep
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Consantre_ErsalMahiane(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
+		[HttpPut]
 		public IActionResult GetAllMojudi([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Consantre_Mojudi.Inputs inputs)
 		{
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Consantre_Mojudi(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
+		[HttpPut]
 		public IActionResult GetAllMojudiMahiane([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Consantre_MojudiMahiane.Inputs inputs)
 		{
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Consantre_MojudiMahiane(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
