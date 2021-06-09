@@ -36,7 +36,7 @@ namespace FTSS.API.Middlewares
             catch (Exception ex)
             {
                 _logger.Error($"Unhandled exception: {ex}");
-                await HandleExceptionAsync(httpContext);
+                await HandleExceptionAsync(httpContext,ex);
             }
         }
 
@@ -46,11 +46,11 @@ namespace FTSS.API.Middlewares
         /// <param name="context"></param>
         /// <param name="exception"></param>
         /// <returns></returns>
-        private Task HandleExceptionAsync(HttpContext context)
+        private Task HandleExceptionAsync(HttpContext context,Exception ex)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return context.Response.WriteAsync("Oops! Something went wrong.");
+            return context.Response.WriteAsync(ex.Message);
         }
     }
 }
