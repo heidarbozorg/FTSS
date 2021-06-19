@@ -9,8 +9,8 @@ I follow these approaches by developing this project:
 * Secure RESTful APIs
 * Scalable
 
-## Stacks:
-I using Microsoft stacks for developing and Postman for running APIs:
+## Stack:
+I using Microsoft stack for developing and Postman for running APIs:
 * C#
 * Dot Net Core 3.1
 * Asp.NET Core MVC REST
