@@ -35,7 +35,7 @@ namespace FTSS.API.Middlewares
             }
             catch (Exception ex)
             {
-                _logger.Error($"Unhandled exception: {ex}");
+                _logger.Error($"Message: {ex.Message} \nStackTrace: {ex.StackTrace}");
                 await HandleExceptionAsync(httpContext);
             }
         }
