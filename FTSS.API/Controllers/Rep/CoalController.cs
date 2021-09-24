@@ -52,33 +52,39 @@ namespace FTSS.API.Controllers.Rep
 			_mapper = mapper;
 			_iHttpContextAccessor = iHttpContextAccessor;
 		}
-		/// <summary>
-		/// تست توضیحات...
-		/// </summary>
-		/// <param name="inputs"></param>
-		/// <returns></returns>
+	
 		[HttpPut]
 		public IActionResult GetAllKharid([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Coal_Kharid.Inputs inputs)
 		{
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_Kharid(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
+
 		[HttpPut]
 		public IActionResult GetAllKharidMahiane([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Coal_KharidMahiane.Inputs inputs)
 		{
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_KharidMahiane(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
+
 		[HttpPut]
 		public IActionResult GetAllMojudi([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Coal_Mojudi.Inputs inputs)
 		{
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_Mojudi(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
+
 		[HttpPut]
 		public IActionResult GetAllMojudiMahiane([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Coal_MojudiMahiane.Inputs inputs)
 		{
 			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_MojudiMahiane(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
+			return FromDatabase(rst);
+		}
+
+		[HttpPut]
+		public IActionResult GetAllKharidTafkiki([FromBody] FTSS.Models.Database.StoredProcedures.MisExtract.Rep.Sp_AmalkardKarkhaneh_Coal_Kharid_Tafkiki.Inputs inputs)
+		{
+			var rst = _ctx_MisExtract.Sp_AmalkardKarkhaneh_Coal_Kharid_Tafkiki(inputs, JWTKey, JWTIssuer, _iHttpContextAccessor);
 			return FromDatabase(rst);
 		}
 	}
