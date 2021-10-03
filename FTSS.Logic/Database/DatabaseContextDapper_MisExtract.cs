@@ -116,6 +116,7 @@ namespace FTSS.Logic.Database
 		{
 			inputs.UserToken = User.GetUserModel(key, issuer, _IHttpContextAccessor).Token;
 			inputs.WAPIToken = User.GetUserModel(key, issuer, _IHttpContextAccessor).WAPIToken;
+			
 			var rst = _Sp_AmalkardKarkhaneh_Coal_Kharid_Tafkiki.Query(inputs);
 			return rst;
 		}
